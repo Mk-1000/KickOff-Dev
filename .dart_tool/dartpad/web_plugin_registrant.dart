@@ -6,11 +6,19 @@
 // @dart = 2.13
 // ignore_for_file: type=lint
 
+import 'package:firebase_auth_web/firebase_auth_web.dart';
+import 'package:firebase_core_web/firebase_core_web.dart';
+import 'package:firebase_database_web/firebase_database_web.dart';
+import 'package:firebase_messaging_web/firebase_messaging_web.dart';
 import 'package:video_player_web/video_player_web.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void registerPlugins([final Registrar? pluginRegistrar]) {
   final Registrar registrar = pluginRegistrar ?? webPluginRegistrar;
+  FirebaseAuthWeb.registerWith(registrar);
+  FirebaseCoreWeb.registerWith(registrar);
+  FirebaseDatabaseWeb.registerWith(registrar);
+  FirebaseMessagingWeb.registerWith(registrar);
   VideoPlayerPlugin.registerWith(registrar);
   registrar.registerMessageHandler();
 }
