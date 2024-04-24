@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
+class ProfileAvatar extends StatefulWidget {
+  final String imageUrl; // URL of the profile picture
+  final VoidCallback onEdit; // Callback for when the edit icon is tapped
+
+  const ProfileAvatar({
+    Key? key,
+    required this.imageUrl,
+    required this.onEdit,
+  }) : super(key: key);
+
+  @override
+  _ProfileAvatarState createState() => _ProfileAvatarState();
+}
+
+class _ProfileAvatarState extends State<ProfileAvatar> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 1, end: 0.95).animate(_controller)
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    _controller.forward();
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    _controller.reverse();
+  }
+
+  void _onTapCancel() {
+    _controller.reverse();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: _onTapDown,
+      onTapUp: _onTapUp,
+      onTapCancel: _onTapCancel,
+      onTap: widget.onEdit,
+      child: Transform.scale(
+        scale: _animation.value,
+        child: Container(
+          width: 95,
+          height: 95,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+              width: 2,
+            ),
+            shape: BoxShape.circle,
+          ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(2),
+                child: CircleAvatar(
+                  radius: 47.5 - 2,
+                  backgroundColor: Colors.grey.shade800,
+                  backgroundImage: widget.imageUrl.isNotEmpty
+                      ? CachedNetworkImageProvider(widget.imageUrl)
+                      : AssetImage('assets/placeholder.png') as ImageProvider,
+                ),
+              ),
+              Positioned(
+                right: 2,
+                bottom: 0,
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.camera_alt_outlined,
+                    size: 20.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
