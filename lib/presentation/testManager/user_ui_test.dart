@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../Managers/UserManager.dart';
 import '../../domain/entities/User.dart';
 
@@ -11,7 +10,6 @@ class TestUserPage extends StatefulWidget {
 class _UserPageState extends State<TestUserPage> {
   final UserManager _userManager =
       UserManager(); // Assuming UserManager is properly initialized
-  final TextEditingController _userIdController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _roleController = TextEditingController();
   final TextEditingController _profileController = TextEditingController();
@@ -44,13 +42,6 @@ class _UserPageState extends State<TestUserPage> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _userIdController,
-              decoration: InputDecoration(labelText: 'User ID'),
-            ),
-          ),
           TextField(
             controller: _emailController,
             decoration: InputDecoration(labelText: 'Email'),
@@ -66,14 +57,12 @@ class _UserPageState extends State<TestUserPage> {
           ElevatedButton(
             onPressed: () {
               User newUser = User(
-                userId: _userIdController.text,
                 email: _emailController.text,
                 role: _roleController.text,
                 profile: _profileController.text,
               );
               _userManager.addUser(newUser).then((_) {
                 setState(() {
-                  _userIdController.clear();
                   _emailController.clear();
                   _roleController.clear();
                   _profileController.clear();

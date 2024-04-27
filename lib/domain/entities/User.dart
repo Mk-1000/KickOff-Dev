@@ -1,5 +1,7 @@
+import '../../utils/IDUtils.dart';
+
 class User {
-  final String _userId;
+  String _userId;
   final String _email;
   final String _role;
   final String _profile;
@@ -7,14 +9,13 @@ class User {
   int _updatedAt;
 
   User({
-    required String userId,
     required String email,
     required String role,
     required String profile,
-  })  : _userId = userId,
-        _email = email,
+  })  : _email = email,
         _role = role,
         _profile = profile,
+        _userId = IDUtils.generateUniqueId(),
         _createdAt = DateTime.now().millisecondsSinceEpoch,
         _updatedAt = DateTime.now().millisecondsSinceEpoch;
 
@@ -38,7 +39,6 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      userId: json['userId'] as String,
       email: json['email'] as String,
       role: json['role'] as String,
       profile: json['profile'] as String,
