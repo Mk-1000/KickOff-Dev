@@ -1,23 +1,36 @@
-import 'package:takwira/domain/repositories/IUserRepository.dart';
-import 'package:takwira/domain/entities/User.dart';
+import '../../domain/entities/User.dart';
+import '../../domain/repositories/IUserRepository.dart';
+import '../../infrastructure/repositories/UserRepository.dart';
+import '../../domain/services/iuser_service.dart';
 
-class UserService {
-  final IUserRepository _userRepository;
-  UserService(this._userRepository);
+class UserService implements IUserService {
+  IUserRepository _userRepository;
 
-  Future<User> getUserDetails(String userId) async {
-    try {
-      return await _userRepository.getUserById(userId);
-    } catch (e) {
-      throw Exception('Failed to fetch user details: $e');
-    }
+  UserService({IUserRepository? userRepository})
+      : _userRepository = userRepository ?? UserRepository();
+
+  @override
+  Future<List<User>> getAllUsers() async {
+    return await _userRepository.getAllUsers();
   }
 
-  Future<void> updateUserDetails(User user) async {
-    try {
-      await _userRepository.updateUser(user);
-    } catch (e) {
-      throw Exception('Failed to update user details: $e');
-    }
+  @override
+  Future<User> getUserDetails(String userId) async {
+    return await _userRepository.getUserById(userId);
+  }
+
+  @override
+  Future<void> addUser(User user) async {
+    await _userRepository.addUser(user);
+  }
+
+  @override
+  Future<void> updateUser(User user) async {
+    await _userRepository.updateUser(user);
+  }
+
+  @override
+  Future<void> deleteUser(String userId) async {
+    await _userRepository.deleteUser(userId);
   }
 }

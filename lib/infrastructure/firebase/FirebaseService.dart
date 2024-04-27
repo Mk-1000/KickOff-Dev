@@ -1,7 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 
 class FirebaseService {
-  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  final FirebaseDatabase _database;
+
+  FirebaseService() : _database = FirebaseDatabase.instance;
 
   // Get a single document by its path
   Future<DataSnapshot> getDocument(String path) async {

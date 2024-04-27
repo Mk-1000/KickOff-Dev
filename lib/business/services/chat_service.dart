@@ -1,5 +1,4 @@
 import 'package:takwira/domain/entities/Message.dart';
-import 'package:takwira/domain/entities/Notification.dart';
 import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/repositories/IChatRepository.dart';

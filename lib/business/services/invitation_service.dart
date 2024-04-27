@@ -1,4 +1,3 @@
-import 'package:firebase_database/firebase_database.dart';
 import '../../domain/entities/Invitation.dart';
 import '../../domain/repositories/IInvitationRepository.dart';
 import '../../domain/services/iinvitation_service.dart';

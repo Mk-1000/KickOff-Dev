@@ -1,4 +1,3 @@
-import '../../view/MatchDetails/widget/Chat/widget/message.dart';
 import '../entities/Chat.dart';
 
 abstract class IChatRepository {

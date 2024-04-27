@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:takwira/view/MatchDetails/widget/Chat/widget/message.dart';
 import '../../domain/entities/Chat.dart';
 import '../../domain/repositories/IChatRepository.dart';
 import '../firebase/FirebaseService.dart';

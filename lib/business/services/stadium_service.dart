@@ -1,4 +1,3 @@
-import 'package:firebase_database/firebase_database.dart';
 import '../../domain/entities/Stadium.dart';
 import '../../domain/repositories/IStadiumRepository.dart';
 import '../../domain/services/istadium_service.dart';

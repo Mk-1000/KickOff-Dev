@@ -1,4 +1,3 @@
-import 'package:firebase_database/firebase_database.dart';
 import '../../domain/entities/Notification.dart';
 import '../../domain/repositories/INotificationRepository.dart';
 import '../../domain/services/inotification_service.dart';

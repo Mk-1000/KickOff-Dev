@@ -1,11 +1,13 @@
 import 'package:takwira/domain/services/iaddress_service.dart';
 import '../../domain/entities/Address.dart';
 import '../../domain/repositories/IAddressRepository.dart';
+import '../../infrastructure/repositories/AddressRepository.dart';
 
 class AddressService implements IAddressService {
-  final IAddressRepository _addressRepository;
+  IAddressRepository _addressRepository;
 
-  AddressService(this._addressRepository);
+  AddressService({IAddressRepository? addressRepository})
+      : _addressRepository = addressRepository ?? AddressRepository();
 
   @override
   Future<List<Address>> getAddressesByUserId(String userId) async {

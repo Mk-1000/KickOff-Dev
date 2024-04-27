@@ -7,8 +7,8 @@ class Address {
   final String _country;
   final double _latitude;
   final double _longitude;
-  final DateTime _createdAt;
-  final DateTime _updatedAt;
+  int _createdAt;
+  int _updatedAt;
   String _userId;
 
   Address({
@@ -20,8 +20,6 @@ class Address {
     required String country,
     required double latitude,
     required double longitude,
-    required DateTime createdAt,
-    required DateTime updatedAt,
     required String userId,
   })  : _addressId = addressId,
         _street = street,
@@ -31,9 +29,9 @@ class Address {
         _country = country,
         _latitude = latitude,
         _longitude = longitude,
-        _createdAt = createdAt,
-        _updatedAt = updatedAt,
-        _userId = userId;
+        _userId = userId,
+        _createdAt = DateTime.now().millisecondsSinceEpoch,
+        _updatedAt = DateTime.now().millisecondsSinceEpoch;
 
   String get addressId => _addressId;
   String get street => _street;
@@ -43,8 +41,8 @@ class Address {
   String get country => _country;
   double get latitude => _latitude;
   double get longitude => _longitude;
-  DateTime get createdAt => _createdAt;
-  DateTime get updatedAt => _updatedAt;
+  int get createdAt => _createdAt;
+  int get updatedAt => _updatedAt;
   String get userId => _userId;
 
   Map<String, dynamic> toJson() => {
@@ -56,8 +54,8 @@ class Address {
         'country': _country,
         'latitude': _latitude,
         'longitude': _longitude,
-        'createdAt': _createdAt.toIso8601String(),
-        'updatedAt': _updatedAt.toIso8601String(),
+        'createdAt': _createdAt,
+        'updatedAt': _updatedAt,
         'userId': _userId,
       };
 
@@ -70,8 +68,10 @@ class Address {
         country: json['country'],
         latitude: json['latitude'],
         longitude: json['longitude'],
-        createdAt: DateTime.parse(json['createdAt']),
-        updatedAt: DateTime.parse(json['updatedAt']),
         userId: json['userId'],
-      );
+      )
+        .._createdAt =
+            json['createdAt'] as int? ?? DateTime.now().millisecondsSinceEpoch
+        .._updatedAt =
+            json['updatedAt'] as int? ?? DateTime.now().millisecondsSinceEpoch;
 }

@@ -4,10 +4,13 @@ import '../../domain/repositories/IUserRepository.dart';
 import '../firebase/FirebaseService.dart';
 
 class UserRepository implements IUserRepository {
-  final FirebaseService _firebaseService;
-  final String _collectionPath = 'users';
+  final String _collectionPath = 'Users';
 
-  UserRepository(this._firebaseService);
+  final FirebaseService _firebaseService; // Instance field for FirebaseService
+
+  // Constructor with optional FirebaseService parameter
+  UserRepository({FirebaseService? firebaseService})
+      : _firebaseService = firebaseService ?? FirebaseService();
 
   // @override
   // Future<List<User>> getAllUsers() async {

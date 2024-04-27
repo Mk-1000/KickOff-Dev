@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../domain/services/iauth_service.dart';
 
 class AuthService implements IAuthService {
