@@ -56,7 +56,7 @@ class InvitationRepository implements IInvitationRepository {
 
   @override
   Future<void> addInvitation(Invitation invitation) async {
-    await _firebaseService.addDocument(_collectionPath, invitation.toJson());
+    await _firebaseService.setDocument(_collectionPath, invitation.toJson());
   }
 
   @override

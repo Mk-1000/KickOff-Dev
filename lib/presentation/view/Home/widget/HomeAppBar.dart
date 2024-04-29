@@ -4,7 +4,7 @@ import 'package:takwira/presentation/view/GoogleNavBar/Navbar.dart';
 import 'package:takwira/presentation/view/Notification/Notification.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
-class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
+class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
 

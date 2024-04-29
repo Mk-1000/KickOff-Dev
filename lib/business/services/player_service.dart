@@ -1,11 +1,13 @@
+import 'package:takwira/infrastructure/repositories/PlayerRepository.dart';
 import '../../domain/entities/Player.dart';
 import '../../domain/repositories/IPlayerRepository.dart';
 import '../../domain/services/iplayer_service.dart';
 
 class PlayerService implements IPlayerService {
-  final IPlayerRepository _playerRepository;
+  IPlayerRepository _playerRepository;
 
-  PlayerService(this._playerRepository);
+  PlayerService({IPlayerRepository? playerRepository})
+      : _playerRepository = playerRepository ?? PlayerRepository();
 
   @override
   Future<void> createPlayer(Player player) async {
@@ -40,6 +42,24 @@ class PlayerService implements IPlayerService {
       await _playerRepository.updatePlayer(player);
     } catch (e) {
       throw Exception('Failed to update player: $e');
+    }
+  }
+
+  @override
+  Future<List<Player>> getAllPlayers() async {
+    try {
+      return await _playerRepository.getAllPlayers();
+    } catch (e) {
+      throw Exception('Failed to retrieve all players: $e');
+    }
+  }
+
+  @override
+  Future<void> deletePlayer(String playerId) async {
+    try {
+      await _playerRepository.deletePlayer(playerId);
+    } catch (e) {
+      throw Exception('Failed to delete player: $e');
     }
   }
 }

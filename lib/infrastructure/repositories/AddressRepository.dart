@@ -52,7 +52,7 @@ class AddressRepository implements IAddressRepository {
 
   @override
   Future<void> addAddress(Address address) async {
-    await _firebaseService.addDocument(_collectionPath, address.toJson());
+    await _firebaseService.setDocument(_collectionPath, address.toJson());
   }
 
   @override

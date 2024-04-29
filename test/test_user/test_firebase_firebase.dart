@@ -15,11 +15,7 @@ void main() {
     });
 
     test('Add, Retrieve, Update, and Delete a User', () async {
-      User testUser = User(
-          userId: testUserId,
-          email: "test@example.com",
-          role: "tester",
-          profile: "test profile");
+      User testUser = User(email: "test@example.com", role: UserRole.user);
 
       // Add user
       await userRepository.addUser(testUser);
@@ -30,10 +26,9 @@ void main() {
 
       // Update user
       testUser = User(
-          userId: testUserId,
-          email: "updated@example.com",
-          role: "tester",
-          profile: "updated profile");
+        email: "updated@example.com",
+        role: UserRole.user,
+      );
       await userRepository.updateUser(testUser);
       User updatedUser = await userRepository.getUserById(testUserId);
       expect(updatedUser.email, equals("updated@example.com"));
@@ -50,17 +45,9 @@ void main() {
 
     test('Verify getAllUsers retrieves multiple users', () async {
       // Creating multiple test users
-      User user1 = User(
-          userId: 'user-${DateTime.now().millisecondsSinceEpoch}',
-          email: "user1@example.com",
-          role: "user",
-          profile: "profile1");
+      User user1 = User(email: "user1@example.com", role: UserRole.user);
 
-      User user2 = User(
-          userId: 'user-${DateTime.now().millisecondsSinceEpoch + 1}',
-          email: "user2@example.com",
-          role: "user",
-          profile: "profile2");
+      User user2 = User(email: "user2@example.com", role: UserRole.user);
 
       // Add users
       await userRepository.addUser(user1);

@@ -54,7 +54,7 @@ class TeamRepository implements ITeamRepository {
 
   @override
   Future<void> addTeam(Team team) async {
-    await _firebaseService.addDocument(_collectionPath, team.toJson());
+    await _firebaseService.setDocument(_collectionPath, team.toJson());
   }
 
   @override

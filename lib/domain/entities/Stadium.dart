@@ -1,69 +1,50 @@
-class Stadium {
-  final String _stadiumId;
+import 'package:takwira/domain/entities/User.dart';
+
+class Stadium extends User {
   final String _name;
   final int _capacity;
   final List<String> _services;
   final String _address;
   final String _phone;
-  final String _type;
-  final DateTime _createdAt;
-  final DateTime _updatedAt;
 
   Stadium({
-    required String stadiumId,
+    required String email,
     required String name,
     required int capacity,
     required List<String> services,
     required String address,
     required String phone,
-    required String type,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-  })  : _stadiumId = stadiumId,
-        _name = name,
+  })  : _name = name,
         _capacity = capacity,
         _services = services,
         _address = address,
         _phone = phone,
-        _type = type,
-        _createdAt = createdAt,
-        _updatedAt = updatedAt;
+        super(email: email, role: UserRole.stadium);
 
-  String get stadiumId => _stadiumId;
-  String get name => _name;
-  int get capacity => _capacity;
-  List<String> get services => _services;
-  String get address => _address;
-  String get phone => _phone;
-  String get type => _type;
-  DateTime get createdAt => _createdAt;
-  DateTime get updatedAt => _updatedAt;
+  // Stadium ID is now the User ID
+  String get stadiumId => userId;
+
+  // Other getters remain the same
 
   Map<String, dynamic> toJson() {
     return {
-      'stadiumId': _stadiumId,
+      ...super.toJson(),
       'name': _name,
       'capacity': _capacity,
       'services': _services,
       'address': _address,
       'phone': _phone,
-      'type': _type,
-      'createdAt': _createdAt.toIso8601String(),
-      'updatedAt': _updatedAt.toIso8601String(),
     };
   }
 
   factory Stadium.fromJson(Map<String, dynamic> json) {
     return Stadium(
-      stadiumId: json['stadiumId'] as String,
-      name: json['name'] as String,
-      capacity: json['capacity'] as int,
-      services: List<String>.from(json['services'] as List),
-      address: json['address'] as String,
-      phone: json['phone'] as String,
-      type: json['type'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      email: json['email'],
+      name: json['name'],
+      capacity: json['capacity'],
+      services: List<String>.from(json['services']),
+      address: json['address'],
+      phone: json['phone'],
     );
   }
 }

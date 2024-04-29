@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:takwira/presentation/managers/UserManager.dart';
 
-class SignInPage extends StatefulWidget {
+class TestSignUpPage extends StatefulWidget {
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<TestSignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final UserManager _userManager =
@@ -18,7 +18,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign In"),
+        title: Text("Sign Up"),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -45,10 +45,10 @@ class _SignInPageState extends State<SignInPage> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _isLoading ? null : _signIn,
+              onPressed: _isLoading ? null : _signUp,
               child: _isLoading
                   ? CircularProgressIndicator(color: Colors.white)
-                  : Text("Sign In"),
+                  : Text("Sign Up"),
             ),
             if (_errorMessage != null) ...[
               SizedBox(height: 8),
@@ -61,19 +61,19 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void _signIn() async {
+  void _signUp() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
-      await _userManager.signInWithEmailPassword(
+      await _userManager.signUpWithEmailPassword(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
       Navigator.of(context)
-          .pop(); // Navigate back or to the main page after successful sign in
+          .pop(); // Optionally navigate back or to a confirmation page after successful sign up
     } catch (e) {
       setState(() {
         _errorMessage = e.toString();

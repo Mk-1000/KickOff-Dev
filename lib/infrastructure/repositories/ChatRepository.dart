@@ -54,7 +54,7 @@ class ChatRepository implements IChatRepository {
 
   @override
   Future<void> addChat(Chat chat) async {
-    await _firebaseService.addDocument(_collectionPath, chat.toJson());
+    await _firebaseService.setDocument(_collectionPath, chat.toJson());
   }
 
   @override
@@ -69,19 +69,25 @@ class ChatRepository implements IChatRepository {
   }
 
   @override
-  Future<List<Chat>> getAllChatsForUser(String userId) async {
-    var chatsSnapshot = await _firebaseService
-        .getDatabaseReference('chats')
-        .orderByChild('participants/$userId')
-        .equalTo(true)
-        .get();
-
-    if (chatsSnapshot.exists && chatsSnapshot.value != null) {
-      return Map<String, dynamic>.from(chatsSnapshot.value as Map)
-          .values
-          .map((chatData) => Chat.fromJson(Map<String, dynamic>.from(chatData)))
-          .toList();
-    }
-    return [];
+  Future<List<Chat>> getAllChatsForUser(String userId) {
+    // TODO: implement getAllChatsForUser
+    throw UnimplementedError();
   }
+
+  // @override
+  // Future<List<Chat>> getAllChatsForUser(String userId) async {
+  //   var chatsSnapshot = await _firebaseService
+  //       .getDatabaseReference('chats')
+  //       .orderByChild('participants/$userId')
+  //       .equalTo(true)
+  //       .get();
+
+  //   if (chatsSnapshot.exists && chatsSnapshot.value != null) {
+  //     return Map<String, dynamic>.from(chatsSnapshot.value as Map)
+  //         .values
+  //         .map((chatData) => Chat.fromJson(Map<String, dynamic>.from(chatData)))
+  //         .toList();
+  //   }
+  //   return [];
+  // }
 }

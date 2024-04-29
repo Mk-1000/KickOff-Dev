@@ -4,23 +4,11 @@ import '../../domain/repositories/IPlayerRepository.dart';
 import '../firebase/FirebaseService.dart';
 
 class PlayerRepository implements IPlayerRepository {
-  final FirebaseService _firebaseService;
   final String _collectionPath = 'players';
+  final FirebaseService _firebaseService; // Instance field for FirebaseService
 
-  PlayerRepository(this._firebaseService);
-
-  // @override
-  // Future<List<Player>> getAllPlayers() async {
-  //   DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);
-  //   if (snapshot.exists && snapshot.value != null) {
-  //     Map<dynamic, dynamic> playersMap =
-  //         (snapshot.value as Map).cast<dynamic, dynamic>();
-  //     return playersMap.values
-  //         .map((e) => Player.fromJson(Map<String, dynamic>.from(e as Map)))
-  //         .toList();
-  //   }
-  //   return [];
-  // }
+  PlayerRepository({FirebaseService? firebaseService})
+      : _firebaseService = firebaseService ?? FirebaseService();
 
   @override
   Future<List<Player>> getAllPlayers() async {
@@ -45,7 +33,7 @@ class PlayerRepository implements IPlayerRepository {
   @override
   Future<Player> getPlayerById(String id) async {
     DataSnapshot snapshot =
-        await _firebaseService.getDocument('$_collectionPath/$id');
+        await _firebaseService.getDocument('$_collectionPath/$id/playerData');
     if (snapshot.exists && snapshot.value != null) {
       return Player.fromJson(Map<String, dynamic>.from(snapshot.value as Map));
     }
@@ -54,13 +42,14 @@ class PlayerRepository implements IPlayerRepository {
 
   @override
   Future<void> addPlayer(Player player) async {
-    await _firebaseService.addDocument(_collectionPath, player.toJson());
+    await _firebaseService.setDocument(
+        '$_collectionPath/${player.playerId}/playerData', player.toJson());
   }
 
   @override
   Future<void> updatePlayer(Player player) async {
     await _firebaseService.updateDocument(
-        '$_collectionPath/${player.playerId}', player.toJson());
+        '$_collectionPath/${player.playerId}/playerData', player.toJson());
   }
 
   @override

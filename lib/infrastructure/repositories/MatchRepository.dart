@@ -54,7 +54,7 @@ class MatchRepository implements IMatchRepository {
 
   @override
   Future<void> addMatch(Match match) async {
-    await _firebaseService.addDocument(_collectionPath, match.toJson());
+    await _firebaseService.setDocument(_collectionPath, match.toJson());
   }
 
   @override

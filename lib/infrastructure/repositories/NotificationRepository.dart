@@ -57,7 +57,7 @@ class NotificationRepository implements INotificationRepository {
 
   @override
   Future<void> addNotification(Notification notification) async {
-    await _firebaseService.addDocument(_collectionPath, notification.toJson());
+    await _firebaseService.setDocument(_collectionPath, notification.toJson());
   }
 
   @override

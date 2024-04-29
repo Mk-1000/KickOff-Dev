@@ -5,12 +5,13 @@ class AuthService implements IAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
-  Future<void> signUpWithEmailPassword(String email, String password) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      throw Exception('Failed to sign up: ${e.message}');
+  Future<String> signUpWithEmailPassword(String email, String password) async {
+    UserCredential userCredential = await _firebaseAuth
+        .createUserWithEmailAndPassword(email: email, password: password);
+    if (userCredential.user != null) {
+      return userCredential.user!.uid;
+    } else {
+      throw Exception('Failed to get user ID');
     }
   }
 
@@ -42,5 +43,23 @@ class AuthService implements IAuthService {
     } on FirebaseAuthException catch (e) {
       throw Exception('Failed to send reset password email: ${e.message}');
     }
+  }
+
+  @override
+  Future<void> signUpWithApple() {
+    // TODO: implement signUpWithApple
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> signUpWithFacebook() {
+    // TODO: implement signUpWithFacebook
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> signUpWithGoogle() {
+    // TODO: implement signUpWithGoogle
+    throw UnimplementedError();
   }
 }

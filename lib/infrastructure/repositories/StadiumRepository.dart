@@ -54,7 +54,7 @@ class StadiumRepository implements IStadiumRepository {
 
   @override
   Future<void> addStadium(Stadium stadium) async {
-    await _firebaseService.addDocument(_collectionPath, stadium.toJson());
+    await _firebaseService.setDocument(_collectionPath, stadium.toJson());
   }
 
   @override

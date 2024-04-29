@@ -54,7 +54,7 @@ class MessageRepository implements IMessageRepository {
 
   @override
   Future<void> addMessage(Message message) async {
-    await _firebaseService.addDocument(_collectionPath, message.toJson());
+    await _firebaseService.setDocument(_collectionPath, message.toJson());
   }
 
   @override
