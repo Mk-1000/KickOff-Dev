@@ -10,6 +10,7 @@ class UserRepository implements IUserRepository {
   UserRepository({FirebaseService? firebaseService})
       : _firebaseService = firebaseService ?? FirebaseService();
 
+  @override
   Future<void> addUser(User user) async {
     if (user.userId.isEmpty) {
       throw Exception("User ID is empty");
@@ -18,6 +19,7 @@ class UserRepository implements IUserRepository {
         '$_collectionPath/${user.userId}', user.toJson());
   }
 
+  @override
   Future<User> getUserById(String id) async {
     DataSnapshot snapshot =
         await _firebaseService.getDocument('$_collectionPath/$id');
@@ -27,15 +29,18 @@ class UserRepository implements IUserRepository {
     throw Exception('User not found');
   }
 
+  @override
   Future<void> updateUser(User user) async {
     await _firebaseService.updateDocument(
         '$_collectionPath/${user.userId}', user.toJson());
   }
 
+  @override
   Future<void> deleteUser(String id) async {
     await _firebaseService.deleteDocument('$_collectionPath/$id');
   }
 
+  @override
   Future<List<User>> getAllUsers() async {
     DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);
     if (snapshot.exists && snapshot.value != null) {

@@ -3,23 +3,28 @@ import 'package:firebase_database/firebase_database.dart';
 class FirebaseService {
   final FirebaseDatabase _database = FirebaseDatabase.instance;
 
+  // Sanitize input for Firebase keys
+  String _sanitizeKey(String key) {
+    return key.replaceAll('.', ',');
+  }
+
   Future<void> setDocument(String path, Map<String, dynamic> data) async {
-    await _database.ref(path).set(data);
+    await _database.ref(_sanitizeKey(path)).set(data);
   }
 
   Future<DataSnapshot> getDocument(String path) async {
-    return await _database.ref(path).get();
+    return await _database.ref(_sanitizeKey(path)).get();
   }
 
   Stream<DatabaseEvent> getCollectionStream(String path) {
-    return _database.ref(path).onValue;
+    return _database.ref(_sanitizeKey(path)).onValue;
   }
 
   Future<void> updateDocument(String path, Map<String, dynamic> data) async {
-    await _database.ref(path).update(data);
+    await _database.ref(_sanitizeKey(path)).update(data);
   }
 
   Future<void> deleteDocument(String path) async {
-    await _database.ref(path).remove();
+    await _database.ref(_sanitizeKey(path)).remove();
   }
 }

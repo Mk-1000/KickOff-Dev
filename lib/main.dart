@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/presentation/testManager/TestSignInPlayer.dart';
 import 'package:takwira/presentation/testManager/player_ui_test.dart';
-import 'package:takwira/presentation/testManager/user_ui_test.dart';
 import 'package:takwira/presentation/view/Onbording/Onbording.dart';
 import 'package:takwira/presentation/view/themes/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'presentation/testManager/TestSignUpPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: Themes().lightTheme,
-      home: SignUpPlayerPage(),
+      home: TestSignInPlayer(),
     );
   }
 }

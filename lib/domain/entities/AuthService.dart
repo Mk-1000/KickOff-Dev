@@ -26,22 +26,24 @@ class AuthService implements IAuthService {
     }
   }
 
-  // @override
-  // Future<void> signUpWithEmailPassword(String email, String password) async {
-  //   try {
-  //     await _firebaseAuth.createUserWithEmailAndPassword(
-  //         email: email, password: password);
-  //   } on FirebaseAuthException catch (e) {
-  //     throw Exception('FirebaseAuth Error: ${e.message}');
-  //   }
-  // }
-
   @override
-  Future<void> signInWithEmailPassword(String email, String password) async {
+  Future<String> signInWithEmailPassword(String email, String password) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential =
+          await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Check if user is successfully signed in and user ID is available
+      if (userCredential.user != null && userCredential.user!.uid.isNotEmpty) {
+        return userCredential.user!.uid; // Return the user ID
+      } else {
+        // If user ID is not available, throw an exception
+        throw Exception('Failed to get user ID after signing in');
+      }
     } on FirebaseAuthException catch (e) {
+      // Catch and rethrow FirebaseAuth specific exceptions as general exceptions
       throw Exception('FirebaseAuth Error: ${e.message}');
     }
   }

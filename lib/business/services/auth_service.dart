@@ -16,12 +16,13 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<void> signInWithEmailPassword(String email, String password) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      throw Exception('Failed to sign in: ${e.message}');
+  Future<String> signInWithEmailPassword(String email, String password) async {
+    UserCredential userCredential = await _firebaseAuth
+        .signInWithEmailAndPassword(email: email, password: password);
+    if (userCredential.user != null) {
+      return userCredential.user!.uid;
+    } else {
+      throw Exception('Failed to get user ID');
     }
   }
 

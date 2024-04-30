@@ -3,16 +3,16 @@ import 'package:takwira/business/services/user_service.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/User.dart';
 import 'package:takwira/domain/services/iplayer_service.dart';
-import 'package:takwira/domain/services/iauth_service.dart'; // Assuming this is the interface for authentication
+import 'package:takwira/domain/services/iauth_service.dart';
 import 'package:takwira/business/services/auth_service.dart';
-import 'package:takwira/domain/services/iuser_service.dart'; // Assuming AuthService handles Firebase Auth
+import 'package:takwira/domain/services/iuser_service.dart';
 
 class PlayerManager {
   final IPlayerService _playerService;
-  final IAuthService _authService; // Add AuthService for user authentication
+  final IAuthService
+      _authService; // AuthenticationService for user authentication
   final IUserService _userService;
 
-  // Constructor with dependency injection for player and auth services
   PlayerManager(
       {IPlayerService? playerService,
       IAuthService? authService,
@@ -20,6 +20,23 @@ class PlayerManager {
       : _playerService = playerService ?? PlayerService(),
         _userService = userService ?? UserService(),
         _authService = authService ?? AuthService();
+
+  // Method to sign in player with email and password
+  Future<void> signInWithEmailPassword(String email, String password) async {
+    try {
+      // Sign in the user with email and password
+      String userId =
+          await _authService.signInWithEmailPassword(email, password);
+
+      // Retrieve player details after successful sign in
+      Player player = await _playerService.getPlayerDetails(userId);
+
+      // Set the retrieved player as the current player
+      Player.setCurrentPlayer(player);
+    } catch (e) {
+      throw Exception('Failed to sign in player: $e');
+    }
+  }
 
   // Method to sign up player with email and password
   Future<void> signUpPlayer(
@@ -36,6 +53,9 @@ class PlayerManager {
 
       // Create player record with this userId
       await _playerService.createPlayer(player);
+
+      // Set the current player
+      Player.setCurrentPlayer(player);
     } catch (e) {
       throw Exception('Failed to sign up player: $e');
     }

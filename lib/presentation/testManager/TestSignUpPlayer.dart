@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:takwira/presentation/managers/UserManager.dart';
 
-class TestSignUpPage extends StatefulWidget {
+class TestSignUpPlayer extends StatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<TestSignUpPage> {
+class _SignUpPageState extends State<TestSignUpPlayer> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final UserManager _userManager =
