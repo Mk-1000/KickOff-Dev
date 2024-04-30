@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:takwira/presentation/testManager/TestSignInPlayer.dart';
-import 'package:takwira/presentation/testManager/player_ui_test.dart';
 import 'package:takwira/presentation/view/Onbording/Onbording.dart';
 import 'package:takwira/presentation/view/themes/themes.dart';
 import 'package:firebase_core/firebase_core.dart';

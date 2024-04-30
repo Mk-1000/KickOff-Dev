@@ -50,7 +50,7 @@ class _HomeScreenState extends State<TestHomeScreen> {
       ),
       body: Center(
         child: _currentPlayer != null
-            ? Text('Welcome, ${_currentPlayer!.toString()}')
+            ? Text('Welcome, ${_currentPlayer!.nickname}')
             : Text('Not signed in'),
       ),
     );

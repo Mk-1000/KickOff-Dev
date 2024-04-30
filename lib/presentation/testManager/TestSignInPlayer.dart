@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:takwira/presentation/Managers/PlayerManager.dart';
 import 'package:takwira/presentation/testManager/TestPlayerHomeScreen.dart';
+import 'package:takwira/presentation/testManager/TestSignUpPlayer.dart';
 
 class TestSignInPlayer extends StatefulWidget {
   @override
@@ -72,6 +73,13 @@ class _LoginScreenState extends State<TestSignInPlayer> {
             ElevatedButton(
               onPressed: _signIn,
               child: Text('Sign In'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => TestSignUpPlayer()));
+              },
+              child: Text('SignUp'),
             ),
           ],
         ),
