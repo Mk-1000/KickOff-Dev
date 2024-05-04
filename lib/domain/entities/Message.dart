@@ -1,9 +1,9 @@
 class Message {
-  final String _messageId;
-  final String _content;
-  final DateTime _sendDate;
-  final String _senderId;
-  final String _chatId;
+  String _messageId;
+  String _content;
+  DateTime _sendDate;
+  String _senderId;
+  String _chatId;
 
   Message({
     required String messageId,

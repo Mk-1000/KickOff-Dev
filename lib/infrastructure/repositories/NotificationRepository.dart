@@ -4,10 +4,12 @@ import '../../domain/repositories/INotificationRepository.dart';
 import '../firebase/FirebaseService.dart';
 
 class NotificationRepository implements INotificationRepository {
-  final FirebaseService _firebaseService;
   final String _collectionPath = 'notifications';
 
-  NotificationRepository(this._firebaseService);
+  final FirebaseService _firebaseService; // Instance field for FirebaseService
+
+  NotificationRepository({FirebaseService? firebaseService})
+      : _firebaseService = firebaseService ?? FirebaseService();
 
   // @override
   // Future<List<Notification>> getAllNotifications() async {

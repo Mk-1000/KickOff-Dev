@@ -33,7 +33,7 @@ class PlayerRepository implements IPlayerRepository {
   @override
   Future<Player> getPlayerById(String id) async {
     DataSnapshot snapshot =
-        await _firebaseService.getDocument('$_collectionPath/$id/playerData');
+        await _firebaseService.getDocument('$_collectionPath/$id');
     if (snapshot.exists && snapshot.value != null) {
       return Player.fromJson(Map<String, dynamic>.from(snapshot.value as Map));
     }
@@ -43,13 +43,13 @@ class PlayerRepository implements IPlayerRepository {
   @override
   Future<void> addPlayer(Player player) async {
     await _firebaseService.setDocument(
-        '$_collectionPath/${player.playerId}/playerData', player.toJson());
+        '$_collectionPath/${player.playerId}', player.toJson());
   }
 
   @override
   Future<void> updatePlayer(Player player) async {
     await _firebaseService.updateDocument(
-        '$_collectionPath/${player.playerId}/playerData', player.toJson());
+        '$_collectionPath/${player.playerId}', player.toJson());
   }
 
   @override

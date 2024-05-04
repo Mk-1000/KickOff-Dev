@@ -3,11 +3,11 @@ import 'package:takwira/domain/entities/User.dart';
 class Player extends User {
   static Player? _currentPlayer; // Singleton instance of the current player
 
-  final String _nickname;
-  final DateTime _birthdate;
-  final String _preferredPosition;
-  final List<String> _phoneNumbers;
-  final String _jerseySize;
+  String _nickname;
+  DateTime _birthdate;
+  String _preferredPosition;
+  List<String> _phoneNumbers;
+  String _jerseySize;
 
   Player({
     String? userId,
@@ -37,8 +37,7 @@ class Player extends User {
   String get preferredPosition => _preferredPosition;
   List<String> get phoneNumbers => _phoneNumbers;
   String get jerseySize => _jerseySize;
-  String get playerId =>
-      userId; // Player ID is now the User ID directly from User base class
+  String get playerId => userId;
 
   Map<String, dynamic> toJson() {
     return {

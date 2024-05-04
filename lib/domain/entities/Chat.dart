@@ -1,8 +1,8 @@
 class Chat {
-  final String _chatId;
-  final Map<String, bool> _participants;
-  final Map<String, dynamic> _lastMessage;
-  final Map<String, dynamic> _readReceipts;
+  String _chatId;
+  Map<String, bool> _participants;
+  Map<String, dynamic> _lastMessage;
+  Map<String, dynamic> _readReceipts;
 
   Chat({
     required String chatId,

@@ -1,12 +1,12 @@
 class Invitation {
-  final String _invitationId;
-  final String _senderId;
-  final String _recipientId;
-  final String _referenceId;
-  final InvitationType _type;
-  final InvitationStatus _status;
-  final DateTime _createdAt;
-  final DateTime _updatedAt;
+  String _invitationId;
+  String _senderId;
+  String _recipientId;
+  String _referenceId;
+  InvitationType _type;
+  InvitationStatus _status;
+  DateTime _createdAt;
+  DateTime _updatedAt;
 
   Invitation({
     required String invitationId,

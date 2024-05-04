@@ -1,12 +1,12 @@
 class Address {
-  final String _addressId;
-  final String _street;
-  final String _city;
-  final String _state;
-  final String _postalCode;
-  final String _country;
-  final double _latitude;
-  final double _longitude;
+  String _addressId;
+  String _street;
+  String _city;
+  String _state;
+  String _postalCode;
+  String _country;
+  double _latitude;
+  double _longitude;
   int _createdAt;
   int _updatedAt;
   String _userId;

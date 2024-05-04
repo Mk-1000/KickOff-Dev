@@ -4,10 +4,11 @@ import '../../domain/repositories/IChatRepository.dart';
 import '../firebase/FirebaseService.dart';
 
 class ChatRepository implements IChatRepository {
-  final FirebaseService _firebaseService;
   final String _collectionPath = 'chats';
+  final FirebaseService _firebaseService; // Instance field for FirebaseService
 
-  ChatRepository(this._firebaseService);
+  ChatRepository({FirebaseService? firebaseService})
+      : _firebaseService = firebaseService ?? FirebaseService();
 
   // @override
   // Future<List<Chat>> getAllChats() async {

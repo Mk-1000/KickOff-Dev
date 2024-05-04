@@ -4,10 +4,11 @@ import '../../domain/repositories/IStadiumRepository.dart';
 import '../firebase/FirebaseService.dart';
 
 class StadiumRepository implements IStadiumRepository {
-  final FirebaseService _firebaseService;
   final String _collectionPath = 'stadiums';
+  final FirebaseService _firebaseService; // Instance field for FirebaseService
 
-  StadiumRepository(this._firebaseService);
+  StadiumRepository({FirebaseService? firebaseService})
+      : _firebaseService = firebaseService ?? FirebaseService();
 
   // @override
   // Future<List<Stadium>> getAllStadiums() async {

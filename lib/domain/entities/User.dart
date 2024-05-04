@@ -4,7 +4,7 @@ enum UserRole { user, player, stadium }
 
 class User {
   String _userId;
-  final String _email;
+  String _email;
   int _createdAt;
   int _updatedAt;
   UserRole _role;

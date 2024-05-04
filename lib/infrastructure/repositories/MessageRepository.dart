@@ -4,11 +4,12 @@ import '../../domain/repositories/IMessageRepository.dart';
 import '../firebase/FirebaseService.dart';
 
 class MessageRepository implements IMessageRepository {
-  final FirebaseService _firebaseService;
   final String _collectionPath = 'messages';
 
-  MessageRepository(this._firebaseService);
+  final FirebaseService _firebaseService; // Instance field for FirebaseService
 
+  MessageRepository({FirebaseService? firebaseService})
+      : _firebaseService = firebaseService ?? FirebaseService();
   // @override
   // Future<List<Message>> getAllMessages() async {
   //   DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);

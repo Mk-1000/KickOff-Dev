@@ -7,7 +7,8 @@ class MatchRepository implements IMatchRepository {
   final FirebaseService _firebaseService;
   final String _collectionPath = 'matches';
 
-  MatchRepository(this._firebaseService);
+  MatchRepository({FirebaseService? firebaseService})
+      : _firebaseService = firebaseService ?? FirebaseService();
 
   // @override
   // Future<List<Match>> getAllMatches() async {

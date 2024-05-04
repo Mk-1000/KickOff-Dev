@@ -33,4 +33,31 @@ class TeamService implements ITeamService {
       throw Exception('Failed to update team: $e');
     }
   }
+
+  @override
+  Future<void> deleteTeam(String teamId) async {
+    try {
+      await _teamRepository.deleteTeam(teamId);
+    } catch (e) {
+      throw Exception('Failed to delete team: $e');
+    }
+  }
+
+  @override
+  Future<List<Team>> getAllTeams() async {
+    try {
+      return await _teamRepository.getAllTeams();
+    } catch (e) {
+      throw Exception('Failed to get all teams: $e');
+    }
+  }
+
+  @override
+  Future<Team> getTeamById(String teamId) async {
+    try {
+      return await _teamRepository.getTeamById(teamId);
+    } catch (e) {
+      throw Exception('Failed to get team by ID: $e');
+    }
+  }
 }

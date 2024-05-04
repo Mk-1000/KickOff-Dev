@@ -1,11 +1,11 @@
 import 'package:takwira/domain/entities/User.dart';
 
 class Stadium extends User {
-  final String _name;
-  final int _capacity;
-  final List<String> _services;
-  final String _address;
-  final String _phone;
+  String _name;
+  int _capacity;
+  List<String> _services;
+  String _address;
+  String _phone;
 
   Stadium({
     required String email,

@@ -5,7 +5,10 @@ import '../firebase/FirebaseService.dart';
 
 class AddressRepository implements IAddressRepository {
   final String _collectionPath = 'addresses';
-  late final FirebaseService _firebaseService;
+  final FirebaseService _firebaseService; // Instance field for FirebaseService
+
+  AddressRepository({FirebaseService? firebaseService})
+      : _firebaseService = firebaseService ?? FirebaseService();
 
   // using getDocument
   // @override

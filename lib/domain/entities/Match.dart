@@ -1,14 +1,14 @@
 class Match {
-  final String _matchId;
-  final String _homeTeam;
-  final String _awayTeam;
-  final DateTime _matchDate;
-  final String _stadium;
-  final String _chat;
-  final bool _visibility;
-  final String _status;
-  final DateTime _createdAt;
-  final DateTime _updatedAt;
+  String _matchId;
+  String _homeTeam;
+  String _awayTeam;
+  DateTime _matchDate;
+  String _stadium;
+  String _chat;
+  bool _visibility;
+  String _status;
+  DateTime _createdAt;
+  DateTime _updatedAt;
 
   Match({
     required String matchId,

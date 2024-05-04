@@ -1,14 +1,14 @@
 class Notification {
-  final String _id;
-  final String _title;
-  final String _message;
-  final DateTime _timestamp;
-  final bool _read;
-  final String _type; // New field for the type of notification
-  final Map<String, bool> _target; // New field to indicate targeted players
-  final String _status; // New field to indicate the read/unread status
-  final DateTime _createdAt; // New field for creation timestamp
-  final DateTime _updatedAt; // New field for last update timestamp
+  String _id;
+  String _title;
+  String _message;
+  DateTime _timestamp;
+  bool _read;
+  String _type; // New field for the type of notification
+  Map<String, bool> _target; // New field to indicate targeted players
+  String _status; // New field to indicate the read/unread status
+  DateTime _createdAt; // New field for creation timestamp
+  DateTime _updatedAt; // New field for last update timestamp
 
   Notification({
     required String id,

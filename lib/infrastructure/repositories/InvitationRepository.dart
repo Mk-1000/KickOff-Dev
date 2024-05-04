@@ -4,10 +4,11 @@ import '../../domain/repositories/IInvitationRepository.dart';
 import '../firebase/FirebaseService.dart';
 
 class InvitationRepository implements IInvitationRepository {
-  final FirebaseService _firebaseService;
   final String _collectionPath = 'invitations';
+  final FirebaseService _firebaseService; // Instance field for FirebaseService
 
-  InvitationRepository(this._firebaseService);
+  InvitationRepository({FirebaseService? firebaseService})
+      : _firebaseService = firebaseService ?? FirebaseService();
 
   // @override
   // Future<List<Invitation>> getAllInvitations() async {
