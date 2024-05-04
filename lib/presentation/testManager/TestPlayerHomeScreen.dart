@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:takwira/domain/entities/Player.dart'; // Ensure your Player class is properly imported
-import 'package:takwira/presentation/Managers/PlayerManager.dart'; // Import PlayerManager
+import 'package:takwira/domain/entities/Player.dart';
+import 'package:takwira/presentation/Managers/PlayerManager.dart';
+import 'package:takwira/presentation/Managers/TeamManager.dart';
 
 class TestHomeScreen extends StatefulWidget {
   @override
@@ -10,8 +11,8 @@ class TestHomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<TestHomeScreen> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final PlayerManager _playerManager =
-      PlayerManager(); // Assuming PlayerManager is properly setup
+  final PlayerManager _playerManager = PlayerManager();
+  final TeamManager _teamManager = TeamManager();
 
   Player? _currentPlayer;
 
@@ -27,6 +28,9 @@ class _HomeScreenState extends State<TestHomeScreen> {
           setState(() {
             _currentPlayer = player;
           });
+
+          // Load teams for the current player using the TeamManager
+          await _teamManager.loadTeamsForUser(_currentPlayer!.userId);
         } catch (e) {
           setState(() {
             _currentPlayer =
@@ -50,7 +54,30 @@ class _HomeScreenState extends State<TestHomeScreen> {
       ),
       body: Center(
         child: _currentPlayer != null
-            ? Text('Welcome, ${_currentPlayer!.nickname}')
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Welcome, ${_currentPlayer!.nickname}'),
+                  SizedBox(height: 20),
+                  Text('Your Teams:'),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _teamManager.teams.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(_teamManager.teams[index].teamName),
+                        // Add onTap functionality to view team details
+                      );
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Navigate to create team screen or implement team creation logic
+                    },
+                    child: Text('Create New Team'),
+                  ),
+                ],
+              )
             : Text('Not signed in'),
       ),
     );

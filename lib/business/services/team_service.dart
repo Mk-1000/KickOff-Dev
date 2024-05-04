@@ -1,11 +1,13 @@
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/repositories/ITeamRepository.dart';
+import 'package:takwira/infrastructure/repositories/TeamRepository.dart';
 import '../../domain/services/iteam_service.dart';
 
 class TeamService implements ITeamService {
   final ITeamRepository _teamRepository;
 
-  TeamService(this._teamRepository);
+  TeamService({TeamRepository? teamRepository})
+      : _teamRepository = teamRepository ?? TeamRepository();
 
   @override
   Future<void> createTeam(Team team) async {

@@ -8,18 +8,9 @@ import 'package:takwira/business/services/auth_service.dart';
 import 'package:takwira/domain/services/iuser_service.dart';
 
 class PlayerManager {
-  final IPlayerService _playerService;
-  final IAuthService
-      _authService; // AuthenticationService for user authentication
-  final IUserService _userService;
-
-  PlayerManager(
-      {IPlayerService? playerService,
-      IAuthService? authService,
-      IUserService? userService})
-      : _playerService = playerService ?? PlayerService(),
-        _userService = userService ?? UserService(),
-        _authService = authService ?? AuthService();
+  final IPlayerService _playerService = PlayerService();
+  final IAuthService _authService = AuthService();
+  final IUserService _userService = UserService();
 
   // Method to sign in player with email and password
   Future<void> signInWithEmailPassword(String email, String password) async {

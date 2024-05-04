@@ -10,19 +10,6 @@ class TeamRepository implements ITeamRepository {
   TeamRepository({FirebaseService? firebaseService})
       : _firebaseService = firebaseService ?? FirebaseService();
 
-  // @override
-  // Future<List<Team>> getAllTeams() async {
-  //   DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);
-  //   if (snapshot.exists && snapshot.value != null) {
-  //     Map<dynamic, dynamic> teamsMap =
-  //         (snapshot.value as Map).cast<dynamic, dynamic>();
-  //     return teamsMap.values
-  //         .map((e) => Team.fromJson(Map<String, dynamic>.from(e as Map)))
-  //         .toList();
-  //   }
-  //   return [];
-  // }
-
   @override
   Future<List<Team>> getAllTeams() async {
     // Use Stream to listen for changes in real-time
@@ -55,7 +42,8 @@ class TeamRepository implements ITeamRepository {
 
   @override
   Future<void> addTeam(Team team) async {
-    await _firebaseService.setDocument(_collectionPath, team.toJson());
+    await _firebaseService.setDocument(
+        '$_collectionPath/${team.teamId}', team.toJson());
   }
 
   @override

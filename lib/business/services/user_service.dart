@@ -4,7 +4,7 @@ import '../../infrastructure/repositories/UserRepository.dart';
 import '../../domain/services/iuser_service.dart';
 
 class UserService implements IUserService {
-  IUserRepository _userRepository;
+  final IUserRepository _userRepository;
 
   UserService({IUserRepository? userRepository})
       : _userRepository = userRepository ?? UserRepository();

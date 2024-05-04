@@ -5,15 +5,8 @@ import '../../business/services/auth_service.dart';
 import '../../business/services/user_service.dart';
 
 class UserManager {
-  final IUserService _userService;
-  final IAuthService _authService;
-
-  // Constructor with dependency injection
-  UserManager({
-    IUserService? userService,
-    IAuthService? authService,
-  })  : _userService = userService ?? UserService(),
-        _authService = authService ?? AuthService();
+  final IUserService _userService = UserService();
+  final IAuthService _authService = AuthService();
 
   List<User> _users = [];
   User? _currentUser;

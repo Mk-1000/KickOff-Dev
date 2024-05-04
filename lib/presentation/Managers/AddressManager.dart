@@ -2,10 +2,7 @@ import 'package:takwira/domain/entities/Address.dart';
 import 'package:takwira/business/services/Address_service.dart';
 
 class AddressManager {
-  final AddressService _addressService;
-
-  AddressManager([AddressService? addressService])
-      : _addressService = addressService ?? AddressService();
+  final AddressService _addressService = AddressService();
 
   List<Address> _addresses = [];
   Address? _currentAddress;
