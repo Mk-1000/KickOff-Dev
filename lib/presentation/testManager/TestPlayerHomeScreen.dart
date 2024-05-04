@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/presentation/Managers/PlayerManager.dart';
 import 'package:takwira/presentation/Managers/TeamManager.dart';
+import 'package:takwira/presentation/testManager/CreateTeam.dart';
 
 class TestHomeScreen extends StatefulWidget {
   @override
@@ -72,7 +73,8 @@ class _HomeScreenState extends State<TestHomeScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to create team screen or implement team creation logic
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CreateTeamPage()));
                     },
                     child: Text('Create New Team'),
                   ),

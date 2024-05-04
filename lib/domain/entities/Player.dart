@@ -8,6 +8,7 @@ class Player extends User {
   String _preferredPosition;
   List<String> _phoneNumbers;
   String _jerseySize;
+  List<String> _teamIds = []; // List to store team IDs
 
   Player({
     String? userId,
@@ -39,6 +40,19 @@ class Player extends User {
   String get jerseySize => _jerseySize;
   String get playerId => userId;
 
+  // Method to add a team ID to the player's list of team IDs
+  void addTeamId(String teamId) {
+    _teamIds.add(teamId);
+  }
+
+  // Method to remove a team ID from the player's list of team IDs
+  void removeTeamId(String teamId) {
+    _teamIds.remove(teamId);
+  }
+
+  // Method to get the player's list of team IDs
+  List<String> get teamIds => _teamIds;
+
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(),
@@ -47,6 +61,7 @@ class Player extends User {
       'preferredPosition': _preferredPosition,
       'phoneNumbers': _phoneNumbers,
       'jerseySize': _jerseySize,
+      'teamIds': _teamIds,
     };
   }
 

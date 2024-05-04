@@ -1,14 +1,15 @@
+import 'package:takwira/business/services/player_service.dart';
 import 'package:takwira/business/services/team_service.dart';
+import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/domain/services/iplayer_service.dart';
 import 'package:takwira/domain/services/iteam_service.dart';
 
 class TeamManager {
-  final ITeamService _teamService;
+  final ITeamService _teamService = TeamService();
+  final IPlayerService _playerService = PlayerService();
 
   List<Team> _teams = [];
-
-  TeamManager({ITeamService? teamService})
-      : _teamService = teamService ?? TeamService();
 
   // Getter for teams
   List<Team> get teams => _teams;
@@ -28,7 +29,11 @@ class TeamManager {
   // Method to add a new team
   Future<void> addTeam(Team team) async {
     await _teamService.createTeam(team);
-    _teams.add(team);
+    var player = Player.currentPlayer;
+    if (player != null) {
+      Player.currentPlayer!.addTeamId(team.teamId);
+      _playerService.updatePlayer(player);
+    }
   }
 
   // Method to update an existing team
