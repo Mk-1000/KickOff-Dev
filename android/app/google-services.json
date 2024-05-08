@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "943225215328",
+    "firebase_url": "https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "kickoff-69472",
+    "storage_bucket": "kickoff-69472.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943225215328:android:8f6b861188f50a6cff2605",
+        "android_client_info": {
+          "package_name": "com.example.takwira"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBci9EWVAgppq-yNHoenPjIlvTrZCnRCZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943225215328:android:d60678f8ef8e7eb8ff2605",
+        "android_client_info": {
+          "package_name": "com.kickoff.k"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBci9EWVAgppq-yNHoenPjIlvTrZCnRCZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

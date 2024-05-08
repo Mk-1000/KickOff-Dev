@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -56,7 +53,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBci9EWVAgppq-yNHoenPjIlvTrZCnRCZE',
-    appId: '1:943225215328:android:8f6b861188f50a6cff2605',
+    appId: '1:943225215328:android:d60678f8ef8e7eb8ff2605',
     messagingSenderId: '943225215328',
     projectId: 'kickoff-69472',
     databaseURL: 'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
@@ -82,4 +79,16 @@ class DefaultFirebaseOptions {
     storageBucket: 'kickoff-69472.appspot.com',
     iosBundleId: 'com.example.takwira',
   );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyCbbXra8rNyamqmGvohuLS0nVk3oiFzScQ',
+    appId: '1:943225215328:web:d6c4af0ca7a9884cff2605',
+    messagingSenderId: '943225215328',
+    projectId: 'kickoff-69472',
+    authDomain: 'kickoff-69472.firebaseapp.com',
+    databaseURL: 'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'kickoff-69472.appspot.com',
+    measurementId: 'G-CL3GNT9J97',
+  );
+
 }
