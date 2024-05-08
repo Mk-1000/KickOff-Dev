@@ -17,7 +17,7 @@ class _HomeScreenState extends State<TestHomeScreen> {
   final TeamManager _teamManager = TeamManager();
 
   Player? _currentPlayer;
-  List<Team> _teams = [];
+  Stream<List<Team>>? _teamStream;
 
   @override
   void initState() {
@@ -26,19 +26,17 @@ class _HomeScreenState extends State<TestHomeScreen> {
       if (user != null) {
         try {
           Player player = await _playerManager.getPlayerDetails(user.uid);
-          List<Team> teams = await _teamManager.getTeamsForPlayer(player);
-          if (mounted) {
-            setState(() {
-              _currentPlayer = player;
-              _teams = teams; // Ensure this is updated with fetched teams
-            });
-          }
+          _teamStream = _teamManager
+              .streamAllTeams(); // Adjust this line to fit your actual method
+          setState(() {
+            _currentPlayer = player;
+          });
         } catch (e) {
           print('Error fetching player details: $e');
           if (mounted) {
             setState(() {
               _currentPlayer = null;
-              _teams = [];
+              _teamStream = null;
             });
           }
         }
@@ -46,7 +44,7 @@ class _HomeScreenState extends State<TestHomeScreen> {
         if (mounted) {
           setState(() {
             _currentPlayer = null;
-            _teams = [];
+            _teamStream = null;
           });
         }
       }
@@ -60,7 +58,7 @@ class _HomeScreenState extends State<TestHomeScreen> {
         title: Text('Home Page'),
       ),
       body: Center(
-        child: _currentPlayer != null
+        child: _currentPlayer != null && _teamStream != null
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -68,15 +66,26 @@ class _HomeScreenState extends State<TestHomeScreen> {
                   SizedBox(height: 20),
                   Text('Your Teams:'),
                   Expanded(
-                    // Use Expanded widget for ListView inside Column
-                    child: ListView.builder(
-                      itemCount: _teams
-                          .length, // Make sure it's _teams not _teamManager.teams
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(_teams[index].teamName),
-                          onTap: () {
-                            // Optional: Implement navigation to team details
+                    child: StreamBuilder<List<Team>>(
+                      stream: _teamStream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Error: ${snapshot.error}");
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        var teams = snapshot.data ?? [];
+                        return ListView.builder(
+                          itemCount: teams.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(teams[index].teamName),
+                              onTap: () {
+                                // Implement navigation to team details
+                              },
+                            );
                           },
                         );
                       },
