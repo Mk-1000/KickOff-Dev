@@ -46,12 +46,14 @@ class Team {
 
   factory Team.fromJson(Map<String, dynamic> json) {
     return Team(
-      teamName: json['teamName'] as String,
-      captainId: json['captainId'] as String,
-      players: (json['players'] as Map<String, dynamic>).map(
-        (key, value) => MapEntry(key, value as bool),
-      ),
-      chat: json['chat'] as String,
+      teamName: json['teamName'] ?? 'Unknown Team',
+      captainId: json['captainId'] ?? 'Unknown Captain',
+      players: json['players'] != null
+          ? (json['players'] as Map<String, dynamic>).map(
+              (key, value) => MapEntry(key, value as bool),
+            )
+          : {},
+      chat: json['chat'] ?? '',
       createdAt: json['createdAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
     );

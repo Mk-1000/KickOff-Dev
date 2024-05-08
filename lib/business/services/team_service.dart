@@ -62,4 +62,14 @@ class TeamService implements ITeamService {
       throw Exception('Failed to get team by ID: $e');
     }
   }
+
+  @override
+  Stream<List<Team>> streamTeams() {
+    try {
+      return _teamRepository
+          .streamTeams(); // Call the streamTeams from the repository
+    } catch (e) {
+      throw Exception('Failed to get team by ID: $e');
+    }
+  }
 }

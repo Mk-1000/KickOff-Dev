@@ -18,6 +18,7 @@ class PlayerManager {
       // Sign in the user with email and password
       String userId =
           await _authService.signInWithEmailPassword(email, password);
+      print("userId: " + userId);
 
       // Retrieve player details after successful sign in
       Player player = await _playerService.getPlayerDetails(userId);

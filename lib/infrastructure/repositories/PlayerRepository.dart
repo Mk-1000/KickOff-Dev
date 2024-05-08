@@ -30,15 +30,15 @@ class PlayerRepository implements IPlayerRepository {
     return players; // Return the initially loaded players
   }
 
-  @override
-  Future<Player> getPlayerById(String id) async {
-    DataSnapshot snapshot =
-        await _firebaseService.getDocument('$_collectionPath/$id');
-    if (snapshot.exists && snapshot.value != null) {
-      return Player.fromJson(Map<String, dynamic>.from(snapshot.value as Map));
-    }
-    throw Exception('Player not found');
-  }
+  // // @override
+  // // Future<Player> getPlayerById(String id) async {
+  // //   DataSnapshot snapshot =
+  // //       await _firebaseService.getDocument('$_collectionPath/$id');
+  // //   if (snapshot.exists && snapshot.value != null) {
+  // //     return Player.fromJson(Map<String, dynamic>.from(snapshot.value as Map));
+  // //   }
+  // //   throw Exception('Player not found');
+  // // }
 
   @override
   Future<void> addPlayer(Player player) async {
@@ -73,5 +73,18 @@ class PlayerRepository implements IPlayerRepository {
     // Since streams are async and continuous, we need to await the first matching element
     final List<Player> players = await query.first;
     return players;
+  }
+
+  @override
+  Future<Player> getPlayerById(String id) async {
+    DataSnapshot snapshot =
+        await _firebaseService.getDocument('$_collectionPath/$id');
+    if (snapshot.exists && snapshot.value != null) {
+      var PlayerData = snapshot.value as Map;
+      return Player.fromJson(Map<String, dynamic>.from(PlayerData));
+    } else {
+      // Explicitly throw an exception if no team is found.
+      throw Exception('Team not found for ID $id');
+    }
   }
 }

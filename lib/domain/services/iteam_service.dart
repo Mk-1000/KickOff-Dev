@@ -7,4 +7,5 @@ abstract class ITeamService {
   Future<void> deleteTeam(String teamId);
   Future<List<Team>> getAllTeams();
   Future<Team> getTeamById(String teamId);
+  Stream<List<Team>> streamTeams();
 }

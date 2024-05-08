@@ -25,33 +25,31 @@ class Player extends User {
         _jerseySize = jerseySize,
         super(userId: userId, email: email, role: UserRole.player);
 
-  // Getter for the current player
   static Player? get currentPlayer => _currentPlayer;
 
-  // Method to set the current player
   static void setCurrentPlayer(Player player) {
     _currentPlayer = player;
   }
 
+  // Use these getters to expose private fields
   String get nickname => _nickname;
   DateTime get birthdate => _birthdate;
   String get preferredPosition => _preferredPosition;
   List<String> get phoneNumbers => _phoneNumbers;
   String get jerseySize => _jerseySize;
   String get playerId => userId;
+  List<String> get teamIds => _teamIds;
 
-  // Method to add a team ID to the player's list of team IDs
   void addTeamId(String teamId) {
-    _teamIds.add(teamId);
+    if (!_teamIds.contains(teamId)) {
+      // Ensure no duplicates
+      _teamIds.add(teamId);
+    }
   }
 
-  // Method to remove a team ID from the player's list of team IDs
   void removeTeamId(String teamId) {
     _teamIds.remove(teamId);
   }
-
-  // Method to get the player's list of team IDs
-  List<String> get teamIds => _teamIds;
 
   Map<String, dynamic> toJson() {
     return {
@@ -67,16 +65,18 @@ class Player extends User {
 
   factory Player.fromJson(Map<String, dynamic> json) {
     Player player = Player(
-      userId: json['userId'],
-      email: json['email'],
-      nickname: json['nickname'],
-      birthdate: DateTime.fromMillisecondsSinceEpoch(json['birthdate']),
-      preferredPosition: json['preferredPosition'],
-      phoneNumbers: List<String>.from(json['phoneNumbers']),
-      jerseySize: json['jerseySize'],
+      userId: json['userId'] as String?,
+      email: json['email'] as String,
+      nickname: json['nickname'] as String,
+      birthdate: DateTime.fromMillisecondsSinceEpoch(json['birthdate'] as int),
+      preferredPosition: json['preferredPosition'] as String,
+      phoneNumbers: json['phoneNumbers'] != null
+          ? List<String>.from(json['phoneNumbers'])
+          : [],
+      jerseySize: json['jerseySize'] as String,
     );
-    setCurrentPlayer(
-        player); // Optionally set as current player upon creation from JSON
+    player._teamIds =
+        json['teamIds'] != null ? List<String>.from(json['teamIds']) : [];
     return player;
   }
 }

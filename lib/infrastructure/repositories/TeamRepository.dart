@@ -10,24 +10,33 @@ class TeamRepository implements ITeamRepository {
   TeamRepository({FirebaseService? firebaseService})
       : _firebaseService = firebaseService ?? FirebaseService();
 
+  Stream<List<Team>> streamTeams() {
+    // Return a stream of teams from the Firebase realtime database
+    return _firebaseService.getCollectionStream(_collectionPath).map((event) {
+      final teamsMap = event.snapshot.value as Map<dynamic, dynamic>?;
+      if (teamsMap != null) {
+        return teamsMap.entries.map((e) {
+          return Team.fromJson(
+              Map<String, dynamic>.from(e.value as Map)..['teamId'] = e.key);
+        }).toList();
+      }
+      return [];
+    });
+  }
+
   @override
   Future<List<Team>> getAllTeams() async {
-    // Use Stream to listen for changes in real-time
-    final Stream<DatabaseEvent> stream =
-        _firebaseService.getCollectionStream(_collectionPath);
-
-    // Handle initial data and subsequent updates
-    final teams = <Team>[];
-    stream.listen((event) {
-      if (event.snapshot.exists) {
-        final data = event.snapshot.value as Map<dynamic, dynamic>;
-        data.forEach((key, value) {
-          teams.add(Team.fromJson(Map<String, dynamic>.from(value)));
-        });
+    DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);
+    if (snapshot.exists && snapshot.value != null) {
+      var teamsMap = snapshot.value;
+      if (teamsMap is Map) {
+        return teamsMap.entries
+            .map((e) => Team.fromJson(
+                Map<String, dynamic>.from(e.value as Map)..['teamId'] = e.key))
+            .toList();
       }
-    });
-
-    return teams; // Return the initially loaded teams
+    }
+    return []; // Return an empty list if no valid data is found
   }
 
   @override
@@ -35,9 +44,12 @@ class TeamRepository implements ITeamRepository {
     DataSnapshot snapshot =
         await _firebaseService.getDocument('$_collectionPath/$id');
     if (snapshot.exists && snapshot.value != null) {
-      return Team.fromJson(Map<String, dynamic>.from(snapshot.value as Map));
+      var teamData = snapshot.value as Map;
+      return Team.fromJson(Map<String, dynamic>.from(teamData));
+    } else {
+      // Explicitly throw an exception if no team is found.
+      throw Exception('Team not found for ID $id');
     }
-    throw Exception('Team not found');
   }
 
   @override

@@ -44,7 +44,8 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                 );
 
                 // Add new team using TeamManager
-                await _teamManager.addTeam(newTeam);
+                await _teamManager.addTeamForPlayer(
+                    newTeam, Player.currentPlayer!);
 
                 // Navigate back to previous screen
                 Navigator.pop(context);
