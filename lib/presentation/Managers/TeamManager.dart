@@ -106,11 +106,30 @@ class TeamManager {
       throw Exception("Team ID cannot be empty.");
     }
     try {
-      Team team = await _teamService.getTeamById(teamId);
+      Team? team = await _teamService.getTeamById(teamId);
+      if (team == null) {
+        print('No team found for ID $teamId in Firebase.');
+        throw Exception('Team not found for ID $teamId');
+      }
       return team;
     } catch (e) {
       print('Failed to fetch team with ID $teamId: $e');
-      throw Exception('Failed to fetch team: $e');
+      throw Exception('Failed to get team by ID: $e');
     }
+  }
+
+  Future<List<Team>> getAllTeamsForPlayer(List<String> teamIds) async {
+    List<Team> teams = [];
+    for (String teamId in teamIds) {
+      try {
+        Team team = await getTeamById(teamId);
+        teams.add(team);
+        print('Successfully fetched team with ID $teamId');
+      } catch (e) {
+        print('Error fetching team $teamId: $e');
+        // Optionally handle partial failure scenarios here
+      }
+    }
+    return teams;
   }
 }

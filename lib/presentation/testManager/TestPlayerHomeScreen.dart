@@ -5,6 +5,7 @@ import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/Managers/PlayerManager.dart';
 import 'package:takwira/presentation/Managers/TeamManager.dart';
 import 'package:takwira/presentation/testManager/CreateTeam.dart';
+import 'package:takwira/presentation/testManager/TeamDetailsPage.dart';
 
 class TestHomeScreen extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _HomeScreenState extends State<TestHomeScreen> {
   final TeamManager _teamManager = TeamManager();
 
   Player? _currentPlayer;
-  Stream<List<Team>>? _teamStream;
+  List<Team> _teams = []; // Correctly initialized as an empty list
 
   @override
   void initState() {
@@ -26,17 +27,18 @@ class _HomeScreenState extends State<TestHomeScreen> {
       if (user != null) {
         try {
           Player player = await _playerManager.getPlayerDetails(user.uid);
-          _teamStream = _teamManager
-              .streamAllTeams(); // Adjust this line to fit your actual method
+          List<Team> teams =
+              await _teamManager.getAllTeamsForPlayer(player.teamIds);
           setState(() {
             _currentPlayer = player;
+            _teams = teams; // Assuming _teams is a List<Team> in your state
           });
         } catch (e) {
-          print('Error fetching player details: $e');
+          print('Error fetching player details or teams: $e');
           if (mounted) {
             setState(() {
               _currentPlayer = null;
-              _teamStream = null;
+              _teams = []; // Ensure the list is cleared on error
             });
           }
         }
@@ -44,7 +46,8 @@ class _HomeScreenState extends State<TestHomeScreen> {
         if (mounted) {
           setState(() {
             _currentPlayer = null;
-            _teamStream = null;
+            _teams =
+                []; // Ensure the list is cleared if the user is not signed in
           });
         }
       }
@@ -58,7 +61,7 @@ class _HomeScreenState extends State<TestHomeScreen> {
         title: Text('Home Page'),
       ),
       body: Center(
-        child: _currentPlayer != null && _teamStream != null
+        child: _currentPlayer != null && _teams.isNotEmpty
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -66,26 +69,48 @@ class _HomeScreenState extends State<TestHomeScreen> {
                   SizedBox(height: 20),
                   Text('Your Teams:'),
                   Expanded(
-                    child: StreamBuilder<List<Team>>(
-                      stream: _teamStream,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text("Error: ${snapshot.error}");
-                        }
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        }
-                        var teams = snapshot.data ?? [];
-                        return ListView.builder(
-                          itemCount: teams.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(teams[index].teamName),
-                              onTap: () {
-                                // Implement navigation to team details
-                              },
-                            );
+                    child: ListView.builder(
+                      itemCount: _teams.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(_teams[index].teamName),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.info_outline),
+                                onPressed: () {
+                                  // Implement navigation to team details
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => TeamDetailsPage(
+                                        teamId: _teams[index].teamId),
+                                  ));
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () async {
+                                  // Implement deletion logic
+                                  try {
+                                    await _teamManager
+                                        .deleteTeam(_teams[index].teamId);
+                                    setState(() {
+                                      _teams.removeAt(index);
+                                    });
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content:
+                                            Text('Failed to delete team: $e'),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            // Optionally keep this tap handler if you want to do something else on tap
                           },
                         );
                       },
@@ -100,7 +125,7 @@ class _HomeScreenState extends State<TestHomeScreen> {
                   ),
                 ],
               )
-            : Text('Not signed in'),
+            : Text('Not signed in or no teams to display'),
       ),
     );
   }

@@ -66,7 +66,14 @@ class TeamRepository implements ITeamRepository {
 
   @override
   Future<void> deleteTeam(String id) async {
-    await _firebaseService.deleteDocument('$_collectionPath/$id');
+    try {
+      await _firebaseService.deleteDocument('$_collectionPath/$id');
+      print(
+          'Team deleted successfully: $id'); // Debugging line to confirm deletion
+    } catch (e) {
+      print('Failed to delete team: $e'); // Error logging
+      throw Exception('Failed to delete team: $e');
+    }
   }
 
   @override
