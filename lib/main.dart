@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: Themes().lightTheme,
-      home: TestSignInPlayer(),
+      theme: Themes.lightTheme,
+      home: Onbording(),
     );
   }
 }

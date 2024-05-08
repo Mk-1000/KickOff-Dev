@@ -2,12 +2,10 @@
 /// with options for forgot password, terms and conditions, and social media login buttons.
 import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/GoogleNavBar/Navbar.dart';
-import 'package:takwira/presentation/view/Home/home_page.dart';
-import 'package:takwira/presentation/view/NavBar/navBarMain.dart';
-import 'package:takwira/presentation/view/splashScreen/splashScreen.dart';
 import 'package:takwira/presentation/view/widgets/button/blueButton/BlueButton.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/InputFild.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
+
 
 import 'completeSginup/completeSignup.dart';
 
@@ -28,17 +26,17 @@ class _LoginState extends State<Login> {
     Size size = MediaQuery.of(context).size;
     Login() {
       if (login) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => GoogleNavBar()),
-        );
+      Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  GoogleNavBar()),
+  );
       } else {
-        Navigator.pushReplacement<void, void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => const CompleteSignup(),
-          ),
-        );
+          Navigator.pushReplacement<void, void>(
+    context,
+    MaterialPageRoute<void>(
+      builder: (BuildContext context) => const CompleteSignup (),
+    ),
+  );
         print("this is the sgin up pressed ");
       }
     }
@@ -145,9 +143,7 @@ class _LoginState extends State<Login> {
           ),
           BlueButton(
             onTap: Login,
-            text: login ? "Se connecter" : "Create an account",
-            outlindedbutton: false,
-            width: size.width,
+            text: login ? "Se connecter" : "Create an account", outlindedbutton: false, width: size.width,
           ),
           Container(
             margin: const EdgeInsets.only(top: 24),
@@ -237,6 +233,7 @@ class _LoginState extends State<Login> {
           ),
         ]),
       ),
-    ));
+    )
+    );
   }
 }

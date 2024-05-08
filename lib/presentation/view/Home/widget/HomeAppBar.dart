@@ -4,7 +4,8 @@ import 'package:takwira/presentation/view/GoogleNavBar/Navbar.dart';
 import 'package:takwira/presentation/view/Notification/Notification.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
-class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+
+class HomeAppBar extends StatelessWidget  implements PreferredSizeWidget {
   @override
   final Size preferredSize;
 
@@ -21,7 +22,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: Icon(Icons.menu, color: Colors.black),
         onPressed: () {
-          GoogleNavBarState.scaffoldKey.currentState?.openDrawer();
+           GoogleNavBarState.scaffoldKey.currentState?.openDrawer();
           // Handle menu button action
         },
       ),
@@ -38,16 +39,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min, // To align the column to the start
             children: <Widget>[
-              AllText.Autotext(
-                  color: Theme.of(context).shadowColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  text: 'Salut SWolf!'),
-              AllText.Autotext(
-                  color: Colors.grey,
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
-                  text: 'lundi, 10 Janvier'),
+              AllText.Autotext(color: Theme.of(context).shadowColor, fontSize: 14, fontWeight: FontWeight.bold, text: 'Salut SWolf!'),
+               AllText.Autotext(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.normal, text: 'lundi, 10 Janvier'),
             ],
           ),
         ],
@@ -57,13 +50,13 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           alignment: Alignment.center,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.mail_outline, color: Colors.black),
+              icon: Icon(Icons.calendar_month_outlined, color: Colors.black),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Calender()),
-                );
-
+                  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const Calender()),
+  );
+                
                 // Handle mail button action
               },
             ),
@@ -98,12 +91,11 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             IconButton(
               icon: Icon(Icons.notifications_none, color: Colors.black),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const NotificationMain()),
-                );
-
+                        Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const  NotificationMain()),
+  );
+               
                 // Handle notifications button action
               },
             ),

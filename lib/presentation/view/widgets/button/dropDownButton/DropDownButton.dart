@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class DropDuwnButton extends StatefulWidget {
   final List<String> list ; 
-  const DropDuwnButton({super.key, required this.list});
+  final double width ; 
+  const DropDuwnButton({super.key, required this.list, this.width = 155});
   @override
   State<DropDuwnButton> createState() => _DropDuwnButtonState();
 }
@@ -28,7 +29,7 @@ class _DropDuwnButtonState extends State<DropDuwnButton> {
       },
       child: Container(
         height: 48,
-        width: 155,
+        width: widget.width,
         padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),

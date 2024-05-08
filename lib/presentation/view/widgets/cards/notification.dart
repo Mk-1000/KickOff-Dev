@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
+
 class NotificationCard extends StatelessWidget {
   const NotificationCard({super.key});
 
@@ -14,7 +15,7 @@ class NotificationCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.black.withOpacity(0.05), width: 1.5),
+         border: Border.all(color: Colors.black.withOpacity(0.05),width: 1.5),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -26,24 +27,21 @@ class NotificationCard extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(47)),
-            child: CahedImage(
-              img:
-                  "https://images.axios.com/JIqTJp0sjfmhTz7Q7zfeq_vrcUU=/0x148:5071x3000/1920x1080/2022/11/25/1669384070045.jpg",
-              height: 44,
-              width: 44,
-              box: BoxFit.cover,
-            ),
-          ),
+           ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(47)),
+                child: CahedImage(
+                  img: "https://images.axios.com/JIqTJp0sjfmhTz7Q7zfeq_vrcUU=/0x148:5071x3000/1920x1080/2022/11/25/1669384070045.jpg",
+                  height: 44,
+                  width: 44,
+                  box: BoxFit.cover,
+                ),
+              ),
           SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize:
-                  MainAxisSize.max, // Make the column take all available space
-              mainAxisAlignment:
-                  MainAxisAlignment.center, // Center the text vertically
+              mainAxisSize: MainAxisSize.max, // Make the column take all available space
+              mainAxisAlignment: MainAxisAlignment.center, // Center the text vertically
               children: [
                 AllText.Autotext(
                   text: "game alert!",
@@ -51,18 +49,15 @@ class NotificationCard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).shadowColor,
                 ),
-                SizedBox(
-                  height: 8,
-                ),
-                Flexible(
-                  // Makes text wrap and fill the container
+                SizedBox(height: 8,),
+                Flexible( // Makes text wrap and fill the container
                   child: AllText.Autotext(
-                      text:
-                          "The match between Real Madrid and Barcelona has been started!",
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey,
-                      textalgin: TextAlign.left),
+                    text: "The match between Real Madrid and Barcelona has been started!",
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.grey,
+                    textalgin: TextAlign.left
+                  ),
                 ),
               ],
             ),

@@ -12,12 +12,12 @@ class Stade extends StatefulWidget {
 class _StadeState extends State<Stade> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+     Size size = MediaQuery.of(context).size;
     return Container(
       child: Stack(
         children: [
           SvgPicture.asset(
-            width: size.width,
+            width:size.width, 
             "assets/image/stade.svg",
             fit: BoxFit.contain,
           ),

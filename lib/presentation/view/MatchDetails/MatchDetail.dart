@@ -2,13 +2,16 @@ import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:takwira/presentation/view/CreateTeam/widget/CircleNumber.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/Chat/chat.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/demande.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/info.dart';
-import 'package:takwira/presentation/view/widgets/StadeWidget/Stade.dart';
+import 'package:takwira/presentation/view/RechercheVs/RechercheVs.dart';
+import 'package:takwira/presentation/view/widgets/bottomSheet/AllButtomSheet.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
+
+
+import 'widget/bottomSheet/selectDateBottomSheet.dart';
 
 class MatchDetails extends StatefulWidget {
   const MatchDetails({super.key});
@@ -19,7 +22,7 @@ class MatchDetails extends StatefulWidget {
 
 class _MatchDetailsState extends State<MatchDetails> {
   int page = 0;
-  bool dateReserved = true;
+  bool dateReserved = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,12 +122,12 @@ class _MatchDetailsState extends State<MatchDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AllText.Autotext(
-                                text: "Waabro",
+                                text: true ? "Recherche " : "Waabro",
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.white),
                             AllText.Autotext(
-                                text: "Monastir",
+                                text: true ? "Adversaire" : "Monastir",
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.white),
@@ -133,17 +136,44 @@ class _MatchDetailsState extends State<MatchDetails> {
                         SizedBox(
                           width: 8,
                         ),
-                        ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(30)),
-                          child: CahedImage(
-                            img:
-                                "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
-                            height: 58,
-                            width: 58,
-                            box: BoxFit.cover,
+                        if (false) ...{
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RechercheVs()),
+                              );
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 58,
+                              width: 58,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                color: Colors.white,
+                              ),
+                              child: AllText.Autotext(
+                                  text: "?",
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                          )
+                        } else ...{
+                          ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30)),
+                            child: CahedImage(
+                              img:
+                                  "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
+                              height: 58,
+                              width: 58,
+                              box: BoxFit.cover,
+                            ),
                           ),
-                        ),
+                        },
                       ],
                     ),
                   ],
@@ -188,7 +218,11 @@ class _MatchDetailsState extends State<MatchDetails> {
                   ),
                 )
               } else ...{
-                Container(
+                GestureDetector(
+                  onTap: () {
+                   AllBottomSheet().FunBottomSheet(context, selectDateBottomSheet());
+                  },
+                  child: Container(
                   alignment: Alignment.center,
                   height: 30,
                   width: 108,
@@ -201,7 +235,8 @@ class _MatchDetailsState extends State<MatchDetails> {
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).primaryColor),
-                ),
+                ) ,)
+               
               },
               SizedBox(height: 8),
               Expanded(

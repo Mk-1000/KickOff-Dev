@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
+
 class Message extends StatelessWidget {
   final String imageUrl;
   final bool me;

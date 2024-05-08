@@ -7,6 +7,7 @@ import 'package:takwira/presentation/view/Home/home_page.dart';
 import 'package:takwira/presentation/view/KickOff/KickoffMain.dart';
 import 'package:takwira/presentation/view/Stades/Stade.dart';
 
+
 class GoogleNavBar extends StatefulWidget {
   const GoogleNavBar({super.key});
 
@@ -15,12 +16,11 @@ class GoogleNavBar extends StatefulWidget {
 }
 
 class GoogleNavBarState extends State<GoogleNavBar> {
-  static final GlobalKey<ScaffoldState> scaffoldKey =
-      GlobalKey<ScaffoldState>();
-  int _selectedIndex = 0;
+    static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static List<Widget> _widgetOptions = <Widget>[
+  static  List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     KickOff(),
     Stades()
@@ -28,8 +28,8 @@ class GoogleNavBarState extends State<GoogleNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
-      drawer: Drawers(),
+         key: scaffoldKey,
+      drawer:Drawers() ,
       backgroundColor: Colors.white,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -62,31 +62,30 @@ class GoogleNavBarState extends State<GoogleNavBar> {
               color: Colors.black,
               tabs: [
                 GButton(
-                  textColor: Theme.of(context).primaryColor,
-                  iconActiveColor: Theme.of(context).primaryColor,
-                  icon: _selectedIndex == 0 ? Icons.home : Icons.home_outlined,
+                    textColor:Theme.of(context).primaryColor ,
+                  iconActiveColor: Theme.of(context).primaryColor ,
+                  icon: 
+                  _selectedIndex == 0? Icons.home: Icons.home_outlined,
                   text: 'Home',
                 ),
                 GButton(
-                  textColor: Theme.of(context).primaryColor,
-                  leading: Container(
-                    child: SvgPicture.asset(
-                      "assets/image/logo_ligth.svg",
-                      height: 20,
-                      width: 20,
-                    ),
+                    textColor:Theme.of(context).primaryColor ,
+                   leading:Container(
+                    child:     SvgPicture.asset(
+                  "assets/image/logo_ligth.svg",
+                  height: 20,
+                  width: 20,
+                ),
                     // color: Colors.amber,
-                  ),
+                    ),
                   icon: Icons.home,
                   text: 'KickOff',
                 ),
                 GButton(
-                  textColor: Theme.of(context).primaryColor,
-                  iconActiveColor: Theme.of(context).primaryColor,
+                  textColor:Theme.of(context).primaryColor ,
+                  iconActiveColor: Theme.of(context).primaryColor ,
                   // iconColor: _selectedIndex == 2 ? Theme.of(context).shadowColor:Theme.of(context).shadowColor ,
-                  icon: _selectedIndex == 2
-                      ? Icons.stadium
-                      : Icons.stadium_outlined,
+                  icon: _selectedIndex == 2 ? Icons.stadium: Icons.stadium_outlined ,
                   text: 'Stades',
                 ),
               ],

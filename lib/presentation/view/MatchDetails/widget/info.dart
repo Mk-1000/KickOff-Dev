@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/widgets/StadeWidget/Stade.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
+
 class Info extends StatefulWidget {
   const Info({super.key});
 
@@ -39,7 +40,7 @@ class _InfoState extends State<Info> {
                             color: Theme.of(context).primaryColor),
                       ),
                       Container(
-                        width: 80,
+                          width: 80,
                         child: AllText.Autotext(
                             text: "Position",
                             fontSize: 14,
@@ -47,24 +48,25 @@ class _InfoState extends State<Info> {
                             color: Theme.of(context).primaryColor),
                       ),
                       Container(
-                        width: 80,
+                          width: 80,
                         child: AllText.Autotext(
                             text: "Numéro",
                             fontSize: 14,
-                            fontWeight: FontWeight.w700,
+                           fontWeight: FontWeight.w700,
                             color: Theme.of(context).primaryColor),
                       ),
-                      Container(
-                        width: 80,
-                        child: AllText.Autotext(
-                            text: "Action",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor),
-                      ),
+                              Container(
+                                  width: 80,
+                                child: AllText.Autotext(
+                          text: "Action",
+                          fontSize: 14,
+                         fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColor),
+                              ),
                     ],
                   ),
                 ),
+               
                 Expanded(
                     child: ListView.builder(
                   padding: EdgeInsets.only(top: 8),
@@ -93,7 +95,7 @@ class _InfoState extends State<Info> {
                             ]),
                           ),
                           Container(
-                            width: 80,
+                              width: 80,
                             child: AllText.Autotext(
                                 text: "Gardien",
                                 fontSize: 14,
@@ -101,15 +103,16 @@ class _InfoState extends State<Info> {
                                 color: Colors.grey),
                           ),
                           Container(
-                            width: 80,
+                              width: 80,
                             child: AllText.Autotext(
                                 text: "1",
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey),
                           ),
-                          Container(
-                              width: 80, child: Icon(Icons.more_vert_rounded))
+                              Container(
+                                  width: 80,
+                                child: Icon(Icons.more_vert_rounded))
                         ],
                       ),
                     );

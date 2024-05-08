@@ -26,7 +26,8 @@ class Body extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.only(top: 26),
-          child: Image.asset(
+          child:
+           Image.asset(
             img,
             height: 287,
             width: 287,
@@ -65,7 +66,7 @@ class Body extends StatelessWidget {
             for (int i = 0; i < 4; i++) ...{
               Container(
                 decoration: BoxDecoration(
-                  color: postion == i ? Color(0xFF3053EC) : Color(0xFFD9D9D9),
+                  color: postion == i  ?Color(0xFF3053EC):  Color(0xFFD9D9D9),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 margin: EdgeInsets.only(left: 4, right: 4, top: 24),
@@ -77,100 +78,97 @@ class Body extends StatelessWidget {
         ),
         Container(
           margin: EdgeInsets.only(top: size.height * 0.06),
-          child: Row(
-            mainAxisAlignment: postion == 0
-                ? MainAxisAlignment.end
-                : MainAxisAlignment.spaceBetween,
+          child: 
+           Row(
+            mainAxisAlignment: postion == 0 ? MainAxisAlignment.end :MainAxisAlignment.spaceBetween  ,
             children: [
-              if (postion == 0) ...{
-                GestureDetector(
-                  onTap: () {
-                    if (postion < 2) {
-                      OnbordingStat.TypeSwitcher.add(changePage(postion));
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Login()),
-                      );
-                    }
-                  },
-                  child: Container(
-                    height: 48,
-                    width: 115,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF3053EC),
-                      borderRadius: BorderRadius.circular(48),
-                    ),
-                    child: AutoSizeText(
-                      textAlign: TextAlign.center,
-                      "Suivant",
-                      style: GoogleFonts.rubik(
-                          textStyle:
-                              TextStyle(height: 1.4, color: Colors.white),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                )
-              } else ...{
-                GestureDetector(
-                  onTap: () {
-                    // Navigator.pop(context);
-                    OnbordingStat.TypeSwitcher.add(retour(postion));
-                  },
-                  child: Container(
-                    height: 48,
-                    width: 115,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Color(0xFF3053EC)),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(48),
-                    ),
-                    child: AutoSizeText(
-                      textAlign: TextAlign.center,
-                      "Retour",
-                      style: GoogleFonts.rubik(
-                          textStyle:
-                              TextStyle(height: 1.4, color: Color(0xFF3053EC)),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
+              if(postion == 0 ) ...{
+                 GestureDetector(
+                onTap: () {
+                  if(postion<2) {
+   OnbordingStat.TypeSwitcher.add(changePage(postion)) ; 
+                  }else {
+                     Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  Login()),
+  );
+                  }
+               
+                },
+                child:Container(
+                height: 48,
+                width: 115,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xFF3053EC),
+                  borderRadius: BorderRadius.circular(48),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    if (postion < 2) {
-                      OnbordingStat.TypeSwitcher.add(changePage(postion));
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Login()),
-                      );
-                    }
-                    // OnbordingStat.TypeSwitcher.add(changePage(postion)) ;
-                  },
-                  child: Container(
-                    height: 48,
-                    width: 115,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF3053EC),
-                      borderRadius: BorderRadius.circular(48),
-                    ),
-                    child: AutoSizeText(
-                      textAlign: TextAlign.center,
-                      "Suivant",
-                      style: GoogleFonts.rubik(
-                          textStyle:
-                              TextStyle(height: 1.4, color: Colors.white),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                )
+                child: AutoSizeText(
+                  textAlign: TextAlign.center,
+                  "Suivant",
+                  style: GoogleFonts.rubik(
+                      textStyle: TextStyle(height: 1.4, color: Colors.white),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                ),
+              ) ,)
+              }else ...{
+                 GestureDetector(
+                onTap: () {
+                // Navigator.pop(context); 
+                 OnbordingStat.TypeSwitcher.add(retour(postion)) ; 
+                },
+                child:Container(
+                height: 48,
+                width: 115,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Color(0xFF3053EC)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(48),
+                ),
+                child: AutoSizeText(
+                  textAlign: TextAlign.center,
+                  "Retour",
+                  style: GoogleFonts.rubik(
+                      textStyle: TextStyle(height: 1.4, color: Color(0xFF3053EC)),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                ),
+              ) ,),
+                 GestureDetector(
+                onTap: () {
+                   if(postion<2) {
+   OnbordingStat.TypeSwitcher.add(changePage(postion)) ; 
+                  }else {
+                     Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  Login()),
+  );
+                  }
+                  // OnbordingStat.TypeSwitcher.add(changePage(postion)) ; 
+                },
+                child:Container(
+                height: 48,
+                width: 115,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xFF3053EC),
+                  borderRadius: BorderRadius.circular(48),
+                ),
+                child: AutoSizeText(
+                  textAlign: TextAlign.center,
+                  "Suivant",
+                  style: GoogleFonts.rubik(
+                      textStyle: TextStyle(height: 1.4, color: Colors.white),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                ),
+              ) 
+              ,)
               }
+             
+              
             ],
           ),
         )

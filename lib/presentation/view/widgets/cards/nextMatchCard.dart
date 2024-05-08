@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
+
 class NextMatchCard extends StatefulWidget {
   final String stade;
   final String time;
@@ -24,8 +25,7 @@ class NextMatchCard extends StatefulWidget {
   State<NextMatchCard> createState() => _NextMatchCardState();
 }
 
-class _NextMatchCardState extends State<NextMatchCard>
-    with SingleTickerProviderStateMixin {
+class _NextMatchCardState extends State<NextMatchCard> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   bool detailsVisible = false;
@@ -37,8 +37,7 @@ class _NextMatchCardState extends State<NextMatchCard>
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    _fadeAnimation =
-        CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
+    _fadeAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
   }
 
   @override
@@ -150,66 +149,60 @@ class _NextMatchCardState extends State<NextMatchCard>
               ),
               FadeTransition(
                 opacity: _fadeAnimation,
-                child: detailsVisible
-                    ? Column(
-                        children: [
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Divider(height: 1, color: Colors.grey),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.place_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  AllText.Autotext(
-                                    text: "Direction",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.local_phone_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  AllText.Autotext(
-                                    text: "Appeler le capitaine",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.share_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  AllText.Autotext(
-                                    text: "Publier",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      )
-                    : SizedBox(),
+                child: detailsVisible ? Column(
+                  children: [
+                    SizedBox(height: 8,),
+                    Divider(height: 1, color: Colors.grey),
+                    SizedBox(height: 8,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            Icon(
+                              Icons.place_outlined,
+                              color: Colors.grey,
+                            ),
+                            AllText.Autotext(
+                              text: "Direction",
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Icon(
+                              Icons.local_phone_outlined,
+                              color: Colors.grey,
+                            ),
+                            AllText.Autotext(
+                              text: "Appeler le capitaine",
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Icon(
+                              Icons.share_outlined,
+                              color: Colors.grey,
+                            ),
+                            AllText.Autotext(
+                              text: "Publier",
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ) : SizedBox(),
               ),
             ],
           ),

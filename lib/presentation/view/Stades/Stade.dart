@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/Home/widget/HomeAppBar.dart';
 import 'package:takwira/presentation/view/widgets/button/dropDownButton/DropDownButton.dart';
-import 'package:takwira/presentation/view/widgets/cards/rechercheEquipeCard.dart';
 import 'package:takwira/presentation/view/widgets/cards/stadeCard.dart';
-import 'package:takwira/presentation/view/widgets/cards/vosEquipeCards.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/search.dart';
+
+
 
 class Stades extends StatefulWidget {
   const Stades({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _StadesState extends State<Stades> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar(),
+       appBar: HomeAppBar(),
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 24),
@@ -52,9 +52,7 @@ class _StadesState extends State<Stades> {
       padding: const EdgeInsets.only(top: 8, bottom: 16),
       itemCount: itemCount,
       itemBuilder: (context, index) {
-        return StadeCard(
-          index: index,
-        );
+        return StadeCard(index: index,);
       },
     );
   }

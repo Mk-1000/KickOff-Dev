@@ -70,19 +70,17 @@ class _VosEquipeState extends State<VosEquipe> {
       },
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MatchDetails()),
-          );
+           Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => MatchDetails()),
+  );
         },
-        child: VosEquipeCard(
+        child:  VosEquipeCard(
           name: 'Barcelona',
-          photo:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB7nXgavBhOElhzqVmf-9fI-j4n9K6LPplzuG7M3y0jA&s',
+          photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB7nXgavBhOElhzqVmf-9fI-j4n9K6LPplzuG7M3y0jA&s',
           place: 'Monastir, Tunisia',
-          captine: true,
-          postion: 'Milieu',
-          id: index,
+           captine: true, postion: 'Milieu',
+           id:index,
         ),
       ),
     );

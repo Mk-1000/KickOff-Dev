@@ -4,6 +4,7 @@ import 'package:takwira/presentation/view/NavBar/NavData.dart';
 import 'package:takwira/presentation/view/NavBar/navBarMain.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
+
 import '../themes/themes.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -55,7 +56,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                 Icon(
                   icon,
                   color: Colors.black,
-                  size: widget.currentIndex == index ? 25 : 30,
+                  size:  widget.currentIndex == index ? 25: 30,
                 ),
               },
               SizedBox(

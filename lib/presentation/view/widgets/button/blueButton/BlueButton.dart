@@ -5,13 +5,13 @@ class BlueButton extends StatelessWidget {
   final String text;
   final double width;
   final bool outlindedbutton;
-
+  
   const BlueButton({
     Key? key,
     required this.onTap,
     required this.text,
     required this.width,
-    required this.outlindedbutton, // Changed variable name for consistency
+    required this.outlindedbutton,
   }) : super(key: key);
 
   @override
@@ -19,18 +19,13 @@ class BlueButton extends StatelessWidget {
     // Determine the style for the button based on whether it's outlined or not.
     final ButtonStyle flatStyle = outlindedbutton
         ? OutlinedButton.styleFrom(
-            side: const BorderSide(
-                color: Color(0xFF3053EC)), // Blue border for outlined button
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(48)),
-            backgroundColor:
-                Colors.white, // White background for outlined button
+            foregroundColor: const Color(0xFF3053EC), side: const BorderSide(color: Color(0xFF3053EC)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(48)),
+            backgroundColor: Colors.white,
           )
         : ElevatedButton.styleFrom(
-            backgroundColor:
-                const Color(0xFF3053EC), // Blue background for elevated button
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(48)),
+            backgroundColor: const Color(0xFF3053EC),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(48)),
           );
 
     // Use a Button widget depending on whether it's outlined or not.
@@ -44,9 +39,8 @@ class BlueButton extends StatelessWidget {
               style: flatStyle,
               child: Text(
                 text,
-                style: const TextStyle(
-                  color:
-                      Color(0xFF3053EC), // Blue text color for outlined button
+                style: TextStyle(
+                  color: const Color(0xFF3053EC),
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
@@ -58,7 +52,7 @@ class BlueButton extends StatelessWidget {
               child: Text(
                 text,
                 style: const TextStyle(
-                  color: Colors.white, // White text color for elevated button
+                  color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),

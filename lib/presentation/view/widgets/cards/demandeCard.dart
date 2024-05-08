@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
+
 class DemandeCard extends StatelessWidget {
   final String name;
   final String photo;
@@ -43,10 +44,7 @@ class DemandeCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(
-                      Icons.person_outline_outlined,
-                      size: 18,
-                    ),
+                    const Icon(Icons.person_outline_outlined,size: 18,),
                     AllText.Autotext(
                         text: name,
                         fontSize: 14,
@@ -56,11 +54,7 @@ class DemandeCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.directions_run,
-                      color: Colors.grey,
-                      size: 18,
-                    ),
+                    const Icon(Icons.directions_run, color: Colors.grey,size: 18,),
                     AllText.Autotext(
                         text: "Capitaine",
                         fontSize: 14,
@@ -103,11 +97,7 @@ class DemandeCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.place_outlined,
-                      color: Colors.grey,
-                      size: 18,
-                    ),
+                    const Icon(Icons.place_outlined, color: Colors.grey,size: 18,),
                     AllText.Autotext(
                         text: postion,
                         fontSize: 14,
@@ -116,39 +106,33 @@ class DemandeCard extends StatelessWidget {
                   ],
                 ),
               ],
-            ),
-
+            ), 
+            
             Container(
               height: 32,
               width: 32,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.red),
-                borderRadius: BorderRadius.all(Radius.circular(
-                        4.0) //                 <--- border radius here
-                    ),
-              ),
-              // close
-              child: Icon(
-                Icons.close,
-                color: Colors.red,
-              ),
+                decoration: BoxDecoration(
+    border: Border.all(color: Colors.red),
+        borderRadius: BorderRadius.all(
+        Radius.circular(4.0) //                 <--- border radius here
+    ),
+  ),
+  // close
+  child: Icon(Icons.close,color: Colors.red,) ,
             ),
-            Container(
+                        Container(
               height: 32,
               width: 32,
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).primaryColor),
-                borderRadius: BorderRadius.all(Radius.circular(
-                        4.0) //                 <--- border radius here
-                    ),
-              ),
-              // close
-              child: Icon(
-                Icons.check_rounded,
-                color: Theme.of(context).primaryColor,
-              ),
+                decoration: BoxDecoration(
+    border: Border.all(color: Theme.of(context).primaryColor),
+        borderRadius: BorderRadius.all(
+        Radius.circular(4.0) //                 <--- border radius here
+    ),
+  ),
+  // close
+  child: Icon(Icons.check_rounded,color: Theme.of(context).primaryColor,) ,
             ),
-
+            
             // Expanded(
             //   child: Padding(
             //     padding: EdgeInsets.zero,

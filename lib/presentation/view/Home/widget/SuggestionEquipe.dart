@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
+
 class SuggestionEquipe extends StatefulWidget {
   const SuggestionEquipe({super.key});
 

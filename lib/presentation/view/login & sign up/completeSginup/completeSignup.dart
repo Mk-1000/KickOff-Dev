@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:takwira/presentation/view/login%20&%20sign%20up/completeSginup/widget/postion.dart';
 import 'package:takwira/presentation/view/widgets/button/blueButton/BlueButton.dart';
-import 'package:takwira/presentation/view/widgets/text/text.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/InputFild.dart';
+import 'package:takwira/presentation/view/widgets/text/text.dart';
+
 
 import 'bloc/bloc/complete_signup_bloc.dart';
 
@@ -207,31 +208,29 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
           width: 200,
         ),
         Container(
-            margin: EdgeInsets.only(top: 8, bottom: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (int i = 0; i < taille.length; i++) ...{
-                  Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.only(left: 8, right: 8),
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.grey,
-                        ),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: AllText.Autotext(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        text: taille[i]),
-                  )
-                },
-              ],
-            )),
+          margin: EdgeInsets.only(top: 8,bottom: 30),
+          child:        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (int i = 0; i < taille.length; i++) ...{
+              Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.only(left: 8,right:8),
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1,
+                      color: Colors.grey,
+                    ),
+                    borderRadius: BorderRadius.circular(20)),
+                    child: AllText.Autotext(color: Colors.grey, fontWeight: FontWeight.w400, fontSize: 14, text: taille[i]),
+              )
+            },
+          ],
+        )
+           ),
+
       },
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

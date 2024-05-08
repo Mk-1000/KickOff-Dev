@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:takwira/presentation/view/CreateTeam/widget/CircleNumber.dart';
 import 'package:takwira/presentation/view/CreateTeam/widget/avatarPhoto/AvatarCreateTeam';
 import 'package:takwira/presentation/view/widgets/CounterInput/CounterInput.dart';
 import 'package:takwira/presentation/view/widgets/StadeWidget/Stade.dart';
 import 'package:takwira/presentation/view/widgets/button/blueButton/BlueButton.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/InputFild.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
+
 
 class CreateTeam extends StatefulWidget {
   const CreateTeam({Key? key}) : super(key: key);
@@ -113,7 +112,7 @@ class _CreateTeamState extends State<CreateTeam>
             ),
             const SizedBox(height: 8),
             _animatedElement(
-              Stade(),
+             Stade(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -121,7 +120,7 @@ class _CreateTeamState extends State<CreateTeam>
                 BlueButton(
                   onTap: () {},
                   text: "Accepter",
-                  width: 115,
+                  width: 120,
                   outlindedbutton: false,
                 ),
               ],

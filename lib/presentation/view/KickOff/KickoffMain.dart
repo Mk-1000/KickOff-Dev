@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:takwira/presentation/view/CreateTeam/CreateTeamMain.dart';
 import 'package:takwira/presentation/view/Home/widget/HomeAppBar.dart';
 import 'package:takwira/presentation/view/KickOff/widget/rechrcheEquipe.dart';
 import 'package:takwira/presentation/view/KickOff/widget/vosEquipe.dart';
+
 
 class KickOff extends StatefulWidget {
   const KickOff({Key? key}) : super(key: key);
@@ -20,9 +22,23 @@ class _KickOffState extends State<KickOff> {
       appBar: HomeAppBar(),
       floatingActionButton: _buildFloatingActionButton(),
       body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          child: _buildTabBarView(),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            
+            Opacity(
+
+              opacity: 0.2,
+              child: SvgPicture.asset(
+              "assets/image/backImage.svg",
+             
+            ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              child: _buildTabBarView(),
+            ),
+          ],
         ),
       ),
     );
@@ -34,7 +50,7 @@ class _KickOffState extends State<KickOff> {
         context,
         MaterialPageRoute(builder: (context) => CreateTeam()),
       ),
-      child: const Icon(Icons.add),
+      child: const Icon(Icons.add,color: Colors.white,),
     );
   }
 
@@ -42,9 +58,9 @@ class _KickOffState extends State<KickOff> {
     return ContainedTabBarView(
       tabBarProperties: TabBarProperties(
         labelStyle: GoogleFonts.rubik(
-          textStyle:
-              const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
         ),
+        indicatorColor: Theme.of(context).primaryColor,
         labelColor: Theme.of(context).primaryColor,
         unselectedLabelColor: Colors.grey,
       ),
