@@ -1,132 +1,128 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:takwira/presentation/managers/PlayerManager.dart';
+import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
-import 'package:takwira/presentation/Managers/PlayerManager.dart';
-import 'package:takwira/presentation/Managers/TeamManager.dart';
-import 'package:takwira/presentation/testManager/CreateTeam.dart';
 import 'package:takwira/presentation/testManager/TeamDetailsPage.dart';
+import 'package:takwira/presentation/testManager/TestCreateTeamPage.dart';
 
-class TestHomeScreen extends StatefulWidget {
+class PlayerHomePage extends StatefulWidget {
+  final String playerId;
+
+  PlayerHomePage({Key? key, required this.playerId}) : super(key: key);
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _PlayerHomePageState createState() => _PlayerHomePageState();
 }
 
-class _HomeScreenState extends State<TestHomeScreen> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+class _PlayerHomePageState extends State<PlayerHomePage> {
   final PlayerManager _playerManager = PlayerManager();
   final TeamManager _teamManager = TeamManager();
-
-  Player? _currentPlayer;
-  List<Team> _teams = []; // Correctly initialized as an empty list
+  Player? player;
+  List<Team> teams = [];
 
   @override
   void initState() {
     super.initState();
-    _firebaseAuth.userChanges().listen((User? user) async {
-      if (user != null) {
-        try {
-          Player player = await _playerManager.getPlayerDetails(user.uid);
-          List<Team> teams =
-              await _teamManager.getAllTeamsForPlayer(player.teamIds);
-          setState(() {
-            _currentPlayer = player;
-            _teams = teams; // Assuming _teams is a List<Team> in your state
-          });
-        } catch (e) {
-          print('Error fetching player details or teams: $e');
-          if (mounted) {
-            setState(() {
-              _currentPlayer = null;
-              _teams = []; // Ensure the list is cleared on error
-            });
-          }
-        }
-      } else {
-        if (mounted) {
-          setState(() {
-            _currentPlayer = null;
-            _teams =
-                []; // Ensure the list is cleared if the user is not signed in
-          });
-        }
+    _initializePage();
+  }
+
+  Future<void> _initializePage() async {
+    try {
+      player = await _playerManager.getPlayerDetails(widget.playerId);
+      if (player != null) {
+        teams = await _teamManager.getAllTeamsForPlayer(player!.teamIds);
       }
-    });
+      setState(() {});
+    } catch (e) {
+      print('Error initializing player home page: $e');
+      // Optionally, display a snackbar or other error message to the user.
+    }
+  }
+
+  Future<void> _deleteTeam(String teamId) async {
+    if (player == null) {
+      print('Error: Player data is null.');
+      return;
+    }
+    try {
+      await _teamManager.deleteTeamForPlayer(teamId, player!);
+      // Update teams list and UI only if delete operation was successful
+      teams.removeWhere((team) => team.teamId == teamId);
+      setState(() {});
+    } catch (e) {
+      print('Error deleting player team: $e');
+      // Optionally, inform the user of the failure to delete the team.
+    }
+  }
+
+  void _addNewTeam(Team newTeam) {
+    if (player != null) {
+      teams.add(newTeam);
+      player!.teamIds
+          .add(newTeam.teamId); // Assuming each team has a unique teamId
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text('Player Home'),
       ),
-      body: Center(
-        child: _currentPlayer != null && _teams.isNotEmpty
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Welcome, ${_currentPlayer!.nickname}'),
-                  SizedBox(height: 20),
-                  Text('Your Teams:'),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: _teams.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(_teams[index].teamName),
+      body: player == null
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Welcome, ${player!.nickname}',
+                      style: TextStyle(fontSize: 20)),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: teams.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(teams[index].teamName),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
+                            children: [
                               IconButton(
-                                icon: Icon(Icons.info_outline),
-                                onPressed: () {
-                                  // Implement navigation to team details
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => TeamDetailsPage(
-                                        teamId: _teams[index].teamId),
-                                  ));
-                                },
+                                icon: Icon(Icons.delete, color: Colors.red),
+                                onPressed: () =>
+                                    _deleteTeam(teams[index].teamId),
                               ),
                               IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () async {
-                                  // Implement deletion logic
-                                  try {
-                                    await _teamManager
-                                        .deleteTeam(_teams[index].teamId);
-                                    setState(() {
-                                      _teams.removeAt(index);
-                                    });
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content:
-                                            Text('Failed to delete team: $e'),
-                                      ),
-                                    );
-                                  }
-                                },
+                                icon: Icon(Icons.arrow_forward),
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TeamDetailsPage(
+                                        teamId: teams[index].teamId),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          onTap: () {
-                            // Optionally keep this tap handler if you want to do something else on tap
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateTeamPage()));
+                        ),
+                      );
                     },
-                    child: Text('Create New Team'),
                   ),
-                ],
-              )
-            : Text('Not signed in or no teams to display'),
-      ),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TestCreateTeamPage(onTeamCreated: _addNewTeam)),
+                  ),
+                  child: Text("Create a new Team"),
+                )
+              ],
+            ),
     );
   }
 }

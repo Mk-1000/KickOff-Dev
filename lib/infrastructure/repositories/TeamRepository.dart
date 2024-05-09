@@ -26,59 +26,88 @@ class TeamRepository implements ITeamRepository {
 
   @override
   Future<List<Team>> getAllTeams() async {
-    DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);
-    if (snapshot.exists && snapshot.value != null) {
-      var teamsMap = snapshot.value;
-      if (teamsMap is Map) {
-        return teamsMap.entries
-            .map((e) => Team.fromJson(
-                Map<String, dynamic>.from(e.value as Map)..['teamId'] = e.key))
-            .toList();
+    try {
+      DataSnapshot snapshot =
+          await _firebaseService.getDocument(_collectionPath);
+      if (snapshot.exists && snapshot.value != null) {
+        var teamsMap = snapshot.value;
+        if (teamsMap is Map) {
+          return teamsMap.entries
+              .map((e) => Team.fromJson(
+                  Map<String, dynamic>.from(e.value as Map)
+                    ..['teamId'] = e.key))
+              .toList();
+        }
       }
+      return []; // Return an empty list if no valid data is found
+    } catch (e) {
+      print('Failed to retrieve all teams: $e');
+      throw Exception('Failed to retrieve all teams');
     }
-    return []; // Return an empty list if no valid data is found
   }
 
   @override
   Future<Team> getTeamById(String id) async {
-    DataSnapshot snapshot =
-        await _firebaseService.getDocument('$_collectionPath/$id');
-    if (snapshot.exists && snapshot.value != null) {
-      var teamData = snapshot.value as Map;
-      return Team.fromJson(Map<String, dynamic>.from(teamData));
-    } else {
-      // Explicitly throw an exception if no team is found.
-      throw Exception('Team not found for ID $id');
+    try {
+      DataSnapshot snapshot =
+          await _firebaseService.getDocument('$_collectionPath/$id');
+      if (snapshot.exists && snapshot.value != null) {
+        var teamData = snapshot.value as Map;
+        return Team.fromJson(Map<String, dynamic>.from(teamData));
+      } else {
+        throw Exception('Team not found for ID $id');
+      }
+    } catch (e) {
+      print('Error fetching team by ID $id: $e');
+      throw Exception('Error fetching team by ID $id: $e');
     }
   }
 
   @override
   Future<void> addTeam(Team team) async {
-    await _firebaseService.setDocument(
-        '$_collectionPath/${team.teamId}', team.toJson());
+    try {
+      await _firebaseService.setDocument(
+          '$_collectionPath/${team.teamId}', team.toJson());
+      print('Team added successfully: ${team.teamId}');
+    } catch (e) {
+      print('Failed to add team: $e');
+      throw Exception('Failed to add team: $e');
+    }
   }
 
   @override
   Future<void> updateTeam(Team team) async {
-    await _firebaseService.updateDocument(
-        '$_collectionPath/${team.teamId}', team.toJson());
+    try {
+      await _firebaseService.updateDocument(
+          '$_collectionPath/${team.teamId}', team.toJson());
+      print('Team updated successfully: ${team.teamId}');
+    } catch (e) {
+      print('Failed to update team: $e');
+      throw Exception('Failed to update team: $e');
+    }
   }
 
   @override
   Future<void> deleteTeam(String id) async {
     try {
       await _firebaseService.deleteDocument('$_collectionPath/$id');
-      print(
-          'Team deleted successfully: $id'); // Debugging line to confirm deletion
+      print('Team deleted successfully: $id');
     } catch (e) {
-      print('Failed to delete team: $e'); // Error logging
+      print('Failed to delete team: $e');
       throw Exception('Failed to delete team: $e');
     }
   }
 
   @override
   Future<List<Team>> getTeamsForUser(String userId) async {
-    final List<Team> allTeams = await getAllTeams();
-    return allTeams.where((team) => team.players.containsKey(userId)).toList();
+    try {
+      final List<Team> allTeams = await getAllTeams();
+      return allTeams
+          .where((team) => team.players.containsKey(userId))
+          .toList();
+    } catch (e) {
+      print('Failed to retrieve teams for user $userId: $e');
+      throw Exception('Failed to retrieve teams for user');
+    }
   }
 }

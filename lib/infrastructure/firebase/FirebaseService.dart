@@ -25,6 +25,15 @@ class FirebaseService {
   }
 
   Future<void> deleteDocument(String path) async {
-    await _database.ref(_sanitizeKey(path)).remove();
+    final sanitizedPath = _sanitizeKey(path);
+    print(
+        'Attempting to delete document at: $sanitizedPath'); // Log the sanitized path
+    try {
+      await _database.ref(sanitizedPath).remove();
+      print('Deletion successful for path: $sanitizedPath');
+    } catch (e) {
+      print('Error deleting document at $sanitizedPath: $e');
+      throw Exception('Failed to delete document');
+    }
   }
 }

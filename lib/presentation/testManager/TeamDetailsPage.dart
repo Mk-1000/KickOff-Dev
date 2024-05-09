@@ -2,11 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/Managers/TeamManager.dart';
 
-class TeamDetailsPage extends StatelessWidget {
+class TeamDetailsPage extends StatefulWidget {
   final String teamId;
-  final TeamManager teamManager = TeamManager();
 
-  TeamDetailsPage({required this.teamId});
+  TeamDetailsPage({Key? key, required this.teamId}) : super(key: key);
+
+  @override
+  _TeamDetailsPageState createState() => _TeamDetailsPageState();
+}
+
+class _TeamDetailsPageState extends State<TeamDetailsPage> {
+  Team? team;
+  final TeamManager _teamManager = TeamManager();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTeamDetails();
+  }
+
+  void fetchTeamDetails() async {
+    try {
+      print('teamId to get: ${widget.teamId}');
+      Team fetchedTeam = await _teamManager.getTeamById(widget.teamId);
+
+      setState(() {
+        team = fetchedTeam;
+      });
+    } catch (e) {
+      print('Error fetching team details: $e');
+      // Handle error appropriately
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,59 +41,16 @@ class TeamDetailsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Team Details'),
       ),
-      body: FutureBuilder<Team>(
-        future: teamManager.getTeamById(teamId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
+      body: team != null
+          ? Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Error: ${snapshot.error.toString()}'),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    child: Text('Retry'),
-                    onPressed: () {
-                      // Triggering a state update to retry fetching
-                      (context as Element).reassemble();
-                    },
-                  ),
+                  Text('Team Name: ${team!.teamName}'),
+                  // Add more team details here
                 ],
               ),
-            );
-          } else if (snapshot.hasData) {
-            Team team = snapshot.data!;
-            return SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Team ID: ${team.teamId}',
-                      style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 10),
-                  Text('Captain ID: ${team.captainId}',
-                      style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 10),
-                  Text('Chat: ${team.chat}', style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 10),
-                  Text('Players:',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  ...team.players.keys
-                      .map((id) => Text(
-                          '$id: ${team.players[id]! ? "Active" : "Inactive"}'))
-                      .toList(),
-                ],
-              ),
-            );
-          } else {
-            return Center(child: Text('No team data available'));
-          }
-        },
-      ),
+            )
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }

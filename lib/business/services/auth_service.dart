@@ -4,8 +4,14 @@ import '../../domain/services/iauth_service.dart';
 class AuthService implements IAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  String cleanEmail(String email) {
+    return email.trim().toLowerCase();
+  }
+
   @override
   Future<String> signUpWithEmailPassword(String email, String password) async {
+    email = cleanEmail(email); // Clean email before use
+
     UserCredential userCredential = await _firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password);
     if (userCredential.user != null) {
@@ -17,6 +23,8 @@ class AuthService implements IAuthService {
 
   @override
   Future<String> signInWithEmailPassword(String email, String password) async {
+    email = cleanEmail(email); // Clean email before use
+
     UserCredential userCredential = await _firebaseAuth
         .signInWithEmailAndPassword(email: email, password: password);
     if (userCredential.user != null) {
@@ -40,6 +48,7 @@ class AuthService implements IAuthService {
   @override
   Future<void> resetPassword(String email) async {
     try {
+      email = cleanEmail(email); // Clean email before use
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       throw Exception('Failed to send reset password email: ${e.message}');

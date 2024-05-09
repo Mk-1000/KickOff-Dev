@@ -101,6 +101,27 @@ class TeamManager {
     }
   }
 
+  Future<void> deleteTeamForPlayer(String teamId, Player player) async {
+    try {
+      // Delete the team using the team service
+      await _teamService.deleteTeam(teamId);
+
+      // Remove the team ID from the player's list of team IDs
+      player.removeTeamId(teamId); // Assuming Player class has this method
+
+      // Update the player's data in the repository
+      await _playerRepository.updatePlayer(player);
+
+      // Remove the team from the local list if maintained
+      _teams.removeWhere((team) => team.teamId == teamId);
+
+      print('Team and player records updated successfully');
+    } catch (e) {
+      print('Failed to delete team for player: $e');
+      throw Exception('Failed to delete team for player: $e');
+    }
+  }
+
   Future<Team> getTeamById(String teamId) async {
     if (teamId.isEmpty) {
       throw Exception("Team ID cannot be empty.");

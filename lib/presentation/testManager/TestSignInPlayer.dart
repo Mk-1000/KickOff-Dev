@@ -16,17 +16,17 @@ class _LoginScreenState extends State<TestSignInPlayer> {
 
   void _signIn() async {
     try {
-      // Attempt to sign in with email and password
-      await _playerManager.signInWithEmailPassword(
+      var currentPlayerId = await _playerManager.signInWithEmailPassword(
         _emailController.text,
         _passwordController.text,
       );
-      // Navigate to the home screen upon successful sign in
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => TestHomeScreen()));
+
+      // Use the returned currentPlayerId for navigation.
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PlayerHomePage(playerId: currentPlayerId),
+      ));
     } catch (e) {
-      // Show an error message if sign in fails
-      _showErrorDialog(e.toString());
+      _showErrorDialog('Failed to sign in: $e');
     }
   }
 
