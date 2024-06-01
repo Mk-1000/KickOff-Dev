@@ -1,3 +1,5 @@
+import '../../utils/IDUtils.dart';
+
 class Message {
   String _messageId;
   String _content;
@@ -6,12 +8,13 @@ class Message {
   String _chatId;
 
   Message({
-    required String messageId,
+    String? messageId, // Update to accept nullable messageId
     required String content,
     required DateTime sendDate,
     required String senderId,
     required String chatId,
-  })  : _messageId = messageId,
+  })  : _messageId = messageId ??
+            IDUtils.generateUniqueId(), // Generate messageId if null
         _content = content,
         _sendDate = sendDate,
         _senderId = senderId,
@@ -35,7 +38,7 @@ class Message {
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
-      messageId: json['messageId'] as String,
+      messageId: json['messageId'] as String?,
       content: json['content'] as String,
       sendDate: DateTime.parse(json['sendDate'] as String),
       senderId: json['senderId'] as String,

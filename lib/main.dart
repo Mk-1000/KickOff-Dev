@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/presentation/testManager/ChatManagerTestPage.dart';
 import 'package:takwira/presentation/testManager/ShowAllTeams.dart';
 import 'package:takwira/presentation/testManager/TestSignInPlayer.dart';
 import 'package:takwira/presentation/view/Onbording/Onbording.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: Themes().lightTheme,
-      home: TestSignInPlayer(),
+      home: ChatManagerTestPage(),
     );
   }
 }

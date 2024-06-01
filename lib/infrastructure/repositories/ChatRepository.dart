@@ -5,90 +5,94 @@ import '../firebase/FirebaseService.dart';
 
 class ChatRepository implements IChatRepository {
   final String _collectionPath = 'chats';
-  final FirebaseService _firebaseService; // Instance field for FirebaseService
+  final FirebaseService _firebaseService;
 
   ChatRepository({FirebaseService? firebaseService})
       : _firebaseService = firebaseService ?? FirebaseService();
 
-  // @override
-  // Future<List<Chat>> getAllChats() async {
-  //   DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);
-  //   if (snapshot.exists && snapshot.value != null) {
-  //     Map<dynamic, dynamic> chatsMap =
-  //         (snapshot.value as Map).cast<dynamic, dynamic>();
-  //     return chatsMap.values
-  //         .map((e) => Chat.fromJson(Map<String, dynamic>.from(e as Map)))
-  //         .toList();
-  //   }
-  //   return [];
-  // }
-
   @override
   Future<List<Chat>> getAllChats() async {
-    // Use Stream to listen for changes in real-time
-    final Stream<DatabaseEvent> stream =
-        _firebaseService.getCollectionStream(_collectionPath);
+    try {
+      final Stream<DatabaseEvent> stream =
+          _firebaseService.getCollectionStream(_collectionPath);
+      final List<Chat> chats = [];
 
-    // Handle initial data and subsequent updates
-    final chats = <Chat>[];
-    stream.listen((event) {
-      if (event.snapshot.exists) {
-        final data = event.snapshot.value as Map<dynamic, dynamic>;
-        data.forEach((key, value) {
-          chats.add(Chat.fromJson(Map<String, dynamic>.from(value)));
-        });
+      await for (DatabaseEvent event in stream) {
+        if (event.snapshot.exists) {
+          final data = event.snapshot.value as Map<dynamic, dynamic>;
+          data.forEach((key, value) {
+            chats.add(Chat.fromJson(Map<String, dynamic>.from(value)));
+          });
+        }
       }
-    });
 
-    return chats; // Return the initially loaded chats
+      return chats;
+    } catch (e) {
+      print('Failed to retrieve all chats: $e');
+      throw Exception('Failed to retrieve all chats');
+    }
   }
 
   @override
-  Future<Chat> getChatById(String id) async {
-    DataSnapshot snapshot =
-        await _firebaseService.getDocument('$_collectionPath/$id');
-    if (snapshot.exists && snapshot.value != null) {
-      return Chat.fromJson(Map<String, dynamic>.from(snapshot.value as Map));
+  Future<Chat?> getChatById(String id) async {
+    try {
+      DataSnapshot snapshot =
+          await _firebaseService.getDocument('$_collectionPath/$id');
+      if (snapshot.exists && snapshot.value != null) {
+        var chatData = snapshot.value as Map;
+        return Chat.fromJson(Map<String, dynamic>.from(chatData));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching chat by ID $id: $e');
+      throw Exception('Error fetching chat by ID $id: $e');
     }
-    throw Exception('Chat not found');
   }
 
   @override
   Future<void> addChat(Chat chat) async {
-    await _firebaseService.setDocument(_collectionPath, chat.toJson());
+    try {
+      await _firebaseService.setDocument(
+          '$_collectionPath/${chat.chatId}', chat.toJson());
+      print('Chat added successfully: ${chat.chatId}');
+    } catch (e) {
+      print('Failed to add chat: $e');
+      throw Exception('Failed to add chat: $e');
+    }
   }
 
   @override
   Future<void> updateChat(Chat chat) async {
-    await _firebaseService.updateDocument(
-        '$_collectionPath/${chat.chatId}', chat.toJson());
+    try {
+      await _firebaseService.updateDocument(
+          '$_collectionPath/${chat.chatId}', chat.toJson());
+      print('Chat updated successfully: ${chat.chatId}');
+    } catch (e) {
+      print('Failed to update chat: $e');
+      throw Exception('Failed to update chat: $e');
+    }
   }
 
   @override
   Future<void> deleteChat(String id) async {
-    await _firebaseService.deleteDocument('$_collectionPath/$id');
+    try {
+      await _firebaseService.deleteDocument('$_collectionPath/$id');
+      print('Chat deleted successfully: $id');
+    } catch (e) {
+      print('Failed to delete chat: $e');
+      throw Exception('Failed to delete chat: $e');
+    }
   }
 
   @override
-  Future<List<Chat>> getAllChatsForUser(String userId) {
-    // TODO: implement getAllChatsForUser
-    throw UnimplementedError();
+  Future<List<Chat>> getAllChatsForUser(String userId) async {
+    try {
+      // Implement logic to retrieve chats for a specific user
+      return [];
+    } catch (e) {
+      print('Failed to retrieve chats for user $userId: $e');
+      throw Exception('Failed to retrieve chats for user $userId');
+    }
   }
-
-  // @override
-  // Future<List<Chat>> getAllChatsForUser(String userId) async {
-  //   var chatsSnapshot = await _firebaseService
-  //       .getDatabaseReference('chats')
-  //       .orderByChild('participants/$userId')
-  //       .equalTo(true)
-  //       .get();
-
-  //   if (chatsSnapshot.exists && chatsSnapshot.value != null) {
-  //     return Map<String, dynamic>.from(chatsSnapshot.value as Map)
-  //         .values
-  //         .map((chatData) => Chat.fromJson(Map<String, dynamic>.from(chatData)))
-  //         .toList();
-  //   }
-  //   return [];
-  // }
 }
