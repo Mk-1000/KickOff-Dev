@@ -13,17 +13,17 @@ class ChatRepository implements IChatRepository {
   @override
   Future<List<Chat>> getAllChats() async {
     try {
-      final Stream<DatabaseEvent> stream =
-          _firebaseService.getCollectionStream(_collectionPath);
+      final DatabaseReference ref =
+          _firebaseService.getCollectionReference(_collectionPath);
+      final DatabaseEvent event = await ref.once();
+      final DataSnapshot snapshot = event.snapshot;
       final List<Chat> chats = [];
 
-      await for (DatabaseEvent event in stream) {
-        if (event.snapshot.exists) {
-          final data = event.snapshot.value as Map<dynamic, dynamic>;
-          data.forEach((key, value) {
-            chats.add(Chat.fromJson(Map<String, dynamic>.from(value)));
-          });
-        }
+      if (snapshot.exists) {
+        final data = snapshot.value as Map<dynamic, dynamic>;
+        data.forEach((key, value) {
+          chats.add(Chat.fromJson(Map<String, dynamic>.from(value)));
+        });
       }
 
       return chats;
@@ -36,11 +36,16 @@ class ChatRepository implements IChatRepository {
   @override
   Future<Chat?> getChatById(String id) async {
     try {
-      DataSnapshot snapshot =
+      final DataSnapshot snapshot =
           await _firebaseService.getDocument('$_collectionPath/$id');
       if (snapshot.exists && snapshot.value != null) {
-        var chatData = snapshot.value as Map;
-        return Chat.fromJson(Map<String, dynamic>.from(chatData));
+        final dynamic chatData = snapshot.value;
+        if (chatData is Map<String, dynamic>) {
+          return Chat.fromJson(chatData);
+        } else {
+          print('Invalid chat data format: $chatData');
+          return null;
+        }
       } else {
         return null;
       }
@@ -88,8 +93,21 @@ class ChatRepository implements IChatRepository {
   @override
   Future<List<Chat>> getAllChatsForUser(String userId) async {
     try {
-      // Implement logic to retrieve chats for a specific user
-      return [];
+      final DatabaseReference ref =
+          _firebaseService.getCollectionReference(_collectionPath);
+      final DatabaseEvent event =
+          await ref.orderByChild('participants/$userId').equalTo(true).once();
+      final DataSnapshot snapshot = event.snapshot;
+      final List<Chat> chats = [];
+
+      if (snapshot.exists) {
+        final data = snapshot.value as Map<dynamic, dynamic>;
+        data.forEach((key, value) {
+          chats.add(Chat.fromJson(Map<String, dynamic>.from(value)));
+        });
+      }
+
+      return chats;
     } catch (e) {
       print('Failed to retrieve chats for user $userId: $e');
       throw Exception('Failed to retrieve chats for user $userId');

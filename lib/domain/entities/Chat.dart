@@ -1,91 +1,71 @@
-import 'package:takwira/domain/entities/Message.dart';
 import 'package:takwira/utils/IDUtils.dart';
+import 'Message.dart';
+
+enum ChatType { private, public }
 
 class Chat {
-  late String chatId;
-  late Map<String, bool> participants;
-  late String lastMessageId;
-  late Map<String, dynamic> lastMessageReadReceipts;
-  late List<Message> messages;
-  late String type;
-  late DateTime createdAt;
-  late DateTime updatedAt;
+  String _chatId;
+  List<String> _participants;
+  ChatType _type;
+  List<Message> _messages;
+  int _createdAt;
+  int _updatedAt;
 
   Chat({
-    required this.participants,
-    required this.lastMessageId,
-    required this.lastMessageReadReceipts,
-    required this.messages,
-    required this.type,
-    required this.createdAt,
-    required this.updatedAt,
-  }) {
-    // Generate unique chatId using IDUtils if not provided
-    chatId = IDUtils.generateUniqueId();
-  }
+    String? chatId,
+    required List<String> participants,
+    required ChatType type,
+    List<Message>? messages,
+    int? createdAt,
+    int? updatedAt,
+  })  : _chatId = chatId ?? IDUtils.generateUniqueId(),
+        _participants = participants,
+        _type = type,
+        _messages = messages ?? [],
+        _createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
+        _updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch;
 
-  void _updateTimestamp() {
-    updatedAt = DateTime.now();
-  }
+  String get chatId => _chatId;
+  List<String> get participants => _participants;
+  ChatType get type => _type;
+  List<Message> get messages => _messages;
+  int get createdAt => _createdAt;
+  int get updatedAt => _updatedAt;
 
   void addParticipant(String participantId) {
-    participants[participantId] = true;
-    lastMessageReadReceipts[participantId] = {'read': false};
-    _updateTimestamp();
+    if (!_participants.contains(participantId)) {
+      _participants.add(participantId);
+    }
   }
 
   void addMessage(Message message) {
-    messages.add(message);
-    lastMessageId = message.messageId;
-    _updateTimestamp();
-  }
-
-  void updateType(String newType) {
-    type = newType;
-    _updateTimestamp();
-  }
-
-  void updateLastMessageId(String newLastMessageId) {
-    lastMessageId = newLastMessageId;
-    _updateTimestamp();
-  }
-
-  void updateParticipants(Map<String, bool> newParticipants) {
-    participants = newParticipants;
-    _updateTimestamp();
-  }
-
-  void updateLastMessageReadReceipts(Map<String, dynamic> newReadReceipts) {
-    lastMessageReadReceipts = newReadReceipts;
-    _updateTimestamp();
-  }
-
-  factory Chat.fromJson(Map<String, dynamic> json) {
-    return Chat(
-      participants: Map<String, bool>.from(json['participants'] ?? {}),
-      lastMessageId: json['lastMessageId'] ?? '',
-      lastMessageReadReceipts:
-          Map<String, dynamic>.from(json['lastMessageReadReceipts'] ?? {}),
-      messages: (json['messages'] as List<dynamic>?)
-              ?.map((messageJson) => Message.fromJson(messageJson))
-              .toList() ??
-          [],
-      type: json['type'] ?? '',
-      createdAt: DateTime.parse(json['createdAt'] ?? ''),
-      updatedAt: DateTime.parse(json['updatedAt'] ?? ''),
-    );
+    _messages.add(message);
+    _updatedAt = DateTime.now().millisecondsSinceEpoch;
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'chatId': chatId,
-      'participants': participants,
-      'lastMessageId': lastMessageId,
-      'lastMessageReadReceipts': lastMessageReadReceipts,
-      'messages': messages.map((message) => message.toJson()).toList(),
-      'type': type,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'chatId': _chatId,
+      'participants': _participants,
+      'type': _type.toString().split('.').last,
+      'messages': _messages.map((message) => message.toJson()).toList(),
+      'createdAt': _createdAt,
+      'updatedAt': _updatedAt,
     };
+  }
+
+  factory Chat.fromJson(Map<String, dynamic> json) {
+    return Chat(
+      chatId: json['chatId'],
+      participants: List<String>.from(json['participants'] ?? []),
+      type: json['type'] == 'private' ? ChatType.private : ChatType.public,
+      messages: json['messages'] != null
+          ? (json['messages'] as List<dynamic>)
+              .map((messageJson) => Message.fromJson(messageJson))
+              .toList()
+          : [],
+      createdAt: json['createdAt'] as int?,
+      updatedAt: json['updatedAt'] as int?,
+    );
   }
 }

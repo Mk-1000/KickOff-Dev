@@ -18,7 +18,6 @@ class ChatManager {
   Future<void> createNewChat(
       Chat chat, Message initialMessage, String participantId) async {
     try {
-      // Implement logic to create a new chat
       await _chatService.createChat(chat, initialMessage, participantId);
     } catch (e) {
       throw Exception('Failed to create chat: $e');
@@ -70,7 +69,7 @@ class ChatManager {
     }
   }
 
-  Future<Map<String, bool>> loadChatParticipants(String chatId) async {
+  Future<List<String>> loadChatParticipants(String chatId) async {
     try {
       Chat? chat = await _chatService.getChatById(chatId);
       if (chat != null) {

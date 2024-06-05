@@ -10,87 +10,106 @@ class ChatManagerTestPage extends StatefulWidget {
 
 class _ChatManagerTestPageState extends State<ChatManagerTestPage> {
   final ChatManager _chatManager = ChatManager();
+  late Chat _chat;
+  late Message _initialMessage;
+  bool _isLoading = true;
 
-  String _resultMessage = '';
+  @override
+  void initState() {
+    super.initState();
+    _initializeChat();
+  }
 
-  Future<void> _testGetChatDetails() async {
+  Future<void> _initializeChat() async {
+    _chat = Chat(
+      participants: [],
+      type: ChatType.private,
+      messages: [],
+    );
+    _initialMessage = Message(
+      messageId: 'initial_msg_id',
+      content: "Welcome to the chat!",
+      senderId: "user_123",
+      sendDate: DateTime.now().millisecondsSinceEpoch,
+    );
+
     try {
-      Chat? chat = await _chatManager
-          .getChatDetails('eece93e6-f9d1-4269-90ef-e867173d2c85');
+      await _chatManager.createNewChat(_chat, _initialMessage, "user_123");
+      _chat = (await _chatManager.getChatDetails(_chat.chatId))!;
       setState(() {
-        _resultMessage = 'Chat Details: $chat';
+        _isLoading = false;
       });
     } catch (e) {
+      print("Error initializing chat: $e");
       setState(() {
-        _resultMessage = 'Error: $e';
+        _isLoading = false;
       });
     }
   }
 
-  Future<void> _testCreateNewChat() async {
+  Future<void> _addNewParticipant() async {
     try {
-      // Initialize ChatManager instance
-      ChatManager _chatManager = ChatManager();
-
-      Chat chat = Chat(
-        participants: {'user_id': true},
-        lastMessageId: '',
-        lastMessageReadReceipts: {},
-        messages: [],
-        type: 'private',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      );
-      Message initialMessage = Message(
-        senderId: 'user_id',
-        content: 'Hello, world!',
-        sendDate: DateTime.now(),
-        chatId: chat.chatId,
-      );
-
-      // Call createNewChat method
-      await _chatManager.createNewChat(chat, initialMessage, 'participant_id');
-      // Assuming setState is available within a Flutter widget context
-      setState(() {
-        _resultMessage = 'New chat created successfully';
-      });
+      await _chatManager.addNewPlayerToChat(_chat.chatId, "new_user");
+      _chat = (await _chatManager.getChatDetails(_chat.chatId))!;
+      setState(() {});
     } catch (e) {
-      setState(() {
-        _resultMessage = 'Error: $e';
-      });
+      print("Error adding new participant: $e");
     }
   }
 
-  // Implement methods to test other functionalities similarly
+  Future<void> _addNewMessage() async {
+    try {
+      Message newMessage = Message(
+        messageId: 'new_msg_id',
+        content: "Hello everyone!",
+        senderId: "new_user",
+        sendDate: DateTime.now().millisecondsSinceEpoch,
+      );
+      await _chatManager.addNewMessageToChat(_chat.chatId, newMessage);
+      _chat = (await _chatManager.getChatDetails(_chat.chatId))!;
+      setState(() {});
+    } catch (e) {
+      print("Error adding new message: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Manager Test'),
+        title: Text("Chat Manager Test Page"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: _testGetChatDetails,
-              child: Text('Test Get Chat Details'),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text("Chat ID: ${_chat.chatId}"),
+                  Text("Participants: ${_chat.participants.join(", ")}"),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _chat.messages.length,
+                      itemBuilder: (context, index) {
+                        final message = _chat.messages[index];
+                        return ListTile(
+                          title: Text(message.content),
+                          subtitle: Text("Sent by: ${message.senderId}"),
+                        );
+                      },
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: _addNewParticipant,
+                    child: Text("Add New Participant"),
+                  ),
+                  ElevatedButton(
+                    onPressed: _addNewMessage,
+                    child: Text("Add New Message"),
+                  ),
+                ],
+              ),
             ),
-            ElevatedButton(
-              onPressed: _testCreateNewChat,
-              child: Text('Test Create New Chat'),
-            ),
-            // Add buttons for other test methods here
-            SizedBox(height: 20),
-            Text(
-              _resultMessage,
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -36,4 +36,8 @@ class FirebaseService {
       throw Exception('Failed to delete document');
     }
   }
+
+  DatabaseReference getCollectionReference(String collectionPath) {
+    return _database.ref(collectionPath);
+  }
 }
