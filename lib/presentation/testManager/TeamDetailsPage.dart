@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:takwira/domain/entities/Team.dart';
-import 'package:takwira/presentation/Managers/TeamManager.dart';
+import 'package:takwira/presentation/managers/TeamManager.dart';
 
 class TeamDetailsPage extends StatefulWidget {
   final String teamId;

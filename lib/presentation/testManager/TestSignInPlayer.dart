@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:takwira/presentation/Managers/PlayerManager.dart';
+import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/testManager/TestPlayerHomeScreen.dart';
 import 'package:takwira/presentation/testManager/TestSignUpPlayer.dart';
 

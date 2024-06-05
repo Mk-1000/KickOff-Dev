@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Message.dart';
-import 'package:takwira/presentation/Managers/ChatManager.dart';
+import 'package:takwira/presentation/managers/ChatManager.dart';
 
 class ChatManagerTestPage extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _ChatManagerTestPageState extends State<ChatManagerTestPage> {
   Future<void> _testGetChatDetails() async {
     try {
       Chat? chat = await _chatManager
-          .getChatDetails('4e322495-f5d9-4cd0-b854-180c8a5434c9');
+          .getChatDetails('eece93e6-f9d1-4269-90ef-e867173d2c85');
       setState(() {
         _resultMessage = 'Chat Details: $chat';
       });
