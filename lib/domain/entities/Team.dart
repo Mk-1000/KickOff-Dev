@@ -5,7 +5,7 @@ class Team {
   String _teamName;
   String _captainId;
   Map<String, bool> _players;
-  String _chat;
+  String? _chat; // Optional chat
   int _createdAt;
   int _updatedAt;
 
@@ -14,7 +14,7 @@ class Team {
     required String teamName,
     required String captainId,
     required Map<String, bool> players,
-    required String chat,
+    String? chat, // Optional chat
     int? createdAt,
     int? updatedAt,
   })  : _teamId = teamId ??
@@ -22,7 +22,7 @@ class Team {
                 .generateUniqueId(), // Use provided teamId or generate a new one
         _teamName = teamName,
         _captainId = captainId,
-        _players = Map.unmodifiable(players),
+        _players = players,
         _chat = chat,
         _createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
         _updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch;
@@ -31,9 +31,20 @@ class Team {
   String get teamName => _teamName;
   String get captainId => _captainId;
   Map<String, bool> get players => _players;
-  String get chat => _chat;
+  String? get chat => _chat;
   int get createdAt => _createdAt;
   int get updatedAt => _updatedAt;
+
+  set chat(String? value) {
+    _chat = value;
+  }
+
+  // Method to add a new player
+  void addPlayer(String playerId, bool isActive) {
+    _players = Map.from(_players); // Ensure the map is mutable
+    _players[playerId] = isActive;
+    _updatedAt = DateTime.now().millisecondsSinceEpoch;
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -48,16 +59,16 @@ class Team {
   }
 
   factory Team.fromJson(Map<String, dynamic> json) {
+    // Handle potential variations in data structure
     return Team(
-      teamId: json['teamId'], // Accepts teamId from JSON
-      teamName: json['teamName'] ?? 'Unknown Team',
-      captainId: json['captainId'] ?? 'Unknown Captain',
-      players: json['players'] != null
-          ? (json['players'] as Map<String, dynamic>).map(
-              (key, value) => MapEntry(key, value as bool),
-            )
-          : {},
-      chat: json['chat'] ?? '',
+      teamId: json['teamId'] as String?,
+      teamName: json['teamName'] as String? ?? 'Unknown Team',
+      captainId: json['captainId'] as String? ?? 'Unknown Captain',
+      players: (json['players'] as Map?)?.map(
+            (key, value) => MapEntry(key as String, value as bool),
+          ) ??
+          {},
+      chat: json['chat'] as String?,
       createdAt: json['createdAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
     );

@@ -4,6 +4,7 @@ import 'package:takwira/domain/entities/Chat.dart';
 abstract class IChatService {
   Future<List<Chat>> getAllChats();
   Future<Chat?> getChatById(String chatId);
+  Future<void> createChatForTeam(Chat chat); // New method
   Future<void> createChat(
       Chat chat, Message initialMessage, String participantId);
   Future<void> updateChat(Chat chat);

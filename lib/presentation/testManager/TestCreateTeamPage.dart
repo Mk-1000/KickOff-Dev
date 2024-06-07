@@ -15,7 +15,6 @@ class TestCreateTeamPage extends StatefulWidget {
 class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
   final TeamManager _teamManager = TeamManager();
   final TextEditingController _teamNameController = TextEditingController();
-  final TextEditingController _chatController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,26 +31,21 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
               controller: _teamNameController,
               decoration: InputDecoration(labelText: 'Team Name'),
             ),
-            TextField(
-              controller: _chatController,
-              decoration: InputDecoration(labelText: 'Chat'),
-            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 if (Player.currentPlayer != null) {
                   // Create new team using input values
                   Team newTeam = Team(
-                    teamName: _teamNameController.text,
-                    captainId: Player.currentPlayer!
-                        .playerId, // Ensure the currentPlayer is not null
-                    players: {}, // Initialize players with an empty map
-                    chat: _chatController.text,
-                  );
+                      teamName: _teamNameController.text,
+                      captainId: Player.currentPlayer!
+                          .playerId, // Ensure the currentPlayer is not null
+                      players: {} // Initialize players with an empty map
+                      );
 
                   // Add new team using TeamManager and check for any possible failure
                   try {
-                    await _teamManager.addTeamForPlayer(
+                    await _teamManager.createTeamForPlayer(
                         newTeam, Player.currentPlayer!);
                     // If successful, call the onTeamCreated callback
                     widget.onTeamCreated(newTeam);
@@ -80,7 +74,6 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
   @override
   void dispose() {
     _teamNameController.dispose();
-    _chatController.dispose();
     super.dispose();
   }
 }

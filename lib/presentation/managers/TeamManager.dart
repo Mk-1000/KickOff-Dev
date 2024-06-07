@@ -1,13 +1,16 @@
+import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/repositories/IPlayerRepository.dart';
 import 'package:takwira/domain/services/iteam_service.dart';
 import 'package:takwira/business/services/team_service.dart';
 import 'package:takwira/infrastructure/repositories/PlayerRepository.dart';
+import 'package:takwira/presentation/managers/ChatManager.dart';
 
 class TeamManager {
   final ITeamService _teamService = TeamService();
   final IPlayerRepository _playerRepository = PlayerRepository();
+  final ChatManager _chatManager = ChatManager();
 
   List<Team> _teams = [];
   Team? _currentTeam;
@@ -103,19 +106,31 @@ class TeamManager {
 
   Future<void> deleteTeamForPlayer(String teamId, Player player) async {
     try {
+      // Retrieve the team to get the chat ID
+      Team? team = await _teamService.getTeamById(teamId);
+
+      if (team == null) {
+        throw Exception('Team not found');
+      }
+
+      // Delete the chat associated with the team, if it exists
+      if (team.chat != null) {
+        await _chatManager.deleteChat(team.chat!);
+      }
+
       // Delete the team using the team service
       await _teamService.deleteTeam(teamId);
 
       // Remove the team ID from the player's list of team IDs
-      player.removeTeamId(teamId); // Assuming Player class has this method
+      player.removeTeamId(teamId);
 
       // Update the player's data in the repository
       await _playerRepository.updatePlayer(player);
 
       // Remove the team from the local list if maintained
-      _teams.removeWhere((team) => team.teamId == teamId);
+      _teams.removeWhere((t) => t.teamId == teamId);
 
-      print('Team and player records updated successfully');
+      print('Team, chat, and player records updated successfully');
     } catch (e) {
       print('Failed to delete team for player: $e');
       throw Exception('Failed to delete team for player: $e');
@@ -152,5 +167,33 @@ class TeamManager {
       }
     }
     return teams;
+  }
+
+  Future<void> createTeamForPlayer(Team team, Player player) async {
+    try {
+      // Create a new chat for the team
+      Chat teamChat = Chat(
+        participants: [player.playerId],
+        type: ChatType.public,
+      );
+
+      await _chatManager.createChatForTeam(teamChat);
+
+      // Set the chat ID in the team if the chat ID is available
+      team.chat = teamChat.chatId;
+
+      // Add the creating player to the team
+      team.addPlayer(player.playerId, true);
+
+      // Create the team
+      await _teamService.createTeam(team);
+      _teams.add(team);
+
+      // Add team ID to player's team list
+      player.addTeamId(team.teamId);
+      await _playerRepository.updatePlayer(player);
+    } catch (e) {
+      throw Exception('Failed to create team for player: $e');
+    }
   }
 }

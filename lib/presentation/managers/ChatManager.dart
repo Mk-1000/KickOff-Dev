@@ -15,6 +15,14 @@ class ChatManager {
     }
   }
 
+  Future<void> createChatForTeam(Chat chat) async {
+    try {
+      await _chatService.createChatForTeam(chat);
+    } catch (e) {
+      throw Exception('Failed to create chat: $e');
+    }
+  }
+
   Future<void> createNewChat(
       Chat chat, Message initialMessage, String participantId) async {
     try {

@@ -29,6 +29,15 @@ class ChatService implements IChatService {
   }
 
   @override
+  Future<void> createChatForTeam(Chat chat) async {
+    try {
+      await _chatRepository.addChat(chat);
+    } catch (e) {
+      throw Exception('Failed to create chat: $e');
+    }
+  }
+
+  @override
   Future<void> createChat(
       Chat chat, Message initialMessage, String participantId) async {
     try {
