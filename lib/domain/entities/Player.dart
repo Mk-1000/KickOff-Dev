@@ -9,7 +9,7 @@ class Player extends User {
   Position _preferredPosition; // Updated to use Position enum
   List<String> _phoneNumbers;
   String _jerseySize;
-  List<String> _teamIds = []; // List to store team IDs
+  List<String> _teamIds; // Updated to use _teamIds
 
   Player({
     String? userId,
@@ -19,11 +19,13 @@ class Player extends User {
     required Position preferredPosition, // Updated to use Position enum
     required List<String> phoneNumbers,
     required String jerseySize,
+    List<String> teamIds = const [], // Updated to use const parameter
   })  : _nickname = nickname,
         _birthdate = birthdate,
         _preferredPosition = preferredPosition,
         _phoneNumbers = phoneNumbers,
         _jerseySize = jerseySize,
+        _teamIds = teamIds, // Initialize _teamIds
         super(userId: userId, email: email, role: UserRole.player);
 
   static Player? get currentPlayer => _currentPlayer;
@@ -52,7 +54,19 @@ class Player extends User {
     _teamIds.remove(teamId);
   }
 
-  // Updated fromJson method
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      ...super.toJson(),
+      'nickname': _nickname,
+      'birthdate': _birthdate.millisecondsSinceEpoch,
+      'preferredPosition': _preferredPosition.toString().split('.').last,
+      'phoneNumbers': _phoneNumbers,
+      'jerseySize': _jerseySize,
+      'teamIds': _teamIds,
+    };
+  }
+
   factory Player.fromJson(Map<String, dynamic> json) {
     return Player(
       userId: json['userId'] as String?,
@@ -65,20 +79,9 @@ class Player extends User {
           ? List<String>.from(json['phoneNumbers'])
           : [],
       jerseySize: json['jerseySize'] as String,
+      teamIds: json['teamIds'] != null
+          ? List<String>.from(json['teamIds'])
+          : [], // Parse teamIds from JSON
     );
-  }
-
-  // Updated toJson method
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      ...super.toJson(),
-      'nickname': _nickname,
-      'birthdate': _birthdate.millisecondsSinceEpoch,
-      'preferredPosition': _preferredPosition.toString().split('.').last,
-      'phoneNumbers': _phoneNumbers,
-      'jerseySize': _jerseySize,
-      'teamIds': _teamIds,
-    };
   }
 }

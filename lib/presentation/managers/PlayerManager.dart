@@ -15,12 +15,15 @@ class PlayerManager {
   // Method to sign in player with email and password
   Future<String> signInWithEmailPassword(String email, String password) async {
     try {
+      // Sign in with email and password
       String userId =
           await _authService.signInWithEmailPassword(email, password);
       print("userId: " + userId);
 
+      // Get player details using userId
       Player player = await _playerService.getPlayerDetails(userId);
       Player.setCurrentPlayer(player);
+      print("player details: " + player.toJson().toString());
 
       return userId; // Return the userId to be used in navigation.
     } catch (e) {
