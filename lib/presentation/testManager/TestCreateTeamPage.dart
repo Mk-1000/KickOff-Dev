@@ -68,8 +68,8 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
                 // Create a new team using input values
                 Team newTeam = Team(
                   teamName: _teamNameController.text,
-                  captainId:
-                      'current_player_id', // Replace with current player ID
+                  captainId: Player.currentPlayer!
+                      .playerId, // Replace with current player ID
                   players: {},
                   defenders: defenderCount,
                   midfielders: midfielderCount,

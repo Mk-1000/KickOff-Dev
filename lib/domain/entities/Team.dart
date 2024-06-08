@@ -79,7 +79,7 @@ class Team {
       String playerId, String playerName, Position position, int number) {
     _players[playerId] = PlayerInfo(
       playerName: playerName,
-      position: position, // Convert enum to string
+      position: position,
       number: number,
     );
     _updatedAt = DateTime.now().millisecondsSinceEpoch;

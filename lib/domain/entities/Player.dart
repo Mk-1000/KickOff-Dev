@@ -1,3 +1,4 @@
+import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/entities/User.dart';
 
 class Player extends User {
@@ -5,7 +6,7 @@ class Player extends User {
 
   String _nickname;
   DateTime _birthdate;
-  String _preferredPosition;
+  Position _preferredPosition; // Updated to use Position enum
   List<String> _phoneNumbers;
   String _jerseySize;
   List<String> _teamIds = []; // List to store team IDs
@@ -15,7 +16,7 @@ class Player extends User {
     required String email,
     required String nickname,
     required DateTime birthdate,
-    required String preferredPosition,
+    required Position preferredPosition, // Updated to use Position enum
     required List<String> phoneNumbers,
     required String jerseySize,
   })  : _nickname = nickname,
@@ -34,7 +35,7 @@ class Player extends User {
   // Use these getters to expose private fields
   String get nickname => _nickname;
   DateTime get birthdate => _birthdate;
-  String get preferredPosition => _preferredPosition;
+  Position get preferredPosition => _preferredPosition;
   List<String> get phoneNumbers => _phoneNumbers;
   String get jerseySize => _jerseySize;
   String get playerId => userId;
@@ -51,32 +52,33 @@ class Player extends User {
     _teamIds.remove(teamId);
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      ...super.toJson(),
-      'nickname': _nickname,
-      'birthdate': _birthdate.millisecondsSinceEpoch,
-      'preferredPosition': _preferredPosition,
-      'phoneNumbers': _phoneNumbers,
-      'jerseySize': _jerseySize,
-      'teamIds': _teamIds,
-    };
-  }
-
+  // Updated fromJson method
   factory Player.fromJson(Map<String, dynamic> json) {
-    Player player = Player(
+    return Player(
       userId: json['userId'] as String?,
       email: json['email'] as String,
       nickname: json['nickname'] as String,
       birthdate: DateTime.fromMillisecondsSinceEpoch(json['birthdate'] as int),
-      preferredPosition: json['preferredPosition'] as String,
+      preferredPosition: Position.values.firstWhere((e) =>
+          e.toString().split('.').last == json['preferredPosition'] as String),
       phoneNumbers: json['phoneNumbers'] != null
           ? List<String>.from(json['phoneNumbers'])
           : [],
       jerseySize: json['jerseySize'] as String,
     );
-    player._teamIds =
-        json['teamIds'] != null ? List<String>.from(json['teamIds']) : [];
-    return player;
+  }
+
+  // Updated toJson method
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      ...super.toJson(),
+      'nickname': _nickname,
+      'birthdate': _birthdate.millisecondsSinceEpoch,
+      'preferredPosition': _preferredPosition.toString().split('.').last,
+      'phoneNumbers': _phoneNumbers,
+      'jerseySize': _jerseySize,
+      'teamIds': _teamIds,
+    };
   }
 }

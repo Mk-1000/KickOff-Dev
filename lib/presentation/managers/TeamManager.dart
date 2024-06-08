@@ -214,7 +214,6 @@ class TeamManager {
         Position.Goalkeeper, // Example position, replace with actual position
         1, // Example number, replace with actual number
       );
-
       // Create the team
       await _teamService.createTeam(team);
       _teams.add(team);
