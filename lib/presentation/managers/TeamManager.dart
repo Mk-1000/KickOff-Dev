@@ -49,19 +49,14 @@ class TeamManager {
 
   Future<void> addTeamForPlayer(Team team, Player player) async {
     try {
-      // Assuming `Team` class has an ID attribute or similar
       if (team.teamId != null) {
-        player
-            .addTeamId(team.teamId); // Add team ID to player's list of team IDs
+        player.addTeamId(team.teamId);
 
-        // Save the updated player object if necessary, e.g., to Firebase
-        // This assumes you have a method to update players
         await _playerRepository.updatePlayer(player);
       }
 
-      // Now, create the team
       await _teamService.createTeam(team);
-      _teams.add(team); // Assuming _teams is a list maintained locally
+      _teams.add(team);
     } catch (e) {
       throw Exception('Failed to add team: $e');
     }
@@ -86,7 +81,6 @@ class TeamManager {
         Team team = await getTeamById(teamId);
         playerTeams.add(team);
       } catch (e) {
-        // Optionally handle or log the error
         print('Error fetching team with ID $teamId: $e');
       }
     }
@@ -106,28 +100,29 @@ class TeamManager {
 
   Future<void> deleteTeamForPlayer(String teamId, Player player) async {
     try {
-      // Retrieve the team to get the chat ID
       Team? team = await _teamService.getTeamById(teamId);
 
       if (team == null) {
         throw Exception('Team not found');
       }
 
-      // Delete the chat associated with the team, if it exists
       if (team.chat != null) {
         await _chatManager.deleteChat(team.chat!);
       }
 
-      // Delete the team using the team service
-      await _teamService.deleteTeam(teamId);
+      // Remove the player from the team's players map
+      team.players.remove(player.userId);
+
+      // Update the team in the database
+      await _teamService.updateTeam(team);
 
       // Remove the team ID from the player's list of team IDs
       player.removeTeamId(teamId);
 
-      // Update the player's data in the repository
+      // Update the player in the database
       await _playerRepository.updatePlayer(player);
 
-      // Remove the team from the local list if maintained
+      // Remove the team from the list of teams
       _teams.removeWhere((t) => t.teamId == teamId);
 
       print('Team, chat, and player records updated successfully');
@@ -163,11 +158,39 @@ class TeamManager {
         print('Successfully fetched team with ID $teamId');
       } catch (e) {
         print('Error fetching team $teamId: $e');
-        // Optionally handle partial failure scenarios here
       }
     }
     return teams;
   }
+
+  // Future<void> createTeamForPlayer(Team team, Player player) async {
+  //   try {
+  //     Chat teamChat = Chat(
+  //       participants: [player.playerId],
+  //       type: ChatType.public,
+  //     );
+
+  //     await _chatManager.createChatForTeam(teamChat);
+
+  //     team.chat = teamChat.chatId;
+
+  //     // Modify this line to provide all required arguments
+  //     team.addPlayer(
+  //       player.playerId,
+  //       player.nickname, // Assuming player nickname is the playerName
+  //       Position.Goalkeeper, // Example position, replace with actual position
+  //       1, // Example number, replace with actual number
+  //     );
+
+  //     await _teamService.createTeam(team);
+  //     _teams.add(team);
+
+  //     player.addTeamId(team.teamId);
+  //     await _playerRepository.updatePlayer(player);
+  //   } catch (e) {
+  //     throw Exception('Failed to create team for player: $e');
+  //   }
+  // }
 
   Future<void> createTeamForPlayer(Team team, Player player) async {
     try {
@@ -183,7 +206,14 @@ class TeamManager {
       team.chat = teamChat.chatId;
 
       // Add the creating player to the team
-      team.addPlayer(player.playerId, true);
+      // team.addPlayer(player.playerId, true);
+
+      team.addPlayer(
+        player.playerId,
+        player.nickname, // Assuming player nickname is the playerName
+        Position.Goalkeeper, // Example position, replace with actual position
+        1, // Example number, replace with actual number
+      );
 
       // Create the team
       await _teamService.createTeam(team);
@@ -194,6 +224,29 @@ class TeamManager {
       await _playerRepository.updatePlayer(player);
     } catch (e) {
       throw Exception('Failed to create team for player: $e');
+    }
+  }
+
+  Future<void> sendInvitation(
+      String teamId, String playerId, String position, int placeNumber) async {
+    try {
+      Team team = await getTeamById(teamId);
+      String positionKey = '$position $placeNumber';
+      team.sendInvitation(playerId, position, placeNumber);
+      await _teamService.updateTeam(team);
+    } catch (e) {
+      throw Exception('Failed to send invitation: $e');
+    }
+  }
+
+  Future<void> acceptInvitation(
+      String teamId, String playerId, String positionKey) async {
+    try {
+      Team team = await getTeamById(teamId);
+      team.fillPosition(positionKey, playerId);
+      await _teamService.updateTeam(team);
+    } catch (e) {
+      throw Exception('Failed to accept invitation: $e');
     }
   }
 }

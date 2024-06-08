@@ -31,7 +31,7 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
     try {
       player = await _playerManager.getPlayerDetails(widget.playerId);
       if (player != null) {
-        teams = await _teamManager.getAllTeamsForPlayer(player!.teamIds);
+        teams = await _teamManager.getTeamsForPlayer(player!);
       }
       setState(() {});
     } catch (e) {

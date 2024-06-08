@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/domain/entities/Player.dart'; // Import the Player class
 import 'package:takwira/presentation/managers/TeamManager.dart';
 
 class TestCreateTeamPage extends StatefulWidget {
@@ -15,6 +15,11 @@ class TestCreateTeamPage extends StatefulWidget {
 class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
   final TeamManager _teamManager = TeamManager();
   final TextEditingController _teamNameController = TextEditingController();
+  final TextEditingController _defenderCountController =
+      TextEditingController();
+  final TextEditingController _midfielderCountController =
+      TextEditingController();
+  final TextEditingController _forwardCountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,36 +36,59 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
               controller: _teamNameController,
               decoration: InputDecoration(labelText: 'Team Name'),
             ),
+            TextField(
+              controller: _defenderCountController,
+              decoration:
+                  InputDecoration(labelText: 'Number of Defenders per Team'),
+              keyboardType: TextInputType.number,
+            ),
+            TextField(
+              controller: _midfielderCountController,
+              decoration:
+                  InputDecoration(labelText: 'Number of Midfielders per Team'),
+              keyboardType: TextInputType.number,
+            ),
+            TextField(
+              controller: _forwardCountController,
+              decoration:
+                  InputDecoration(labelText: 'Number of Forwards per Team'),
+              keyboardType: TextInputType.number,
+            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                if (Player.currentPlayer != null) {
-                  // Create new team using input values
-                  Team newTeam = Team(
-                      teamName: _teamNameController.text,
-                      captainId: Player.currentPlayer!
-                          .playerId, // Ensure the currentPlayer is not null
-                      players: {} // Initialize players with an empty map
-                      );
+                // Parse input values
+                int defenderCount =
+                    int.tryParse(_defenderCountController.text) ?? 0;
+                int midfielderCount =
+                    int.tryParse(_midfielderCountController.text) ?? 0;
+                int forwardCount =
+                    int.tryParse(_forwardCountController.text) ?? 0;
 
-                  // Add new team using TeamManager and check for any possible failure
-                  try {
-                    await _teamManager.createTeamForPlayer(
-                        newTeam, Player.currentPlayer!);
-                    // If successful, call the onTeamCreated callback
-                    widget.onTeamCreated(newTeam);
-                    // Navigate back to the previous screen
-                    Navigator.pop(context);
-                  } catch (e) {
-                    // Handle any errors, e.g., show an error message
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content:
-                            Text('Failed to create team: ${e.toString()}')));
-                  }
-                } else {
-                  // Handle null currentPlayer appropriately
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('No current player available.')));
+                // Create a new team using input values
+                Team newTeam = Team(
+                  teamName: _teamNameController.text,
+                  captainId:
+                      'current_player_id', // Replace with current player ID
+                  players: {},
+                  defenders: defenderCount,
+                  midfielders: midfielderCount,
+                  forwards: forwardCount,
+                );
+
+                // Create a Player object for the current player
+                Player currentPlayer = Player.currentPlayer!;
+
+                // Call createTeamForPlayer method with both arguments
+                try {
+                  await _teamManager.createTeamForPlayer(
+                      newTeam, currentPlayer);
+                  widget.onTeamCreated(newTeam);
+                  Navigator.pop(context);
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Failed to create team: $e'),
+                  ));
                 }
               },
               child: Text('Create Team'),
@@ -74,6 +102,9 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
   @override
   void dispose() {
     _teamNameController.dispose();
+    _defenderCountController.dispose();
+    _midfielderCountController.dispose();
+    _forwardCountController.dispose();
     super.dispose();
   }
 }

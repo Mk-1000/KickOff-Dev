@@ -49,7 +49,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '943225215328',
     projectId: 'kickoff-69472',
     authDomain: 'kickoff-69472.firebaseapp.com',
-    databaseURL: 'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'kickoff-69472.appspot.com',
     measurementId: 'G-57KZZ0RZFC',
   );
@@ -59,7 +60,8 @@ class DefaultFirebaseOptions {
     appId: '1:943225215328:android:31813ca636f31d96ff2605',
     messagingSenderId: '943225215328',
     projectId: 'kickoff-69472',
-    databaseURL: 'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'kickoff-69472.appspot.com',
   );
 
@@ -68,7 +70,8 @@ class DefaultFirebaseOptions {
     appId: '1:943225215328:ios:2de4986fbd9cbd91ff2605',
     messagingSenderId: '943225215328',
     projectId: 'kickoff-69472',
-    databaseURL: 'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'kickoff-69472.appspot.com',
     iosBundleId: 'com.example.kickoff',
   );
@@ -78,7 +81,8 @@ class DefaultFirebaseOptions {
     appId: '1:943225215328:ios:ced6bfee4065d921ff2605',
     messagingSenderId: '943225215328',
     projectId: 'kickoff-69472',
-    databaseURL: 'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://kickoff-69472-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'kickoff-69472.appspot.com',
     iosBundleId: 'com.example.kickoff.RunnerTests',
   );

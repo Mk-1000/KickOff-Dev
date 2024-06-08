@@ -52,8 +52,12 @@ class TeamRepository implements ITeamRepository {
       DataSnapshot snapshot =
           await _firebaseService.getDocument('$_collectionPath/$id');
       if (snapshot.exists && snapshot.value != null) {
-        var teamData = snapshot.value as Map;
-        return Team.fromJson(Map<String, dynamic>.from(teamData));
+        var teamData = snapshot.value;
+        if (teamData is Map<String, dynamic>) {
+          return Team.fromJson(teamData);
+        } else {
+          throw Exception('Invalid team data format for ID $id: $teamData');
+        }
       } else {
         throw Exception('Team not found for ID $id');
       }

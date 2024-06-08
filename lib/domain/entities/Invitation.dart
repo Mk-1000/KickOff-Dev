@@ -1,67 +1,61 @@
+import 'package:takwira/utils/IDUtils.dart';
+
+enum InvitationStatus { pending, accepted, declined }
+
 class Invitation {
-  String _invitationId;
-  String _senderId;
-  String _recipientId;
-  String _referenceId;
-  InvitationType _type;
-  InvitationStatus _status;
-  DateTime _createdAt;
-  DateTime _updatedAt;
+  String invitationId;
+  String teamId;
+  String playerId;
+  String position;
+  InvitationStatus status;
+  int createdAt;
+  int updatedAt;
 
   Invitation({
-    required String invitationId,
-    required String senderId,
-    required String recipientId,
-    required String referenceId,
-    required InvitationType type,
-    required InvitationStatus status,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-  })  : _invitationId = invitationId,
-        _senderId = senderId,
-        _recipientId = recipientId,
-        _referenceId = referenceId,
-        _type = type,
-        _status = status,
-        _createdAt = createdAt,
-        _updatedAt = updatedAt;
+    String? invitationId,
+    required this.teamId,
+    required this.playerId,
+    required this.position,
+    this.status = InvitationStatus.pending,
+    int? createdAt,
+    int? updatedAt,
+  })  : this.invitationId = invitationId ?? IDUtils.generateUniqueId(),
+        this.createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
+        this.updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch;
 
-  String get invitationId => _invitationId;
-  String get senderId => _senderId;
-  String get recipientId => _recipientId;
-  String get referenceId => _referenceId;
-  InvitationType get type => _type;
-  InvitationStatus get status => _status;
-  DateTime get createdAt => _createdAt;
-  DateTime get updatedAt => _updatedAt;
+  void accept() {
+    status = InvitationStatus.accepted;
+    updatedAt = DateTime.now().millisecondsSinceEpoch;
+  }
+
+  void decline() {
+    status = InvitationStatus.declined;
+    updatedAt = DateTime.now().millisecondsSinceEpoch;
+  }
 
   Map<String, dynamic> toJson() {
     return {
-      'invitationId': _invitationId,
-      'senderId': _senderId,
-      'recipientId': _recipientId,
-      'referenceId': _referenceId,
-      'type': _type.index,
-      'status': _status.index,
-      'createdAt': _createdAt.toIso8601String(),
-      'updatedAt': _updatedAt.toIso8601String(),
+      'invitationId': invitationId,
+      'teamId': teamId,
+      'playerId': playerId,
+      'position': position,
+      'status': status.toString().split('.').last,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 
   factory Invitation.fromJson(Map<String, dynamic> json) {
     return Invitation(
-      invitationId: json['invitationId'] as String,
-      senderId: json['senderId'] as String,
-      recipientId: json['recipientId'] as String,
-      referenceId: json['referenceId'] as String,
-      type: InvitationType.values[json['type'] as int],
-      status: InvitationStatus.values[json['status'] as int],
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      invitationId: json['invitationId'],
+      teamId: json['teamId'],
+      playerId: json['playerId'],
+      position: json['position'],
+      status: InvitationStatus.values.firstWhere(
+        (e) => e.toString() == 'InvitationStatus.' + json['status'],
+      ),
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
     );
   }
 }
-
-enum InvitationType { TeamInvitation, MatchInvitation }
-
-enum InvitationStatus { Pending, Accepted, Declined, Cancelled }
