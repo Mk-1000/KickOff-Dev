@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import '../../domain/entities/Team.dart';
 import '../../domain/repositories/ITeamRepository.dart';
@@ -47,27 +49,6 @@ class TeamRepository implements ITeamRepository {
   }
 
   @override
-  Future<Team> getTeamById(String id) async {
-    try {
-      DataSnapshot snapshot =
-          await _firebaseService.getDocument('$_collectionPath/$id');
-      if (snapshot.exists && snapshot.value != null) {
-        var teamData = snapshot.value;
-        if (teamData is Map<String, dynamic>) {
-          return Team.fromJson(teamData);
-        } else {
-          throw Exception('Invalid team data format for ID $id: $teamData');
-        }
-      } else {
-        throw Exception('Team not found for ID $id');
-      }
-    } catch (e) {
-      print('Error fetching team by ID $id: $e');
-      throw Exception('Error fetching team by ID $id: $e');
-    }
-  }
-
-  @override
   Future<void> addTeam(Team team) async {
     try {
       await _firebaseService.setDocument(
@@ -112,6 +93,33 @@ class TeamRepository implements ITeamRepository {
     } catch (e) {
       print('Failed to retrieve teams for user $userId: $e');
       throw Exception('Failed to retrieve teams for user');
+    }
+  }
+
+  @override
+  Future<Team> getTeamById(String id) async {
+    try {
+      DataSnapshot snapshot =
+          await _firebaseService.getDocument('$_collectionPath/$id');
+
+      if (snapshot.exists && snapshot.value != null) {
+        var teamData = snapshot.value;
+
+        // Check if teamData is a Map or a JSON string
+        if (teamData is Map) {
+          return Team.fromJson(Map<String, dynamic>.from(teamData));
+        } else if (teamData is String) {
+          Map<String, dynamic> teamMap = json.decode(teamData);
+          return Team.fromJson(teamMap);
+        } else {
+          throw Exception('Unexpected data format for team data: $teamData');
+        }
+      } else {
+        throw Exception('Player not found for ID $id');
+      }
+    } catch (e) {
+      print('Error fetching player by ID $id: $e');
+      throw Exception('Error fetching player by ID $id: $e');
     }
   }
 }

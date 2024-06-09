@@ -195,9 +195,7 @@
 //       throw ArgumentError('Invalid position string: $positionString');
 //   }
 // }
-
-import 'package:takwira/domain/entities/PlayerInfo.dart';
-import 'package:takwira/utils/IDUtils.dart'; // Import PlayerInfo class
+import 'package:takwira/utils/IDUtils.dart';
 
 enum Position {
   Goalkeeper,
@@ -210,7 +208,7 @@ class Team {
   String _teamId;
   String _teamName;
   String _captainId;
-  Map<String, PlayerInfo> _players;
+  Map<String, dynamic> _players;
   String? _chat;
   int _createdAt;
   int _updatedAt;
@@ -224,7 +222,7 @@ class Team {
     String? teamId,
     required String teamName,
     required String captainId,
-    required Map<String, PlayerInfo> players,
+    required Map<String, dynamic> players,
     String? chat,
     int? createdAt,
     int? updatedAt,
@@ -247,7 +245,7 @@ class Team {
   String get teamId => _teamId;
   String get teamName => _teamName;
   String get captainId => _captainId;
-  Map<String, PlayerInfo> get players => _players;
+  Map<String, dynamic> get players => _players;
   String? get chat => _chat;
   int get createdAt => _createdAt;
   int get updatedAt => _updatedAt;
@@ -268,11 +266,11 @@ class Team {
 
   void addPlayer(
       String playerId, String playerName, Position position, int number) {
-    _players[playerId] = PlayerInfo(
-      playerName: playerName,
-      position: position,
-      number: number,
-    );
+    _players[playerId] = {
+      'playerName': playerName,
+      'position': position.toString().split('.').last,
+      'number': number,
+    };
     _updatedAt = DateTime.now().millisecondsSinceEpoch;
   }
 
@@ -290,7 +288,7 @@ class Team {
       'teamId': _teamId,
       'teamName': _teamName,
       'captainId': _captainId,
-      'players': _players.map((key, value) => MapEntry(key, value.toJson())),
+      'players': _players,
       'chat': _chat,
       'createdAt': _createdAt,
       'updatedAt': _updatedAt,
@@ -304,59 +302,45 @@ class Team {
 
   // Factory method to create a team object from JSON format
   factory Team.fromJson(Map<String, dynamic> json) {
-    try {
-      final teamId = json['teamId'] as String;
-      final teamName = json['teamName'] as String;
-      final captainId = json['captainId'] as String;
-      final defenders = json['defenders'] as int;
-      final midfielders = json['midfielders'] as int;
-      final forwards = json['forwards'] as int;
-      final createdAt = json['createdAt'] as int?;
-      final updatedAt = json['updatedAt'] as int?;
-      final chat = json['chat'] as String?;
-      final playersJson = json['players'] as Map<String, dynamic>;
+    final teamId = json['teamId'] as String;
+    final teamName = json['teamName'] as String;
+    final captainId = json['captainId'] as String;
+    final defenders = json['defenders'] as int;
+    final midfielders = json['midfielders'] as int;
+    final forwards = json['forwards'] as int;
+    final createdAt = json['createdAt'] as int?;
+    final updatedAt = json['updatedAt'] as int?;
+    final chat = json['chat'] as String?;
+    final playersJson = Map<String, dynamic>.from(json['players'] as Map);
 
-      // Adjusted to handle nested player structure
-      Map<String, PlayerInfo> players = {};
-      playersJson.forEach((key, value) {
-        players[key] =
-            PlayerInfo.fromJson(value); // Directly pass the nested value
-      });
+    // Convert the playersJson to a Map<String, dynamic>
+    Map<String, Map<String, dynamic>> players = {};
+    playersJson.forEach((key, value) {
+      players[key] = Map<String, dynamic>.from(value as Map);
+    });
 
-      final filledPositionsJson =
-          json['filledPositions'] as Map<String, dynamic>?;
+    final filledPositionsJson =
+        json['filledPositions'] as Map<String, dynamic>?;
 
-      // Parse filledPositions
-      Map<String, String> filledPositionsMap = {};
-      if (filledPositionsJson != null) {
-        filledPositionsMap = filledPositionsJson.cast<String, String>();
-      }
-
-      return Team(
-        teamId: teamId,
-        teamName: teamName,
-        captainId: captainId,
-        players: players,
-        chat: chat,
-        createdAt: createdAt ?? DateTime.now().millisecondsSinceEpoch,
-        updatedAt: updatedAt ?? DateTime.now().millisecondsSinceEpoch,
-        defenders: defenders,
-        midfielders: midfielders,
-        forwards: forwards,
-        filledPositions: filledPositionsMap,
-      );
-    } catch (e) {
-      print("Error parsing team JSON: $e");
-      print(json);
-      return Team(
-        teamName: '',
-        captainId: '',
-        players: {},
-        defenders: 0,
-        midfielders: 0,
-        forwards: 0,
-      );
+    // Parse filledPositions
+    Map<String, String> filledPositionsMap = {};
+    if (filledPositionsJson != null) {
+      filledPositionsMap = filledPositionsJson.cast<String, String>();
     }
+
+    return Team(
+      teamId: teamId,
+      teamName: teamName,
+      captainId: captainId,
+      players: players,
+      chat: chat,
+      createdAt: createdAt ?? DateTime.now().millisecondsSinceEpoch,
+      updatedAt: updatedAt ?? DateTime.now().millisecondsSinceEpoch,
+      defenders: defenders,
+      midfielders: midfielders,
+      forwards: forwards,
+      filledPositions: filledPositionsMap,
+    );
   }
 }
 

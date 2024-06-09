@@ -48,12 +48,6 @@ class TeamDetailsPage extends StatelessWidget {
                   SizedBox(height: 10),
                   Text('Number of Forwards: ${team.forwards}'),
                   SizedBox(height: 10),
-                  Text(
-                      'Creation Date: ${DateTime.fromMillisecondsSinceEpoch(team.createdAt)}'),
-                  SizedBox(height: 10),
-                  Text(
-                      'Last Updated: ${DateTime.fromMillisecondsSinceEpoch(team.updatedAt)}'),
-                  SizedBox(height: 10),
                   // You can add more details here as needed
                 ],
               ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/infrastructure/repositories/TeamRepository.dart';
 import 'package:takwira/presentation/testManager/ChatManagerTestPage.dart';
 import 'package:takwira/presentation/testManager/ShowAllTeams.dart';
 import 'package:takwira/presentation/testManager/TestSignInPlayer.dart';
@@ -12,6 +14,17 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Team team = await TeamRepository()
+  //     .getTeamById("487a276b-3406-47e2-a39b-5c18dda37214");
+
+  // // Convert JSON to Team object
+  // //final team = Team.fromJson(teamJson);
+  // print(team.teamId);
+  // print(team.teamName);
+  // print(team.captainId);
+  // print(team.players);
+
   runApp(const MyApp());
 }
 
