@@ -3,6 +3,9 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
+import 'package:takwira/domain/entities/Player.dart';
+import 'package:takwira/presentation/Managers/PlayerManager.dart';
+import 'package:takwira/presentation/Managers/UserManager.dart';
 import 'package:takwira/presentation/view/login%20&%20sign%20up/completeSginup/widget/postion.dart';
 import 'package:takwira/presentation/view/widgets/button/blueButton/BlueButton.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/InputFild.dart';
@@ -12,17 +15,25 @@ import 'package:takwira/presentation/view/widgets/text/text.dart';
 import 'bloc/bloc/complete_signup_bloc.dart';
 
 class CompleteSignup extends StatefulWidget {
-  const CompleteSignup({super.key});
+  final String email; 
+  final String pass; 
+
+
+  const CompleteSignup({super.key, required this.email, required this.pass,});
 
   @override
   State<CompleteSignup> createState() => _CompleteSignupStateState();
 }
 
 class _CompleteSignupStateState extends State<CompleteSignup> {
+  List<String> postion = ["gol", "defance", "mid","attack"];
   List<String> taille = ["S", "M", "L"];
   TextEditingController NameController = TextEditingController();
   TextEditingController UserNameController = TextEditingController();
+  TextEditingController regionController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+      int? jerrySize ; 
+
   static CompleteSignupBloc completeSignup = CompleteSignupBloc();
   DateTime _selectedDate = DateTime.now();
   @override
@@ -31,16 +42,18 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
     return SafeArea(
         child: Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      body: Container(
-          margin: const EdgeInsets.only(left: 24, right: 24),
-          child: BlocBuilder<CompleteSignupBloc, CompleteSignupState>(
-              bloc: completeSignup,
-              builder: (context, state) {
-                if (state is CompleteSignupInitial) {
-                  return body(state, size);
-                }
-                return Container();
-              })),
+      body: SingleChildScrollView(
+        child: Container(
+            margin: const EdgeInsets.only(left: 24, right: 24),
+            child: BlocBuilder<CompleteSignupBloc, CompleteSignupState>(
+                bloc: completeSignup,
+                builder: (context, state) {
+                  if (state is CompleteSignupInitial) {
+                    return body(state, size);
+                  }
+                  return Container();
+                })),
+      ),
     ));
     ;
   }
@@ -110,6 +123,8 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
               obscureText: false,
               size: size,
             )),
+         
+            
         Container(
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(bottom: 8),
@@ -141,7 +156,7 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
             alignment: Alignment.topLeft,
             //  margin: EdgeInsets.only(bottom: 26),
             child: inputFild(
-              controller: UserNameController,
+              controller: regionController,
               hint: "Sélectionnez votre région",
               obscureText: false,
               size: size,
@@ -159,8 +174,8 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
             alignment: Alignment.topLeft,
             //  margin: EdgeInsets.only(bottom: 26),
             child: inputFild(
-              controller: UserNameController,
-              hint: 'Entrez votre nom d\'utilisateur',
+              controller: phoneController,
+              hint: 'Entrez votre numero telephone',
               obscureText: false,
               size: size,
             )),
@@ -208,6 +223,7 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
           width: 200,
         ),
         Container(
+<<<<<<< Updated upstream
           margin: EdgeInsets.only(top: 8,bottom: 30),
           child:        Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -231,6 +247,40 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
         )
            ),
 
+=======
+            margin: EdgeInsets.only(top: 8, bottom: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int i = 0; i < taille.length; i++) ...{
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        jerrySize = i;
+                      });
+                    },
+                    child:Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(left: 8, right: 8),
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: jerrySize == i ?Color(0xFF3053EC)   :Colors.grey  ,
+                        ),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: AllText.Autotext(
+                        color: jerrySize == i ?Color(0xFF3053EC)   :Colors.grey  ,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        text: taille[i]),
+                  ) ,)
+                  
+                },
+              ],
+            )),
+>>>>>>> Stashed changes
       },
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -245,14 +295,22 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
           ),
           BlueButton(
             onTap: () {
-              completeSignup.add(changePage(state.page));
+              if(state.page == 3) {
+                // UserManager().signUpWithEmailPassword(email, password)
+                PlayerManager().signUpPlayer(widget.email,widget.pass,Player(email: widget.email, nickname:UserNameController.text , birthdate: _selectedDate, preferredPosition:postion[PostionState.selected!] , phoneNumbers: [phoneController.text], jerseySize: taille[jerrySize!]));
+                
+              }else {
+  completeSignup.add(changePage(state.page));
+              }
+            
             },
             text: 'Suivant',
             width: 115,
             outlindedbutton: false,
           ),
         ],
-      )
+      ),
+      SizedBox(height: 20,),
     ]);
   }
 }
