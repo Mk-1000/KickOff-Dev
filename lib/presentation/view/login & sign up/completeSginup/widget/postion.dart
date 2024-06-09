@@ -4,10 +4,10 @@ class Postion extends StatefulWidget {
   const Postion({super.key});
 
   @override
-  State<Postion> createState() => PostionState();
+  State<Postion> createState() => _PostionState();
 }
 
-class PostionState extends State<Postion> {
+class _PostionState extends State<Postion> {
   static int? selected;
   @override
   Widget build(BuildContext context) {

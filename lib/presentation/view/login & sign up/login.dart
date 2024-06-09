@@ -1,9 +1,6 @@
 /// The Login class is a StatefulWidget that displays a login form with email and password fields, along
 /// with options for forgot password, terms and conditions, and social media login buttons.
 import 'package:flutter/material.dart';
-import 'package:takwira/domain/entities/Player.dart';
-import 'package:takwira/presentation/Managers/PlayerManager.dart';
-import 'package:takwira/presentation/Managers/UserManager.dart';
 import 'package:takwira/presentation/view/GoogleNavBar/Navbar.dart';
 import 'package:takwira/presentation/view/widgets/button/blueButton/BlueButton.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/InputFild.dart';
@@ -27,9 +24,8 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    Login() async {
+    Login() {
       if (login) {
-<<<<<<< Updated upstream
       Navigator.push(
     context,
     MaterialPageRoute(builder: (context) =>  GoogleNavBar()),
@@ -41,28 +37,6 @@ class _LoginState extends State<Login> {
       builder: (BuildContext context) => const CompleteSignup (),
     ),
   );
-=======
-        //yassine@gmail.com
-        //yassine0123
-        await PlayerManager()
-            .signInWithEmailPassword(emailController.text, passController.text)
-            .then((value) async {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => GoogleNavBar()),
-          );
-        });
-      } else {
-        if(emailController.text != "" && passController.text != "") {
-Navigator.pushReplacement<void, void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) =>  CompleteSignup(email: emailController.text,pass: passController.text,),
-          ),
-        );
-        }
-
->>>>>>> Stashed changes
         print("this is the sgin up pressed ");
       }
     }
@@ -70,17 +44,10 @@ Navigator.pushReplacement<void, void>(
     return SafeArea(
         child: Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-<<<<<<< Updated upstream
       body: SingleChildScrollView(
         reverse: true,
         child: Container(
           margin: const EdgeInsets.only(left: 24, right: 24),
-=======
-      body: Container(
-        margin: const EdgeInsets.only(left: 24, right: 24),
-        child: SingleChildScrollView(
-          reverse: true,
->>>>>>> Stashed changes
           child: Column(children: [
             Container(
                 margin: EdgeInsets.only(
@@ -178,13 +145,7 @@ Navigator.pushReplacement<void, void>(
             ),
             BlueButton(
               onTap: Login,
-<<<<<<< Updated upstream
               text: login ? "Se connecter" : "Create an account", outlindedbutton: false, width: size.width,
-=======
-              text: login ? "Se connecter" : "Suivant",
-              outlindedbutton: false,
-              width: size.width,
->>>>>>> Stashed changes
             ),
             Container(
               margin: const EdgeInsets.only(top: 24),
