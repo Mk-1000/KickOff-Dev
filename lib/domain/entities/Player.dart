@@ -73,8 +73,7 @@ class Player extends User {
       email: json['email'] as String,
       nickname: json['nickname'] as String,
       birthdate: DateTime.fromMillisecondsSinceEpoch(json['birthdate'] as int),
-      preferredPosition: Position.values.firstWhere((e) =>
-          e.toString().split('.').last == json['preferredPosition'] as String),
+      preferredPosition: parsePosition(json['preferredPosition'] as String),
       phoneNumbers: json['phoneNumbers'] != null
           ? List<String>.from(json['phoneNumbers'])
           : [],

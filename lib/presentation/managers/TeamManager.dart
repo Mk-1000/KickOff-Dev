@@ -226,17 +226,17 @@ class TeamManager {
     }
   }
 
-  Future<void> sendInvitation(
-      String teamId, String playerId, String position, int placeNumber) async {
-    try {
-      Team team = await getTeamById(teamId);
-      String positionKey = '$position $placeNumber';
-      team.sendInvitation(playerId, position, placeNumber);
-      await _teamService.updateTeam(team);
-    } catch (e) {
-      throw Exception('Failed to send invitation: $e');
-    }
-  }
+  // Future<void> sendInvitation(
+  //     String teamId, String playerId, String position, int placeNumber) async {
+  //   try {
+  //     Team team = await getTeamById(teamId);
+  //     String positionKey = '$position $placeNumber';
+  //     team.sendInvitation(playerId, position, placeNumber);
+  //     await _teamService.updateTeam(team);
+  //   } catch (e) {
+  //     throw Exception('Failed to send invitation: $e');
+  //   }
+  // }
 
   Future<void> acceptInvitation(
       String teamId, String playerId, String positionKey) async {
