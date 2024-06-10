@@ -135,8 +135,7 @@ class TeamManager {
       // Update the player in the database
       await _playerRepository.updatePlayer(player);
 
-      // Remove the team from the list of teams (local state)
-      _teams.removeWhere((t) => t.teamId == teamId);
+      await deleteTeam(teamId);
 
       print('Team, chat, and player records updated successfully');
     } catch (e) {
@@ -146,19 +145,14 @@ class TeamManager {
   }
 
   Future<Team> getTeamById(String teamId) async {
-    if (teamId.isEmpty) {
-      throw Exception("Team ID cannot be empty.");
-    }
     try {
       Team? team = await _teamService.getTeamById(teamId);
       if (team == null) {
-        print('No team found for ID $teamId in Firebase.');
-        throw Exception('Team not found for ID $teamId');
+        throw Exception('No team found for ID $teamId');
       }
       return team;
     } catch (e) {
-      print('Failed to fetch team with ID $teamId: $e');
-      throw Exception('Failed to get team by ID: $e');
+      throw Exception('Failed to fetch team with ID $teamId: $e');
     }
   }
 
@@ -176,34 +170,6 @@ class TeamManager {
     return teams;
   }
 
-  // Future<void> createTeamForPlayer(Team team, Player player) async {
-  //   try {
-  //     Chat teamChat = Chat(
-  //       participants: [player.playerId],
-  //       type: ChatType.public,
-  //     );
-
-  //     await _chatManager.createChatForTeam(teamChat);
-
-  //     team.chat = teamChat.chatId;
-
-  //     // Modify this line to provide all required arguments
-  //     team.addPlayer(
-  //       player.playerId,
-  //       player.nickname, // Assuming player nickname is the playerName
-  //       Position.Goalkeeper, // Example position, replace with actual position
-  //       1, // Example number, replace with actual number
-  //     );
-
-  //     await _teamService.createTeam(team);
-  //     _teams.add(team);
-
-  //     player.addTeamId(team.teamId);
-  //     await _playerRepository.updatePlayer(player);
-  //   } catch (e) {
-  //     throw Exception('Failed to create team for player: $e');
-  //   }
-  // }
   Future<void> createTeamForPlayer(Team team, Player player) async {
     try {
       // Create a new chat for the team
