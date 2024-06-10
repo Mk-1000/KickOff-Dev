@@ -195,7 +195,6 @@
 //       throw ArgumentError('Invalid position string: $positionString');
 //   }
 // }import 'package:takwira/utils/IDUtils.dart';
-
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/utils/IDUtils.dart';
 
@@ -203,14 +202,14 @@ class Team {
   final String teamId;
   final String teamName;
   final String captainId;
-  final Map<String, PositionSlot> slots;
+  Map<String, PositionSlot> slots;
   String? chat;
   final int createdAt;
   int updatedAt;
-  final int maxGoalkeepers;
-  final int maxDefenders;
-  final int maxMidfielders;
-  final int maxForwards;
+  int maxGoalkeepers;
+  int maxDefenders;
+  int maxMidfielders;
+  int maxForwards;
 
   Team({
     String? teamId,
@@ -267,6 +266,35 @@ class Team {
     }
     slots[slotId]!.status = SlotStatus.Reserved;
     slots[slotId]!.playerId = playerId;
+    updatedAt = DateTime.now().millisecondsSinceEpoch;
+  }
+
+  void changeSlotLimits({
+    int? newMaxGoalkeepers,
+    int? newMaxDefenders,
+    int? newMaxMidfielders,
+    int? newMaxForwards,
+  }) {
+    if (newMaxGoalkeepers != null) maxGoalkeepers = newMaxGoalkeepers;
+    if (newMaxDefenders != null) maxDefenders = newMaxDefenders;
+    if (newMaxMidfielders != null) maxMidfielders = newMaxMidfielders;
+    if (newMaxForwards != null) maxForwards = newMaxForwards;
+
+    slots = _initializeSlots(
+      goalkeepers: maxGoalkeepers,
+      defenders: maxDefenders,
+      midfielders: maxMidfielders,
+      forwards: maxForwards,
+    );
+
+    // Clear players from slots that no longer exist
+    slots.forEach((slotId, slot) {
+      if (slot.status == SlotStatus.Reserved) {
+        slot.status = SlotStatus.Available;
+        slot.playerId = null;
+      }
+    });
+
     updatedAt = DateTime.now().millisecondsSinceEpoch;
   }
 

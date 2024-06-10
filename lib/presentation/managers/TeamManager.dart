@@ -210,6 +210,31 @@ class TeamManager {
     }
   }
 
+  Future<void> changeTeamSlotLimits(
+    String teamId, {
+    int? newMaxGoalkeepers,
+    int? newMaxDefenders,
+    int? newMaxMidfielders,
+    int? newMaxForwards,
+  }) async {
+    try {
+      Team team = await getTeamById(teamId);
+
+      team.changeSlotLimits(
+        newMaxGoalkeepers: newMaxGoalkeepers,
+        newMaxDefenders: newMaxDefenders,
+        newMaxMidfielders: newMaxMidfielders,
+        newMaxForwards: newMaxForwards,
+      );
+
+      await updateTeam(team);
+      print('Team slot limits updated successfully');
+    } catch (e) {
+      print('Failed to change team slot limits: $e');
+      throw Exception('Failed to change team slot limits: $e');
+    }
+  }
+
   // Future<void> sendInvitation(
   //     String teamId, String playerId, String position, int placeNumber) async {
   //   try {
