@@ -206,7 +206,7 @@ class Team {
   String? chat;
   final int createdAt;
   int updatedAt;
-  int maxGoalkeepers;
+  final int maxGoalkeepers = 1;
   int maxDefenders;
   int maxMidfielders;
   int maxForwards;
@@ -218,7 +218,6 @@ class Team {
     this.chat,
     int? createdAt,
     int? updatedAt,
-    this.maxGoalkeepers = 1,
     this.maxDefenders = 4,
     this.maxMidfielders = 4,
     this.maxForwards = 2,
@@ -226,7 +225,7 @@ class Team {
         createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
         updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch,
         slots = _initializeSlots(
-          goalkeepers: maxGoalkeepers,
+          goalkeepers: 1,
           defenders: maxDefenders,
           midfielders: maxMidfielders,
           forwards: maxForwards,
@@ -270,18 +269,16 @@ class Team {
   }
 
   void changeSlotLimits({
-    int? newMaxGoalkeepers,
     int? newMaxDefenders,
     int? newMaxMidfielders,
     int? newMaxForwards,
   }) {
-    if (newMaxGoalkeepers != null) maxGoalkeepers = newMaxGoalkeepers;
     if (newMaxDefenders != null) maxDefenders = newMaxDefenders;
     if (newMaxMidfielders != null) maxMidfielders = newMaxMidfielders;
     if (newMaxForwards != null) maxForwards = newMaxForwards;
 
     slots = _initializeSlots(
-      goalkeepers: maxGoalkeepers,
+      goalkeepers: 1,
       defenders: maxDefenders,
       midfielders: maxMidfielders,
       forwards: maxForwards,
@@ -354,7 +351,6 @@ class Team {
       chat: chat,
       createdAt: createdAt,
       updatedAt: updatedAt,
-      maxGoalkeepers: maxGoalkeepers,
       maxDefenders: maxDefenders,
       maxMidfielders: maxMidfielders,
       maxForwards: maxForwards,

@@ -212,7 +212,6 @@ class TeamManager {
 
   Future<void> changeTeamSlotLimits(
     String teamId, {
-    int? newMaxGoalkeepers,
     int? newMaxDefenders,
     int? newMaxMidfielders,
     int? newMaxForwards,
@@ -221,7 +220,6 @@ class TeamManager {
       Team team = await getTeamById(teamId);
 
       team.changeSlotLimits(
-        newMaxGoalkeepers: newMaxGoalkeepers,
         newMaxDefenders: newMaxDefenders,
         newMaxMidfielders: newMaxMidfielders,
         newMaxForwards: newMaxForwards,

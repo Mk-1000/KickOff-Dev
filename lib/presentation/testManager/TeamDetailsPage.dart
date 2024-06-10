@@ -48,7 +48,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
     try {
       await _teamManager.changeTeamSlotLimits(
         widget.teamId,
-        newMaxGoalkeepers: _maxGoalkeepers,
         newMaxDefenders: _maxDefenders,
         newMaxMidfielders: _maxMidfielders,
         newMaxForwards: _maxForwards,
