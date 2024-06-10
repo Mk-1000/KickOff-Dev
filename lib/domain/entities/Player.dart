@@ -1,4 +1,4 @@
-import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/User.dart';
 
 class Player extends User {
@@ -73,14 +73,14 @@ class Player extends User {
       email: json['email'] as String,
       nickname: json['nickname'] as String,
       birthdate: DateTime.fromMillisecondsSinceEpoch(json['birthdate'] as int),
-      preferredPosition: parsePosition(json['preferredPosition'] as String),
-      phoneNumbers: json['phoneNumbers'] != null
+      preferredPosition:
+          ParserUtils.parsePosition(json['preferredPosition'] as String),
+      phoneNumbers: json['phoneNumbers'] is List
           ? List<String>.from(json['phoneNumbers'])
           : [],
       jerseySize: json['jerseySize'] as String,
-      teamIds: json['teamIds'] != null
-          ? List<String>.from(json['teamIds'])
-          : [], // Parse teamIds from JSON
+      teamIds:
+          json['teamIds'] is List ? List<String>.from(json['teamIds']) : [],
     );
   }
 }

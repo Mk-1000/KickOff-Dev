@@ -194,168 +194,142 @@
 //     default:
 //       throw ArgumentError('Invalid position string: $positionString');
 //   }
-// }
+// }import 'package:takwira/utils/IDUtils.dart';
+
+import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/utils/IDUtils.dart';
 
-enum Position {
-  Goalkeeper,
-  Defender,
-  Midfielder,
-  Forward,
-}
-
 class Team {
-  String _teamId;
-  String _teamName;
-  String _captainId;
-  Map<String, dynamic> _players;
-  String? _chat;
-  int _createdAt;
-  int _updatedAt;
-  final int _goalkeepers = 1;
-  int _defenders;
-  int _midfielders;
-  int _forwards;
-  Map<String, String> _filledPositions;
+  final String teamId;
+  final String teamName;
+  final String captainId;
+  final Map<String, PositionSlot> slots;
+  String? chat;
+  final int createdAt;
+  int updatedAt;
+  final int maxGoalkeepers;
+  final int maxDefenders;
+  final int maxMidfielders;
+  final int maxForwards;
 
   Team({
     String? teamId,
-    required String teamName,
-    required String captainId,
-    required Map<String, dynamic> players,
-    String? chat,
+    required this.teamName,
+    required this.captainId,
+    this.chat,
     int? createdAt,
     int? updatedAt,
+    this.maxGoalkeepers = 1,
+    this.maxDefenders = 4,
+    this.maxMidfielders = 4,
+    this.maxForwards = 2,
+  })  : teamId = teamId ?? IDUtils.generateUniqueId(),
+        createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
+        updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch,
+        slots = _initializeSlots(
+          goalkeepers: maxGoalkeepers,
+          defenders: maxDefenders,
+          midfielders: maxMidfielders,
+          forwards: maxForwards,
+        );
+
+  static Map<String, PositionSlot> _initializeSlots({
+    required int goalkeepers,
     required int defenders,
     required int midfielders,
     required int forwards,
-    Map<String, dynamic>? filledPositions,
-  })  : _teamId = teamId ?? IDUtils.generateUniqueId(),
-        _teamName = teamName,
-        _captainId = captainId,
-        _players = players,
-        _chat = chat,
-        _createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
-        _updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch,
-        _defenders = defenders,
-        _midfielders = midfielders,
-        _forwards = forwards,
-        _filledPositions = filledPositions?.cast<String, String>() ?? {};
+  }) {
+    Map<String, PositionSlot> slots = {};
+    int slotNumber = 1;
 
-  String get teamId => _teamId;
-  String get teamName => _teamName;
-  String get captainId => _captainId;
-  Map<String, dynamic> get players => _players;
-  String? get chat => _chat;
-  int get createdAt => _createdAt;
-  int get updatedAt => _updatedAt;
-  int get goalkeepers => _goalkeepers;
-  int get defenders => _defenders;
-  int get midfielders => _midfielders;
-  int get forwards => _forwards;
+    void addSlot(Position position, int count) {
+      for (int i = 0; i < count; i++) {
+        slots[slotNumber.toString()] = PositionSlot(
+          slotId: IDUtils.generateUniqueId(),
+          number: slotNumber,
+          position: position,
+        );
+        slotNumber++;
+      }
+    }
 
-  set chat(String? value) {
-    _chat = value;
+    addSlot(Position.Goalkeeper, goalkeepers);
+    addSlot(Position.Defender, defenders);
+    addSlot(Position.Midfielder, midfielders);
+    addSlot(Position.Forward, forwards);
+
+    return slots;
   }
 
-  void setPlayerDistribution(int defenders, int midfielders, int forwards) {
-    _defenders = defenders;
-    _midfielders = midfielders;
-    _forwards = forwards;
+  void addPlayerToSlot(String slotId, String playerId) {
+    if (!slots.containsKey(slotId)) {
+      throw Exception('Slot ID $slotId does not exist');
+    }
+    slots[slotId]!.status = SlotStatus.Reserved;
+    slots[slotId]!.playerId = playerId;
+    updatedAt = DateTime.now().millisecondsSinceEpoch;
   }
 
-  void addPlayer(
-      String playerId, String playerName, Position position, int number) {
-    _players[playerId] = {
-      'playerName': playerName,
-      'position': position.toString().split('.').last,
-      'number': number,
-    };
-    _updatedAt = DateTime.now().millisecondsSinceEpoch;
-  }
-
-  bool isPositionFilled(String positionKey) {
-    return _filledPositions.containsKey(positionKey);
-  }
-
-  void fillPosition(String positionKey, String playerId) {
-    _filledPositions[positionKey] = playerId;
-  }
-
-  // Convert the team object to JSON format
   Map<String, dynamic> toJson() {
     return {
-      'teamId': _teamId,
-      'teamName': _teamName,
-      'captainId': _captainId,
-      'players': _players,
-      'chat': _chat,
-      'createdAt': _createdAt,
-      'updatedAt': _updatedAt,
-      'defenders': _defenders,
-      'midfielders': _midfielders,
-      'forwards': _forwards,
-      'goalkeepers': _goalkeepers,
-      'filledPositions': _filledPositions,
+      'teamId': teamId,
+      'teamName': teamName,
+      'captainId': captainId,
+      'slots': slots.map((key, slot) => MapEntry(key, slot.toJson())),
+      'chat': chat,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'maxGoalkeepers': maxGoalkeepers,
+      'maxDefenders': maxDefenders,
+      'maxMidfielders': maxMidfielders,
+      'maxForwards': maxForwards,
     };
   }
 
-  // Factory method to create a team object from JSON format
   factory Team.fromJson(Map<String, dynamic> json) {
+    print('Parsing team JSON: $json');
+
     final teamId = json['teamId'] as String;
     final teamName = json['teamName'] as String;
     final captainId = json['captainId'] as String;
-    final defenders = json['defenders'] as int;
-    final midfielders = json['midfielders'] as int;
-    final forwards = json['forwards'] as int;
+    final maxGoalkeepers = json['maxGoalkeepers'] as int;
+    final maxDefenders = json['maxDefenders'] as int;
+    final maxMidfielders = json['maxMidfielders'] as int;
+    final maxForwards = json['maxForwards'] as int;
     final createdAt = json['createdAt'] as int?;
     final updatedAt = json['updatedAt'] as int?;
     final chat = json['chat'] as String?;
-    final playersJson = Map<String, dynamic>.from(json['players'] as Map);
 
-    // Convert the playersJson to a Map<String, dynamic>
-    Map<String, Map<String, dynamic>> players = {};
-    playersJson.forEach((key, value) {
-      players[key] = Map<String, dynamic>.from(value as Map);
-    });
+    print('Slots JSON before parsing: ${json['slots']}');
 
-    final filledPositionsJson =
-        json['filledPositions'] as Map<String, dynamic>?;
+    final slotsJson = json['slots'];
+    if (slotsJson is! List) {
+      throw Exception(
+          'Expected a list for slots, but found ${slotsJson.runtimeType}');
+    }
 
-    // Parse filledPositions
-    Map<String, String> filledPositionsMap = {};
-    if (filledPositionsJson != null) {
-      filledPositionsMap = filledPositionsJson.cast<String, String>();
+    // Convert the slotsJson to a Map<String, PositionSlot>
+    Map<String, PositionSlot> slots = {};
+    List<dynamic> slotsList = slotsJson as List;
+    for (var slot in slotsList) {
+      if (slot != null) {
+        var slotMap = Map<String, dynamic>.from(slot as Map);
+        PositionSlot positionSlot = PositionSlot.fromJson(slotMap);
+        slots[positionSlot.slotId] = positionSlot;
+      }
     }
 
     return Team(
       teamId: teamId,
       teamName: teamName,
       captainId: captainId,
-      players: players,
       chat: chat,
-      createdAt: createdAt ?? DateTime.now().millisecondsSinceEpoch,
-      updatedAt: updatedAt ?? DateTime.now().millisecondsSinceEpoch,
-      defenders: defenders,
-      midfielders: midfielders,
-      forwards: forwards,
-      filledPositions: filledPositionsMap,
-    );
-  }
-}
-
-// Helper function to parse Position enum from string
-Position parsePosition(String positionString) {
-  switch (positionString) {
-    case 'Goalkeeper':
-      return Position.Goalkeeper;
-    case 'Defender':
-      return Position.Defender;
-    case 'Midfielder':
-      return Position.Midfielder;
-    case 'Forward':
-      return Position.Forward;
-    default:
-      throw ArgumentError('Invalid position string: $positionString');
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      maxGoalkeepers: maxGoalkeepers,
+      maxDefenders: maxDefenders,
+      maxMidfielders: maxMidfielders,
+      maxForwards: maxForwards,
+    )..slots.addAll(slots);
   }
 }

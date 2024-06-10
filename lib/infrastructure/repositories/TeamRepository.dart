@@ -87,9 +87,10 @@ class TeamRepository implements ITeamRepository {
   Future<List<Team>> getTeamsForUser(String userId) async {
     try {
       final List<Team> allTeams = await getAllTeams();
-      return allTeams
-          .where((team) => team.players.containsKey(userId))
-          .toList();
+      return allTeams.where((team) {
+        // Check if the player's ID is present in any slot
+        return team.slots.values.any((slot) => slot.playerId == userId);
+      }).toList();
     } catch (e) {
       print('Failed to retrieve teams for user $userId: $e');
       throw Exception('Failed to retrieve teams for user');

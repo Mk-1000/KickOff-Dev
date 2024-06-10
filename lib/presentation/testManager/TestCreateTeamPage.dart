@@ -68,19 +68,18 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
                 // Create a new team using input values
                 Team newTeam = Team(
                   teamName: _teamNameController.text,
-                  captainId: Player.currentPlayer!
-                      .playerId, // Replace with current player ID
-                  players: {},
-                  defenders: defenderCount,
-                  midfielders: midfielderCount,
-                  forwards: forwardCount,
+                  captainId:
+                      Player.currentPlayer!.playerId, // Current player's ID
+                  maxDefenders: defenderCount,
+                  maxMidfielders: midfielderCount,
+                  maxForwards: forwardCount,
                 );
 
-                // Create a Player object for the current player
+                // Get the current player
                 Player currentPlayer = Player.currentPlayer!;
 
-                // Call createTeamForPlayer method with both arguments
                 try {
+                  // Call createTeamForPlayer method with the new team and current player
                   await _teamManager.createTeamForPlayer(
                       newTeam, currentPlayer);
                   widget.onTeamCreated(newTeam);

@@ -38,16 +38,8 @@ class TeamDetailsPage extends StatelessWidget {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
-                  Text('Captain: ${team.captainId}'),
-                  SizedBox(height: 10),
-                  Text('Number of Goalkeepers: ${team.goalkeepers}'),
-                  SizedBox(height: 10),
-                  Text('Number of Defenders: ${team.defenders}'),
-                  SizedBox(height: 10),
-                  Text('Number of Midfielders: ${team.midfielders}'),
-                  SizedBox(height: 10),
-                  Text('Number of Forwards: ${team.forwards}'),
-                  SizedBox(height: 10),
+                  Text('Team details: ${team.toJson()}'),
+
                   // You can add more details here as needed
                 ],
               ),
