@@ -16,6 +16,7 @@ class PositionSlot {
   final Position position;
   SlotStatus status;
   String? playerId;
+  List<String> invitationIds = []; // Add a list to store invitation IDs
 
   PositionSlot({
     required this.slotId,
@@ -25,6 +26,10 @@ class PositionSlot {
     this.playerId,
   });
 
+  void addInvitation(String invitationId) {
+    invitationIds.add(invitationId);
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'slotId': slotId,
@@ -32,6 +37,7 @@ class PositionSlot {
       'position': position.toString().split('.').last,
       'status': status.toString().split('.').last,
       'playerId': playerId,
+      'invitationIds': invitationIds, // Include invitation IDs in JSON
     };
   }
 
@@ -42,7 +48,7 @@ class PositionSlot {
       position: ParserUtils.parsePosition(json['position'] as String),
       status: ParserUtils.parseSlotStatus(json['status'] as String),
       playerId: json['playerId'] as String?,
-    );
+    )..invitationIds = List<String>.from(json['invitationIds'] ?? []);
   }
 }
 

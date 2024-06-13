@@ -4,6 +4,7 @@ import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/testManager/TeamDetailsPage.dart';
+import 'package:takwira/presentation/testManager/TeamSlotsPage.dart';
 import 'package:takwira/presentation/testManager/TestCreateTeamPage.dart';
 
 class PlayerHomePage extends StatefulWidget {
@@ -94,6 +95,12 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                                 icon: Icon(Icons.delete, color: Colors.red),
                                 onPressed: () =>
                                     _deleteTeam(teams[index].teamId),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.accessibility,
+                                    color: Colors.blue),
+                                onPressed: () =>
+                                    TeamSlotsPage(team: teams[index]),
                               ),
                               IconButton(
                                 icon: Icon(Icons.arrow_forward),

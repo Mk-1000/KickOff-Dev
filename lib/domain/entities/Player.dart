@@ -10,6 +10,7 @@ class Player extends User {
   List<String> _phoneNumbers;
   String _jerseySize;
   List<String> _teamIds; // Updated to use _teamIds
+  List<String> _receivedInvitationIds = []; // Updated to store invitation IDs
 
   Player({
     String? userId,
@@ -42,6 +43,8 @@ class Player extends User {
   String get jerseySize => _jerseySize;
   String get playerId => userId;
   List<String> get teamIds => _teamIds;
+  List<String> get receivedInvitationIds =>
+      _receivedInvitationIds; // Getter for received invitation IDs
 
   void addTeamId(String teamId) {
     if (!_teamIds.contains(teamId)) {
@@ -54,6 +57,14 @@ class Player extends User {
     _teamIds.remove(teamId);
   }
 
+  void addReceivedInvitation(String invitationId) {
+    _receivedInvitationIds.add(invitationId);
+  }
+
+  void removeReceivedInvitation(String invitationId) {
+    _receivedInvitationIds.remove(invitationId);
+  }
+
   @override
   Map<String, dynamic> toJson() {
     return {
@@ -64,6 +75,8 @@ class Player extends User {
       'phoneNumbers': _phoneNumbers,
       'jerseySize': _jerseySize,
       'teamIds': _teamIds,
+      'receivedInvitationIds':
+          _receivedInvitationIds, // Serialize received invitation IDs
     };
   }
 
@@ -81,6 +94,7 @@ class Player extends User {
       jerseySize: json['jerseySize'] as String,
       teamIds:
           json['teamIds'] is List ? List<String>.from(json['teamIds']) : [],
-    );
+    ).._receivedInvitationIds =
+        List<String>.from(json['receivedInvitationIds'] ?? []);
   }
 }

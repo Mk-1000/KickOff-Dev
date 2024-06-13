@@ -2,16 +2,15 @@ import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
-import 'package:takwira/domain/repositories/IPlayerRepository.dart';
 import 'package:takwira/domain/services/iteam_service.dart';
 import 'package:takwira/business/services/team_service.dart';
-import 'package:takwira/infrastructure/repositories/PlayerRepository.dart';
 import 'package:takwira/presentation/managers/ChatManager.dart';
+import 'package:takwira/presentation/managers/PlayerManager.dart';
 
 class TeamManager {
   final ITeamService _teamService = TeamService();
-  final IPlayerRepository _playerRepository = PlayerRepository();
   final ChatManager _chatManager = ChatManager();
+  final PlayerManager _playerManager = PlayerManager();
 
   List<Team> _teams = [];
   Team? _currentTeam;
@@ -53,7 +52,7 @@ class TeamManager {
       if (team.teamId != null) {
         player.addTeamId(team.teamId);
 
-        await _playerRepository.updatePlayer(player);
+        await _playerManager.updatePlayer(player);
       }
 
       await _teamService.createTeam(team);
@@ -113,27 +112,11 @@ class TeamManager {
         await _chatManager.deleteChat(team.chat!);
       }
 
-      // Find the slot occupied by the player and update its status
-      String? playerSlotId;
-      team.slots.forEach((slotId, slot) {
-        if (slot.playerId == player.userId) {
-          playerSlotId = slotId;
-        }
-      });
-
-      if (playerSlotId != null) {
-        team.slots[playerSlotId]!.status = SlotStatus.Available;
-        team.slots[playerSlotId]!.playerId = null;
-      }
-
-      // Update the team in the database
-      await _teamService.updateTeam(team);
-
       // Remove the team ID from the player's list of team IDs
       player.removeTeamId(teamId);
 
       // Update the player in the database
-      await _playerRepository.updatePlayer(player);
+      await _playerManager.updatePlayer(player);
 
       await deleteTeam(teamId);
 
@@ -204,7 +187,7 @@ class TeamManager {
 
       // Add team ID to player's team list
       player.addTeamId(team.teamId);
-      await _playerRepository.updatePlayer(player);
+      await _playerManager.updatePlayer(player);
     } catch (e) {
       throw Exception('Failed to create team for player: $e');
     }
@@ -233,26 +216,15 @@ class TeamManager {
     }
   }
 
-  // Future<void> sendInvitation(
-  //     String teamId, String playerId, String position, int placeNumber) async {
-  //   try {
-  //     Team team = await getTeamById(teamId);
-  //     String positionKey = '$position $placeNumber';
-  //     team.sendInvitation(playerId, position, placeNumber);
-  //     await _teamService.updateTeam(team);
-  //   } catch (e) {
-  //     throw Exception('Failed to send invitation: $e');
-  //   }
-  // }
-
-  // Future<void> acceptInvitation(
-  //     String teamId, String playerId, String positionKey) async {
-  //   try {
-  //     Team team = await getTeamById(teamId);
-  //     team.fillPosition(positionKey, playerId);
-  //     await _teamService.updateTeam(team);
-  //   } catch (e) {
-  //     throw Exception('Failed to accept invitation: $e');
-  //   }
-  // }
+  Future<void> saveInvitationForTeamSlot(
+      String teamId, String slotId, String invitationId) async {
+    try {
+      Team team = await getTeamById(teamId);
+      team.addInvitationToSlot(slotId, invitationId);
+      await updateTeam(team);
+      print('Invitation save in the team successfully');
+    } catch (e) {
+      throw Exception('Failed to saveInvitationForTeamSlot : $e');
+    }
+  }
 }

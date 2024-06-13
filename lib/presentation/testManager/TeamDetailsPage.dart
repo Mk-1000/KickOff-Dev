@@ -1,6 +1,142 @@
+// import 'package:flutter/material.dart';
+// import 'package:takwira/domain/entities/Team.dart';
+// import 'package:takwira/presentation/managers/TeamManager.dart';
+
+// class TeamDetailsPage extends StatefulWidget {
+//   final String teamId;
+
+//   TeamDetailsPage({required this.teamId});
+
+//   @override
+//   _TeamDetailsPageState createState() => _TeamDetailsPageState();
+// }
+
+// class _TeamDetailsPageState extends State<TeamDetailsPage> {
+//   final TeamManager _teamManager = TeamManager();
+//   Team? _team;
+//   int? _maxGoalkeepers;
+//   int? _maxDefenders;
+//   int? _maxMidfielders;
+//   int? _maxForwards;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _loadTeam();
+//   }
+
+//   Future<void> _loadTeam() async {
+//     try {
+//       Team team = await _teamManager.getTeamById(widget.teamId);
+//       setState(() {
+//         _team = team;
+//         _maxGoalkeepers = team.maxGoalkeepers;
+//         _maxDefenders = team.maxDefenders;
+//         _maxMidfielders = team.maxMidfielders;
+//         _maxForwards = team.maxForwards;
+//       });
+//     } catch (e) {
+//       if (mounted) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text('Failed to load team: $e')),
+//         );
+//       }
+//     }
+//   }
+
+//   Future<void> _updateSlotLimits() async {
+//     try {
+//       await _teamManager.changeTeamSlotLimits(
+//         widget.teamId,
+//         newMaxDefenders: _maxDefenders,
+//         newMaxMidfielders: _maxMidfielders,
+//         newMaxForwards: _maxForwards,
+//       );
+//       if (mounted) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text('Team slot limits updated successfully')),
+//         );
+//       }
+//     } catch (e) {
+//       if (mounted) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text('Failed to update team slot limits: $e')),
+//         );
+//       }
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Team Details'),
+//       ),
+//       body: _team == null
+//           ? Center(child: CircularProgressIndicator())
+//           : Padding(
+//               padding: const EdgeInsets.all(16.0),
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                     'Team Name: ${_team!.teamName}',
+//                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//                   ),
+//                   SizedBox(height: 10),
+//                   Text('Team ID: ${_team!.teamId}'),
+//                   SizedBox(height: 10),
+//                   Text('Captain ID: ${_team!.captainId}'),
+//                   SizedBox(height: 20),
+//                   _buildSlotLimitField(
+//                     'Max Goalkeepers',
+//                     _maxGoalkeepers,
+//                     (value) => setState(() => _maxGoalkeepers = value),
+//                   ),
+//                   _buildSlotLimitField(
+//                     'Max Defenders',
+//                     _maxDefenders,
+//                     (value) => setState(() => _maxDefenders = value),
+//                   ),
+//                   _buildSlotLimitField(
+//                     'Max Midfielders',
+//                     _maxMidfielders,
+//                     (value) => setState(() => _maxMidfielders = value),
+//                   ),
+//                   _buildSlotLimitField(
+//                     'Max Forwards',
+//                     _maxForwards,
+//                     (value) => setState(() => _maxForwards = value),
+//                   ),
+//                   SizedBox(height: 20),
+//                   ElevatedButton(
+//                     onPressed: _updateSlotLimits,
+//                     child: Text('Update Slot Limits'),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//     );
+//   }
+
+//   Widget _buildSlotLimitField(
+//       String label, int? initialValue, ValueChanged<int?> onChanged) {
+//     return TextFormField(
+//       initialValue: initialValue?.toString(),
+//       decoration: InputDecoration(labelText: label),
+//       keyboardType: TextInputType.number,
+//       onChanged: (value) => onChanged(int.tryParse(value)),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
+import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/domain/entities/Player.dart';
+import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
+import 'package:takwira/presentation/managers/PlayerManager.dart';
 
 class TeamDetailsPage extends StatefulWidget {
   final String teamId;
@@ -13,16 +149,20 @@ class TeamDetailsPage extends StatefulWidget {
 
 class _TeamDetailsPageState extends State<TeamDetailsPage> {
   final TeamManager _teamManager = TeamManager();
+  final PlayerManager _playerManager = PlayerManager();
+  final InvitationManager _invitationManager = InvitationManager();
   Team? _team;
   int? _maxGoalkeepers;
   int? _maxDefenders;
   int? _maxMidfielders;
   int? _maxForwards;
+  List<Player> _availablePlayers = [];
 
   @override
   void initState() {
     super.initState();
     _loadTeam();
+    _loadPlayers();
   }
 
   Future<void> _loadTeam() async {
@@ -39,6 +179,21 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to load team: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _loadPlayers() async {
+    try {
+      List<Player> players = await _playerManager.getPlayers();
+      setState(() {
+        _availablePlayers = players;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load players: $e')),
         );
       }
     }
@@ -63,6 +218,28 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
           SnackBar(content: Text('Failed to update team slot limits: $e')),
         );
       }
+    }
+  }
+
+  void _invitePlayerToSlot(String slotId, Player player) async {
+    try {
+      await _invitationManager.sendInvitation(
+          playerId: player.playerId,
+          position: _team!.slots[slotId]!.position,
+          slotId: slotId,
+          teamId: _team!.teamId);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invitation sent to ${player.nickname}')),
+      );
+
+      setState(() {
+        _team = _team; // To trigger UI update
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to send invitation: $e')),
+      );
     }
   }
 
@@ -113,9 +290,63 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                     onPressed: _updateSlotLimits,
                     child: Text('Update Slot Limits'),
                   ),
+                  SizedBox(height: 20),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _team!.slots.length,
+                      itemBuilder: (context, index) {
+                        String slotId = _team!.slots.keys.elementAt(index);
+                        PositionSlot slot = _team!.slots[slotId]!;
+                        return _buildSlotCard(slot);
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
+    );
+  }
+
+  Widget _buildSlotCard(PositionSlot slot) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Slot ${slot.number} - ${slot.position.toString().split('.').last}',
+            ),
+            Text('Status: ${slot.status.toString().split('.').last}'),
+            if (slot.playerId != null) ...[
+              Text('Player ID: ${slot.playerId}'),
+            ] else ...[
+              Text('No player assigned'),
+              SizedBox(height: 10),
+              Text('Invite Player:'),
+              _buildPlayerDropdown(slot.slotId),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlayerDropdown(String slotId) {
+    return DropdownButton<Player>(
+      hint: Text('Select Player'),
+      onChanged: (Player? player) {
+        if (player != null) {
+          _invitePlayerToSlot(slotId, player);
+        }
+      },
+      items: _availablePlayers.map((Player player) {
+        return DropdownMenuItem<Player>(
+          value: player,
+          child: Text(player.nickname),
+        );
+      }).toList(),
     );
   }
 
@@ -129,109 +360,3 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
     );
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import 'package:takwira/domain/entities/Team.dart';
-// import 'package:takwira/presentation/managers/TeamManager.dart';
-// import 'package:takwira/presentation/managers/PlayerManager.dart';
-// import 'package:takwira/domain/entities/Player.dart';
-
-// class TeamDetailsPage extends StatefulWidget {
-//   final String teamId;
-
-//   TeamDetailsPage({Key? key, required this.teamId}) : super(key: key);
-
-//   @override
-//   _TeamDetailsPageState createState() => _TeamDetailsPageState();
-// }
-
-// class _TeamDetailsPageState extends State<TeamDetailsPage> {
-//   Team? team;
-//   final TeamManager _teamManager = TeamManager();
-//   final PlayerManager _playerManager = PlayerManager();
-//   List<Player> availablePlayers = [];
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     fetchTeamDetails();
-//     fetchAvailablePlayers();
-//   }
-
-//   void fetchTeamDetails() async {
-//     try {
-//       Team fetchedTeam = await _teamManager.getTeamById(widget.teamId);
-//       setState(() {
-//         team = fetchedTeam;
-//       });
-//     } catch (e) {
-//       print('Error fetching team details: $e');
-//       // Handle error appropriately
-//     }
-//   }
-
-//   void fetchAvailablePlayers() async {
-//     try {
-//       List<Player> players = await _playerManager.getPlayers();
-//       setState(() {
-//         availablePlayers = players;
-//       });
-//     } catch (e) {
-//       print('Error fetching available players: $e');
-//       // Handle error appropriately
-//     }
-//   }
-
-//   void _invitePlayer(Player player, String position, int placeNumber) async {
-//     if (team != null) {
-//       try {
-//         await _teamManager.sendInvitation(
-//             team!.teamId, player.playerId, position, placeNumber);
-//         ScaffoldMessenger.of(context).showSnackBar(
-//             SnackBar(content: Text('Invitation sent to ${player.nickname}')));
-//       } catch (e) {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//             SnackBar(content: Text('Failed to send invitation: $e')));
-//       }
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Team Details'),
-//       ),
-//       body: team != null
-//           ? Center(
-//               child: Column(
-//                 children: [
-//                   Text('Team Name: ${team!.teamName}'),
-//                   // Add more team details here
-//                   Expanded(
-//                     child: ListView.builder(
-//                       itemCount: availablePlayers.length,
-//                       itemBuilder: (context, index) {
-//                         return Card(
-//                           child: ListTile(
-//                             title: Text(availablePlayers[index].nickname),
-//                             trailing: IconButton(
-//                               icon: Icon(Icons.person_add),
-//                               onPressed: () => _invitePlayer(
-//                                   availablePlayers[index],
-//                                   'defender',
-//                                   index + 1),
-//                             ),
-//                           ),
-//                         );
-//                       },
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             )
-//           : Center(child: CircularProgressIndicator()),
-//     );
-//   }
-// }

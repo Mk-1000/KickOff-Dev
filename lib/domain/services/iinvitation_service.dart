@@ -1,7 +1,10 @@
-import '../entities/Invitation.dart';
+import 'package:takwira/domain/entities/Invitation.dart';
 
 abstract class IInvitationService {
-  Future<void> sendInvitation(Invitation invitation);
-  Future<List<Invitation>> getInvitationsByUser(String userId);
-  Future<void> updateInvitationStatus(Invitation invitation);
+  Future<void> createInvitation(Invitation invitation);
+  Future<Invitation> getInvitationDetails(String invitationId);
+  Future<List<Invitation>> getInvitationsByPlayer(String playerId);
+  Future<List<Invitation>> getInvitationsByTeam(String teamId);
+  Future<void> updateInvitation(Invitation invitation);
+  Future<void> deleteInvitation(String invitationId);
 }

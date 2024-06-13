@@ -6,7 +6,7 @@ import '../../domain/services/iteam_service.dart';
 class TeamService implements ITeamService {
   final ITeamRepository _teamRepository;
 
-  TeamService({TeamRepository? teamRepository})
+  TeamService({ITeamRepository? teamRepository})
       : _teamRepository = teamRepository ?? TeamRepository();
 
   @override

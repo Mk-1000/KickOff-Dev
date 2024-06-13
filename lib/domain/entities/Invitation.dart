@@ -11,6 +11,7 @@ class Invitation {
   final String invitationId;
   final String teamId;
   final String playerId;
+  final String slotId;
   final Position position;
   InvitationStatus status;
   final int sentAt;
@@ -22,6 +23,7 @@ class Invitation {
     String? invitationId,
     required this.teamId,
     required this.playerId,
+    required this.slotId,
     required this.position,
     this.status = InvitationStatus.Pending,
     required this.sentAt,
@@ -32,28 +34,12 @@ class Invitation {
         createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
         updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch;
 
-  Invitation copyWith({
-    String? invitationId,
-    String? teamId,
-    String? playerId,
-    Position? position,
-    InvitationStatus? status,
-    int? sentAt,
-    int? respondedAt,
-    int? createdAt,
-    int? updatedAt,
-  }) {
-    return Invitation(
-      invitationId: invitationId ?? this.invitationId,
-      teamId: teamId ?? this.teamId,
-      playerId: playerId ?? this.playerId,
-      position: position ?? this.position,
-      status: status ?? this.status,
-      sentAt: sentAt ?? this.sentAt,
-      respondedAt: respondedAt ?? this.respondedAt,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
+  void accept() {
+    _updateStatus(InvitationStatus.Accepted);
+  }
+
+  void reject() {
+    _updateStatus(InvitationStatus.Rejected);
   }
 
   void _updateStatus(InvitationStatus newStatus) {
@@ -62,15 +48,12 @@ class Invitation {
     updatedAt = DateTime.now().millisecondsSinceEpoch;
   }
 
-  void accept() => _updateStatus(InvitationStatus.Accepted);
-
-  void reject() => _updateStatus(InvitationStatus.Rejected);
-
   Map<String, dynamic> toJson() {
     return {
       'invitationId': invitationId,
       'teamId': teamId,
       'playerId': playerId,
+      'slotId': slotId,
       'position': position.toString().split('.').last,
       'status': status.toString().split('.').last,
       'sentAt': sentAt,
@@ -81,13 +64,11 @@ class Invitation {
   }
 
   factory Invitation.fromJson(Map<String, dynamic> json) {
-    if (json == null) {
-      throw ArgumentError('JSON must not be null');
-    }
     return Invitation(
       invitationId: json['invitationId'] as String,
       teamId: json['teamId'] as String,
       playerId: json['playerId'] as String,
+      slotId: json['slotId'] as String,
       position: ParserUtils.parsePosition(json['position'] as String),
       status: InvitationStatus.values.firstWhere(
         (status) => status.toString().split('.').last == json['status'],
