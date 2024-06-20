@@ -89,7 +89,7 @@ class TeamRepository implements ITeamRepository {
       final List<Team> allTeams = await getAllTeams();
       return allTeams.where((team) {
         // Check if the player's ID is present in any slot
-        return team.slots.values.any((slot) => slot.playerId == userId);
+        return team.slots!.any((slot) => slot.playerId == userId);
       }).toList();
     } catch (e) {
       print('Failed to retrieve teams for user $userId: $e');

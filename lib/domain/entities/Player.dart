@@ -1,5 +1,6 @@
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/User.dart';
+import 'package:takwira/utils/Parse.dart';
 
 class Player extends User {
   static Player? _currentPlayer; // Singleton instance of the current player

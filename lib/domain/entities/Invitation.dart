@@ -1,5 +1,5 @@
-import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/utils/IDUtils.dart';
+import 'package:takwira/utils/Parse.dart';
 
 enum InvitationStatus {
   Pending,
@@ -12,7 +12,6 @@ class Invitation {
   final String teamId;
   final String playerId;
   final String slotId;
-  final Position position;
   InvitationStatus status;
   final int sentAt;
   int? respondedAt;
@@ -24,7 +23,6 @@ class Invitation {
     required this.teamId,
     required this.playerId,
     required this.slotId,
-    required this.position,
     this.status = InvitationStatus.Pending,
     required this.sentAt,
     this.respondedAt,
@@ -35,17 +33,23 @@ class Invitation {
         updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch;
 
   void accept() {
-    _updateStatus(InvitationStatus.Accepted);
+    if (status == InvitationStatus.Pending) {
+      status = InvitationStatus.Accepted;
+      respondedAt = DateTime.now().millisecondsSinceEpoch;
+      updatedAt = DateTime.now().millisecondsSinceEpoch;
+    } else {
+      throw Exception('Cannot accept invitation: Already responded');
+    }
   }
 
   void reject() {
-    _updateStatus(InvitationStatus.Rejected);
-  }
-
-  void _updateStatus(InvitationStatus newStatus) {
-    status = newStatus;
-    respondedAt = DateTime.now().millisecondsSinceEpoch;
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
+    if (status == InvitationStatus.Pending) {
+      status = InvitationStatus.Rejected;
+      respondedAt = DateTime.now().millisecondsSinceEpoch;
+      updatedAt = DateTime.now().millisecondsSinceEpoch;
+    } else {
+      throw Exception('Cannot reject invitation: Already responded');
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -54,7 +58,6 @@ class Invitation {
       'teamId': teamId,
       'playerId': playerId,
       'slotId': slotId,
-      'position': position.toString().split('.').last,
       'status': status.toString().split('.').last,
       'sentAt': sentAt,
       'respondedAt': respondedAt,
@@ -65,19 +68,15 @@ class Invitation {
 
   factory Invitation.fromJson(Map<String, dynamic> json) {
     return Invitation(
-      invitationId: json['invitationId'] as String,
+      invitationId: json['invitationId'] as String?,
       teamId: json['teamId'] as String,
       playerId: json['playerId'] as String,
       slotId: json['slotId'] as String,
-      position: ParserUtils.parsePosition(json['position'] as String),
-      status: InvitationStatus.values.firstWhere(
-        (status) => status.toString().split('.').last == json['status'],
-        orElse: () => InvitationStatus.Pending,
-      ),
+      status: ParserUtils.parseInvitationStatus(json['status'] as String),
       sentAt: json['sentAt'] as int,
       respondedAt: json['respondedAt'] as int?,
-      createdAt: json['createdAt'] as int,
-      updatedAt: json['updatedAt'] as int,
+      createdAt: json['createdAt'] as int?,
+      updatedAt: json['updatedAt'] as int?,
     );
   }
 }

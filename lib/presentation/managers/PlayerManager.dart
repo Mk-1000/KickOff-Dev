@@ -129,11 +129,11 @@ class PlayerManager {
   Future<void> saveInvitationForPlayer(
       String playerId, String invitationId) async {
     try {
-      Player player = await getPlayerDetails(playerId);
+      final player = await getPlayerDetails(playerId);
       player.addReceivedInvitation(invitationId);
       await updatePlayer(player);
     } catch (e) {
-      throw Exception('Failed to saveInvitationForPlayer: $e');
+      throw Exception('Failed to save invitation for player: $e');
     }
   }
 }

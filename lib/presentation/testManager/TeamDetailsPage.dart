@@ -223,19 +223,32 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
 
   void _invitePlayerToSlot(String slotId, Player player) async {
     try {
-      await _invitationManager.sendInvitation(
-          playerId: player.playerId,
-          position: _team!.slots[slotId]!.position,
-          slotId: slotId,
-          teamId: _team!.teamId);
+      if (_team != null && _team!.slots!.any((slot) => slot.slotId == slotId)) {
+        // Check if the slot is available for invitation
+        if (_team!.slots!.any((slot) =>
+            slot.slotId == slotId && slot.status == SlotStatus.Available)) {
+          await _invitationManager.sendInvitation(
+            playerId: player.playerId,
+            slotId: slotId,
+            teamId: _team!.teamId,
+          );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invitation sent to ${player.nickname}')),
-      );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Invitation sent to ${player.nickname}')),
+          );
 
-      setState(() {
-        _team = _team; // To trigger UI update
-      });
+          setState(() {
+            _team = _team!;
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text('This slot is not available for invitation')),
+          );
+        }
+      } else {
+        throw Exception('Team or slot not found');
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to send invitation: $e')),
@@ -293,10 +306,10 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                   SizedBox(height: 20),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: _team!.slots.length,
+                      itemCount: _team!.slots?.length,
                       itemBuilder: (context, index) {
-                        String slotId = _team!.slots.keys.elementAt(index);
-                        PositionSlot slot = _team!.slots[slotId]!;
+                        String slotId = _team!.slots![index].slotId;
+                        PositionSlot slot = _team!.slots![index];
                         return _buildSlotCard(slot);
                       },
                     ),

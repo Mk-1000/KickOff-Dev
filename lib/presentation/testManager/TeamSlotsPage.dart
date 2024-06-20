@@ -14,9 +14,9 @@ class TeamSlotsPage extends StatelessWidget {
         title: Text('Team Slots'),
       ),
       body: ListView.builder(
-        itemCount: team.slots.length,
+        itemCount: team.slots?.length,
         itemBuilder: (context, index) {
-          var slot = team.slots[index];
+          var slot = team.slots?[index];
           if (slot == null) return Container(); // Handle null slots
           return ListTile(
             title: Text('Slot ${slot.number}: ${slot.position}'),
