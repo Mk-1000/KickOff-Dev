@@ -1,14 +1,14 @@
 import 'package:takwira/business/services/invitation_service.dart';
+import 'package:takwira/business/services/team_service.dart';
 import 'package:takwira/domain/entities/Invitation.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
-import 'package:takwira/presentation/managers/TeamManager.dart';
 
 class InvitationManager {
   final InvitationService _invitationService = InvitationService();
   final PlayerManager _playerManager = PlayerManager();
-  final TeamManager _teamManager = TeamManager();
+  final TeamService _teamManager = TeamService();
 
-  Future<void> sendInvitation({
+  Future<void> sendInvitationToPlayer({
     required String teamId,
     required String playerId,
     required String slotId,
@@ -23,9 +23,33 @@ class InvitationManager {
 
       await _invitationService.createInvitation(invitation);
 
-      await _playerManager.saveInvitationForPlayer(
+      await _playerManager.addReceivedInvitationToSlot(
           playerId, invitation.invitationId);
-      await _teamManager.saveInvitationForTeamSlot(
+      await _teamManager.addSentInvitationToSlot(
+          teamId, slotId, invitation.invitationId);
+    } catch (e) {
+      throw Exception('Failed to send invitation: $e');
+    }
+  }
+
+  Future<void> sendInvitationToTeam({
+    required String teamId,
+    required String playerId,
+    required String slotId,
+  }) async {
+    try {
+      final invitation = Invitation(
+        teamId: teamId,
+        playerId: playerId,
+        slotId: slotId,
+        sentAt: DateTime.now().millisecondsSinceEpoch,
+      );
+
+      await _invitationService.createInvitation(invitation);
+
+      await _playerManager.addSentInvitationToSlot(
+          playerId, invitation.invitationId);
+      await _teamManager.addReceivedInvitationToSlot(
           teamId, slotId, invitation.invitationId);
     } catch (e) {
       throw Exception('Failed to send invitation: $e');
@@ -54,6 +78,37 @@ class InvitationManager {
   Future<void> removeInvitation(String invitationId) async {
     try {
       await _invitationService.deleteInvitation(invitationId);
+    } catch (e) {
+      throw Exception('Failed to remove invitation: $e');
+    }
+  }
+
+  Future<void> removeInvitationSendFromPlayer(String invitationId) async {
+    try {
+      Invitation invitation = await fetchInvitationDetails(invitationId);
+      await _playerManager.removeSentInvitation(
+          invitation.playerId, invitationId);
+
+      await _teamManager.removeReceivedInvitationFromSlot(
+          invitation.teamId, invitation.slotId, invitationId);
+
+      await removeInvitation(invitationId);
+    } catch (e) {
+      throw Exception('Failed to remove invitation: $e');
+    }
+  }
+
+  Future<void> removeInvitationSendFromTeam(String invitationId) async {
+    try {
+      Invitation invitation = await fetchInvitationDetails(invitationId);
+
+      await _playerManager.removeReceivedInvitation(
+          invitation.playerId, invitationId);
+
+      await _teamManager.removeSentInvitationFromSlot(
+          invitation.teamId, invitation.slotId, invitationId);
+
+      await removeInvitation(invitationId);
     } catch (e) {
       throw Exception('Failed to remove invitation: $e');
     }

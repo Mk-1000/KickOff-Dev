@@ -6,12 +6,14 @@ import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/services/iteam_service.dart';
 import 'package:takwira/business/services/team_service.dart';
 import 'package:takwira/presentation/managers/ChatManager.dart';
+import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
 
 class TeamManager {
   final ITeamService _teamService = TeamService();
   final ChatManager _chatManager = ChatManager();
   final PlayerManager _playerManager = PlayerManager();
+  final InvitationManager _invitationManager = InvitationManager();
 
   List<Team> _teams = [];
   Team? _currentTeam;
@@ -50,11 +52,9 @@ class TeamManager {
 
   Future<void> addTeamForPlayer(Team team, Player player) async {
     try {
-      if (team.teamId != null) {
-        player.addTeamId(team.teamId);
+      player.addTeamId(team.teamId);
 
-        await _playerManager.updatePlayer(player);
-      }
+      await _playerManager.updatePlayer(player);
 
       await _teamService.createTeam(team);
       _teams.add(team);
@@ -85,8 +85,6 @@ class TeamManager {
         print('Error fetching team with ID $teamId: $e');
       }
     }
-    print("playerlength : " + playerTeams.length.toString());
-
     return playerTeams;
   }
 
@@ -104,10 +102,6 @@ class TeamManager {
       // Fetch the team by its ID
       Team? team = await _teamService.getTeamById(teamId);
 
-      if (team == null) {
-        throw Exception('Team not found');
-      }
-
       // Delete the chat associated with the team, if any
       if (team.chat != null) {
         await _chatManager.deleteChat(team.chat!);
@@ -119,15 +113,17 @@ class TeamManager {
       // Update the player in the database
       await _playerManager.updatePlayer(player);
 
-      // // delete all invitations
-      // Future<void> deleteAllInvitations(
-      //     InvitationManager _invitationManager) async {
-      //   for (var invitations in team.slotInvitations.values) {
-      //     for (var invitationId in invitations) {
-      //       await _invitationManager.removeInvitation(invitationId);
-      //     }
-      //   }
-      // }
+      // Delete all invitations
+      team.receivedSlotInvitations.forEach((slotId, invitations) {
+        invitations.forEach((invitationId) async {
+          await _invitationManager.removeInvitationSendFromPlayer(invitationId);
+        });
+      });
+      team.sentSlotInvitations.forEach((slotId, invitations) {
+        invitations.forEach((invitationId) async {
+          await _invitationManager.removeInvitationSendFromTeam(invitationId);
+        });
+      });
 
       await deleteTeam(teamId);
 
@@ -139,15 +135,8 @@ class TeamManager {
   }
 
   Future<Team> getTeamById(String teamId) async {
-    try {
-      Team? team = await _teamService.getTeamById(teamId);
-      if (team == null) {
-        throw Exception('No team found for ID $teamId');
-      }
-      return team;
-    } catch (e) {
-      throw Exception('Failed to fetch team with ID $teamId: $e');
-    }
+    Team? team = await _teamService.getTeamById(teamId);
+    return team;
   }
 
   Future<List<Team>> getAllTeamsForPlayer(List<String> teamIds) async {
@@ -222,13 +211,27 @@ class TeamManager {
         newMaxForwards: newMaxForwards);
   }
 
-  Future<Invitation?> getInvitationForSlot(String teamId, String slotId) async {
-    return await _teamService.getInvitationForSlot(teamId, slotId);
+  Future<void> addSentInvitationToSlot(
+      String teamId, String slotId, String invitationId) async {
+    return await _teamService.addSentInvitationToSlot(
+        teamId, slotId, invitationId);
   }
 
-  Future<void> saveInvitationForTeamSlot(
+  Future<void> addReceivedInvitationToSlot(
       String teamId, String slotId, String invitationId) async {
-    return await _teamService.saveInvitationForTeamSlot(
+    return await _teamService.addReceivedInvitationToSlot(
+        teamId, slotId, invitationId);
+  }
+
+  Future<void> removeSentInvitationFromSlot(
+      String teamId, String slotId, String invitationId) async {
+    return await _teamService.removeSentInvitationFromSlot(
+        teamId, slotId, invitationId);
+  }
+
+  Future<void> removeReceivedInvitationFromSlot(
+      String teamId, String slotId, String invitationId) async {
+    return await _teamService.removeReceivedInvitationFromSlot(
         teamId, slotId, invitationId);
   }
 

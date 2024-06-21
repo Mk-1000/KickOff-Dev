@@ -3,31 +3,30 @@ import 'package:takwira/domain/entities/User.dart';
 import 'package:takwira/utils/Parse.dart';
 
 class Player extends User {
-  static Player? _currentPlayer; // Singleton instance of the current player
-
+  static Player? _currentPlayer;
   String _nickname;
   DateTime _birthdate;
-  Position _preferredPosition; // Updated to use Position enum
+  Position _preferredPosition;
   List<String> _phoneNumbers;
   String _jerseySize;
-  List<String> _teamIds; // Updated to use _teamIds
-  List<String> _receivedInvitationIds = []; // Updated to store invitation IDs
-
+  List<String> _teamIds;
+  List<String> _receivedInvitationIds = [];
+  List<String> _sentInvitationIds = [];
   Player({
     String? userId,
     required String email,
     required String nickname,
     required DateTime birthdate,
-    required Position preferredPosition, // Updated to use Position enum
+    required Position preferredPosition,
     required List<String> phoneNumbers,
     required String jerseySize,
-    List<String> teamIds = const [], // Updated to use const parameter
+    List<String> teamIds = const [],
   })  : _nickname = nickname,
         _birthdate = birthdate,
         _preferredPosition = preferredPosition,
         _phoneNumbers = phoneNumbers,
         _jerseySize = jerseySize,
-        _teamIds = teamIds, // Initialize _teamIds
+        _teamIds = teamIds,
         super(userId: userId, email: email, role: UserRole.player);
 
   static Player? get currentPlayer => _currentPlayer;
@@ -36,7 +35,6 @@ class Player extends User {
     _currentPlayer = player;
   }
 
-  // Use these getters to expose private fields
   String get nickname => _nickname;
   DateTime get birthdate => _birthdate;
   Position get preferredPosition => _preferredPosition;
@@ -44,8 +42,8 @@ class Player extends User {
   String get jerseySize => _jerseySize;
   String get playerId => userId;
   List<String> get teamIds => _teamIds;
-  List<String> get receivedInvitationIds =>
-      _receivedInvitationIds; // Getter for received invitation IDs
+  List<String> get receivedInvitationIds => _receivedInvitationIds;
+  List<String> get sentInvitationIds => _sentInvitationIds;
 
   void addTeamId(String teamId) {
     if (!_teamIds.contains(teamId)) {
@@ -59,11 +57,25 @@ class Player extends User {
   }
 
   void addReceivedInvitation(String invitationId) {
-    _receivedInvitationIds.add(invitationId);
+    if (!_receivedInvitationIds.contains(invitationId)) {
+      // Ensure no duplicates
+      _receivedInvitationIds.add(invitationId);
+    }
   }
 
   void removeReceivedInvitation(String invitationId) {
     _receivedInvitationIds.remove(invitationId);
+  }
+
+  void addSentInvitation(String invitationId) {
+    if (!_sentInvitationIds.contains(invitationId)) {
+      // Ensure no duplicates
+      _sentInvitationIds.add(invitationId);
+    }
+  }
+
+  void removeSentInvitation(String invitationId) {
+    _sentInvitationIds.remove(invitationId);
   }
 
   @override
@@ -78,6 +90,7 @@ class Player extends User {
       'teamIds': _teamIds,
       'receivedInvitationIds':
           _receivedInvitationIds, // Serialize received invitation IDs
+      'sentInvitationIds': _sentInvitationIds, // Serialize sent invitation IDs
     };
   }
 
@@ -95,7 +108,10 @@ class Player extends User {
       jerseySize: json['jerseySize'] as String,
       teamIds:
           json['teamIds'] is List ? List<String>.from(json['teamIds']) : [],
-    ).._receivedInvitationIds =
-        List<String>.from(json['receivedInvitationIds'] ?? []);
+    )
+      .._receivedInvitationIds =
+          List<String>.from(json['receivedInvitationIds'] ?? [])
+      .._sentInvitationIds = List<String>.from(
+          json['sentInvitationIds'] ?? []); // Deserialize sent invitation IDs
   }
 }

@@ -95,7 +95,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
         // Check if the slot is available for invitation
         if (_team!.slots!.any((slot) =>
             slot.slotId == slotId && slot.status == SlotStatus.Available)) {
-          await _invitationManager.sendInvitation(
+          await _invitationManager.sendInvitationToPlayer(
             playerId: player.playerId,
             slotId: slotId,
             teamId: _team!.teamId,

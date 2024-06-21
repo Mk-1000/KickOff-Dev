@@ -62,4 +62,52 @@ class PlayerService implements IPlayerService {
       throw Exception('Failed to delete player: $e');
     }
   }
+
+  @override
+  Future<void> addSentInvitationToSlot(
+      String playerId, String invitationId) async {
+    try {
+      final player = await getPlayerDetails(playerId);
+      player.addSentInvitation(invitationId);
+      await updatePlayer(player);
+    } catch (e) {
+      print('Failed to save invitation for Player: $e');
+    }
+  }
+
+  @override
+  Future<void> addReceivedInvitationToSlot(
+      String playerId, String invitationId) async {
+    try {
+      final player = await getPlayerDetails(playerId);
+      player.addReceivedInvitation(invitationId);
+      await updatePlayer(player);
+    } catch (e) {
+      print('Failed to save invitation for Player: $e');
+    }
+  }
+
+  @override
+  Future<void> removeSentInvitation(
+      String playerId, String invitationId) async {
+    try {
+      final player = await getPlayerDetails(playerId);
+      player.removeSentInvitation(invitationId);
+      await updatePlayer(player);
+    } catch (e) {
+      print('Failed to remove invitation from Player: $e');
+    }
+  }
+
+  @override
+  Future<void> removeReceivedInvitation(
+      String playerId, String invitationId) async {
+    try {
+      final player = await getPlayerDetails(playerId);
+      player.removeReceivedInvitation(invitationId);
+      await updatePlayer(player);
+    } catch (e) {
+      print('Failed to remove invitation from Player: $e');
+    }
+  }
 }

@@ -13,7 +13,8 @@ class Team {
   int maxMidfielders;
   int maxForwards;
   late List<PositionSlot>? slots = [];
-  late Map<String, List<String>> slotInvitations = {};
+  late Map<String, List<String>> receivedSlotInvitations = {};
+  late Map<String, List<String>> sentSlotInvitations = {};
 
   Team({
     String? teamId,
@@ -29,7 +30,8 @@ class Team {
   })  : teamId = teamId ?? IDUtils.generateUniqueId(),
         createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
         updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch {
-    slotInvitations = {};
+    receivedSlotInvitations = {};
+    sentSlotInvitations = {};
   }
 
   List<PositionSlot> initializeSlotsList({
@@ -93,28 +95,35 @@ class Team {
 
     _initializeSlots();
 
-    // slots?.forEach((slot) {
-    //   if (slot.status == SlotStatus.Reserved) {
-    //     slot.status = SlotStatus.Available;
-    //     slot.playerId = null;
-    //   }
-    // });
-
     updatedAt = DateTime.now().millisecondsSinceEpoch;
   }
 
-  void addInvitationToSlot(String slotId, String invitationId) {
-    if (!slotInvitations.containsKey(slotId)) {
-      slotInvitations[slotId] = [];
+  void addReceivedInvitationToSlot(String slotId, String invitationId) {
+    if (!receivedSlotInvitations.containsKey(slotId)) {
+      receivedSlotInvitations[slotId] = [];
     }
-    slotInvitations[slotId]!.add(invitationId);
+    receivedSlotInvitations[slotId]!.add(invitationId);
   }
 
-  void removeInvitationFromSlot(String slotId, String invitationId) {
-    if (!slotInvitations.containsKey(slotId)) {
+  void removeReceivedInvitationFromSlot(String slotId, String invitationId) {
+    if (!receivedSlotInvitations.containsKey(slotId)) {
       throw Exception('Slot ID $slotId does not exist');
     }
-    slotInvitations[slotId]!.remove(invitationId);
+    receivedSlotInvitations[slotId]!.remove(invitationId);
+  }
+
+  void addSentInvitationToSlot(String slotId, String invitationId) {
+    if (!sentSlotInvitations.containsKey(slotId)) {
+      sentSlotInvitations[slotId] = [];
+    }
+    sentSlotInvitations[slotId]!.add(invitationId);
+  }
+
+  void removeSentInvitationFromSlot(String slotId, String invitationId) {
+    if (!sentSlotInvitations.containsKey(slotId)) {
+      throw Exception('Slot ID $slotId does not exist');
+    }
+    sentSlotInvitations[slotId]!.remove(invitationId);
   }
 
   List<PositionSlot> getAllSlots() {
@@ -127,7 +136,10 @@ class Team {
       'teamName': teamName,
       'captainId': captainId,
       'slots': slots?.map((slot) => slot.toJson()).toList(),
-      'slotInvitations': slotInvitations, // Add invitations to JSON
+      'receivedSlotInvitations':
+          receivedSlotInvitations, // Add received invitations to JSON
+      'sentSlotInvitations':
+          sentSlotInvitations, // Add sent invitations to JSON
       'chat': chat,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
@@ -163,17 +175,34 @@ class Team {
       print("Error parsing slots: $e");
     }
 
-    final slotInvitationsJson = json['slotInvitations'];
-    print('slotInvitationsJson $slotInvitationsJson');
+    final receivedSlotInvitationsJson = json['receivedSlotInvitations'];
+    print('receivedSlotInvitationsJson $receivedSlotInvitationsJson');
 
-    // Convert slotInvitationsJson to a Map<String, List<String>> if not null
-    Map<String, List<String>> slotInvitations = {};
-    if (slotInvitationsJson != null) {
-      slotInvitationsJson.forEach((key, value) {
+    // Convert receivedSlotInvitationsJson to a Map<String, List<String>> if not null
+    Map<String, List<String>> receivedSlotInvitations = {};
+    if (receivedSlotInvitationsJson != null) {
+      receivedSlotInvitationsJson.forEach((key, value) {
         if (value is List) {
-          slotInvitations[key] = List<String>.from(value);
+          receivedSlotInvitations[key] = List<String>.from(value);
         } else {
-          throw Exception('Invalid format for slot invitation with key: $key');
+          throw Exception(
+              'Invalid format for received slot invitation with key: $key');
+        }
+      });
+    }
+
+    final sentSlotInvitationsJson = json['sentSlotInvitations'];
+    print('sentSlotInvitationsJson $sentSlotInvitationsJson');
+
+    // Convert sentSlotInvitationsJson to a Map<String, List<String>> if not null
+    Map<String, List<String>> sentSlotInvitations = {};
+    if (sentSlotInvitationsJson != null) {
+      sentSlotInvitationsJson.forEach((key, value) {
+        if (value is List) {
+          sentSlotInvitations[key] = List<String>.from(value);
+        } else {
+          throw Exception(
+              'Invalid format for sent slot invitation with key: $key');
         }
       });
     }
@@ -190,6 +219,7 @@ class Team {
       maxForwards: maxForwards,
     )
       ..slots?.addAll(slots)
-      ..slotInvitations.addAll(slotInvitations);
+      ..receivedSlotInvitations.addAll(receivedSlotInvitations)
+      ..sentSlotInvitations.addAll(sentSlotInvitations);
   }
 }
