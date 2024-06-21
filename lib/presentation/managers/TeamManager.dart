@@ -1,4 +1,3 @@
-import 'package:takwira/business/services/invitation_service.dart';
 import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Invitation.dart';
 import 'package:takwira/domain/entities/Player.dart';
@@ -13,7 +12,6 @@ class TeamManager {
   final ITeamService _teamService = TeamService();
   final ChatManager _chatManager = ChatManager();
   final PlayerManager _playerManager = PlayerManager();
-  final InvitationService _invitationService = InvitationService();
 
   List<Team> _teams = [];
   Team? _currentTeam;
@@ -121,6 +119,16 @@ class TeamManager {
       // Update the player in the database
       await _playerManager.updatePlayer(player);
 
+      // // delete all invitations
+      // Future<void> deleteAllInvitations(
+      //     InvitationManager _invitationManager) async {
+      //   for (var invitations in team.slotInvitations.values) {
+      //     for (var invitationId in invitations) {
+      //       await _invitationManager.removeInvitation(invitationId);
+      //     }
+      //   }
+      // }
+
       await deleteTeam(teamId);
 
       print('Team, chat, and player records updated successfully');
@@ -208,96 +216,28 @@ class TeamManager {
     int? newMaxMidfielders,
     int? newMaxForwards,
   }) async {
-    try {
-      Team team = await getTeamById(teamId);
-
-      team.changeSlotLimits(
+    return await _teamService.changeTeamSlotLimits(teamId,
         newMaxDefenders: newMaxDefenders,
         newMaxMidfielders: newMaxMidfielders,
-        newMaxForwards: newMaxForwards,
-      );
-
-      await updateTeam(team);
-      print('Team slot limits updated successfully');
-    } catch (e) {
-      print('Failed to change team slot limits: $e');
-      throw Exception('Failed to change team slot limits: $e');
-    }
+        newMaxForwards: newMaxForwards);
   }
 
   Future<Invitation?> getInvitationForSlot(String teamId, String slotId) async {
-    try {
-      final team =
-          await TeamService().getTeamById(teamId); // Get the team by ID
-      if (team != null && team.slots!.any((slot) => slot.slotId == slotId)) {
-        // Check if the slot exists in the team
-        final invitationIds = team.slotInvitations?[slotId];
-        if (invitationIds != null && invitationIds.isNotEmpty) {
-          // Assuming you want to return the first invitation in the list
-          final invitationId = invitationIds.first;
-          final invitation =
-              await _invitationService.getInvitationDetails(invitationId);
-          return invitation;
-        } else {
-          print('No invitations found for slot $slotId');
-        }
-      } else {
-        print('Team or slot not found');
-      }
-    } catch (e) {
-      print('Error retrieving invitation: $e');
-    }
-    return null; // Return null if no invitation is found
+    return await _teamService.getInvitationForSlot(teamId, slotId);
   }
 
   Future<void> saveInvitationForTeamSlot(
       String teamId, String slotId, String invitationId) async {
-    try {
-      final team = await getTeamById(teamId);
-      print('teeeam' + team.toJson().toString());
-      if (team != null) {
-        team.addInvitationToSlot(
-            slotId, invitationId); // Add invitation to the slot
-        await updateTeam(team);
-      } else {
-        throw Exception('Team not found');
-      }
-    } catch (e) {
-      print('Failed to save invitation for team slot: $e');
-      // Handle the error as per your application's requirements
-    }
+    return await _teamService.saveInvitationForTeamSlot(
+        teamId, slotId, invitationId);
   }
 
   Future<void> addPlayerToSlot(
       String playerId, String teamId, String slotId) async {
-    try {
-      final team = await getTeamById(teamId); // Get the team by ID
-      if (team != null) {
-        team.addPlayerToSlot(playerId, slotId); // Add player to the slot
-        await updateTeam(team); // Update the team
-      } else {
-        throw Exception('Team not found');
-      }
-    } catch (e) {
-      print('Failed to add player to slot: $e');
-      // Handle the error as per your application's requirements
-    }
+    return await _teamService.addPlayerToSlot(playerId, teamId, slotId);
   }
 
   Future<List<PositionSlot>> getAllSlotsFromTeam(String teamId) async {
-    try {
-      final teamManager = TeamManager(); // Instantiate TeamManager
-      final team = await teamManager
-          .getTeamById(teamId); // Get the team by ID using TeamManager
-      if (team != null) {
-        return team.getAllSlots(); // Return all slots from the team
-      } else {
-        throw Exception('Team not found');
-      }
-    } catch (e) {
-      print('Failed to get all slots from team: $e');
-      throw Exception(
-          'Failed to get all slots from team: $e'); // Rethrow the exception
-    }
+    return await _teamService.getAllSlotsFromTeam(teamId);
   }
 }
