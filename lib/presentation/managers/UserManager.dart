@@ -52,7 +52,7 @@ class UserManager {
     try {
       String userId =
           await _authService.signUpWithEmailPassword(email, password);
-      User newUser = User(userId: userId, email: email, role: UserRole.user);
+      User newUser = User(userId: userId, email: email, role: UserRole.User);
       await addUser(newUser);
     } catch (e) {
       // Properly handle or log the error

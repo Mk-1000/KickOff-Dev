@@ -19,7 +19,7 @@ class Stadium extends User {
         _services = services,
         _address = address,
         _phone = phone,
-        super(email: email, role: UserRole.stadium);
+        super(email: email, role: UserRole.Stadium);
 
   // Stadium ID is now the User ID
   String get stadiumId => userId;

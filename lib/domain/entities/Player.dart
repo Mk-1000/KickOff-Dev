@@ -4,93 +4,80 @@ import 'package:takwira/utils/Parse.dart';
 
 class Player extends User {
   static Player? _currentPlayer;
-  String _nickname;
-  DateTime _birthdate;
-  Position _preferredPosition;
-  List<String> _phoneNumbers;
-  String _jerseySize;
-  List<String> _teamIds;
-  List<String> _receivedInvitationIds = [];
-  List<String> _sentInvitationIds = [];
+  String nickname;
+  DateTime birthdate;
+  Position preferredPosition;
+  String phoneNumbers;
+  String jerseySize;
+  List<String> teamIds;
+  List<String> receivedInvitationIds = [];
+  List<String> sentInvitationIds = [];
+
   Player({
     String? userId,
     required String email,
-    required String nickname,
-    required DateTime birthdate,
-    required Position preferredPosition,
-    required List<String> phoneNumbers,
-    required String jerseySize,
-    List<String> teamIds = const [],
-  })  : _nickname = nickname,
-        _birthdate = birthdate,
-        _preferredPosition = preferredPosition,
-        _phoneNumbers = phoneNumbers,
-        _jerseySize = jerseySize,
-        _teamIds = teamIds,
-        super(userId: userId, email: email, role: UserRole.player);
+    required this.nickname,
+    required this.birthdate,
+    required this.preferredPosition,
+    required this.phoneNumbers,
+    required this.jerseySize,
+    this.teamIds = const [],
+  }) : super(userId: userId, email: email, role: UserRole.Player);
 
   static Player? get currentPlayer => _currentPlayer;
+
+  String get playerId => userId;
 
   static void setCurrentPlayer(Player player) {
     _currentPlayer = player;
   }
 
-  String get nickname => _nickname;
-  DateTime get birthdate => _birthdate;
-  Position get preferredPosition => _preferredPosition;
-  List<String> get phoneNumbers => _phoneNumbers;
-  String get jerseySize => _jerseySize;
-  String get playerId => userId;
-  List<String> get teamIds => _teamIds;
-  List<String> get receivedInvitationIds => _receivedInvitationIds;
-  List<String> get sentInvitationIds => _sentInvitationIds;
-
   void addTeamId(String teamId) {
-    if (!_teamIds.contains(teamId)) {
+    if (!teamIds.contains(teamId)) {
       // Ensure no duplicates
-      _teamIds.add(teamId);
+      teamIds.add(teamId);
     }
   }
 
   void removeTeamId(String teamId) {
-    _teamIds.remove(teamId);
+    teamIds.remove(teamId);
   }
 
   void addReceivedInvitation(String invitationId) {
-    if (!_receivedInvitationIds.contains(invitationId)) {
+    if (!receivedInvitationIds.contains(invitationId)) {
       // Ensure no duplicates
-      _receivedInvitationIds.add(invitationId);
+      receivedInvitationIds.add(invitationId);
     }
   }
 
   void removeReceivedInvitation(String invitationId) {
-    _receivedInvitationIds.remove(invitationId);
+    receivedInvitationIds.remove(invitationId);
   }
 
   void addSentInvitation(String invitationId) {
-    if (!_sentInvitationIds.contains(invitationId)) {
+    if (!sentInvitationIds.contains(invitationId)) {
       // Ensure no duplicates
-      _sentInvitationIds.add(invitationId);
+      sentInvitationIds.add(invitationId);
     }
   }
 
   void removeSentInvitation(String invitationId) {
-    _sentInvitationIds.remove(invitationId);
+    sentInvitationIds.remove(invitationId);
   }
 
   @override
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(),
-      'nickname': _nickname,
-      'birthdate': _birthdate.millisecondsSinceEpoch,
-      'preferredPosition': _preferredPosition.toString().split('.').last,
-      'phoneNumbers': _phoneNumbers,
-      'jerseySize': _jerseySize,
-      'teamIds': _teamIds,
+      'nickname': nickname,
+      'birthdate': birthdate.millisecondsSinceEpoch,
+      'preferredPosition': preferredPosition.toString().split('.').last,
+      'phoneNumbers': phoneNumbers,
+      'jerseySize': jerseySize,
+      'teamIds': teamIds,
       'receivedInvitationIds':
-          _receivedInvitationIds, // Serialize received invitation IDs
-      'sentInvitationIds': _sentInvitationIds, // Serialize sent invitation IDs
+          receivedInvitationIds, // Serialize received invitation IDs
+      'sentInvitationIds': sentInvitationIds, // Serialize sent invitation IDs
     };
   }
 
@@ -102,16 +89,14 @@ class Player extends User {
       birthdate: DateTime.fromMillisecondsSinceEpoch(json['birthdate'] as int),
       preferredPosition:
           ParserUtils.parsePosition(json['preferredPosition'] as String),
-      phoneNumbers: json['phoneNumbers'] is List
-          ? List<String>.from(json['phoneNumbers'])
-          : [],
+      phoneNumbers: json['phoneNumbers'],
       jerseySize: json['jerseySize'] as String,
       teamIds:
           json['teamIds'] is List ? List<String>.from(json['teamIds']) : [],
     )
-      .._receivedInvitationIds =
+      ..receivedInvitationIds =
           List<String>.from(json['receivedInvitationIds'] ?? [])
-      .._sentInvitationIds = List<String>.from(
+      ..sentInvitationIds = List<String>.from(
           json['sentInvitationIds'] ?? []); // Deserialize sent invitation IDs
   }
 }

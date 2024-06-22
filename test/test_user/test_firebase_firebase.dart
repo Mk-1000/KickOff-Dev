@@ -15,7 +15,7 @@ void main() {
     });
 
     test('Add, Retrieve, Update, and Delete a User', () async {
-      User testUser = User(email: "test@example.com", role: UserRole.user);
+      User testUser = User(email: "test@example.com", role: UserRole.User);
 
       // Add user
       await userRepository.addUser(testUser);
@@ -27,7 +27,7 @@ void main() {
       // Update user
       testUser = User(
         email: "updated@example.com",
-        role: UserRole.user,
+        role: UserRole.User,
       );
       await userRepository.updateUser(testUser);
       User updatedUser = await userRepository.getUserById(testUserId);
@@ -45,9 +45,9 @@ void main() {
 
     test('Verify getAllUsers retrieves multiple users', () async {
       // Creating multiple test users
-      User user1 = User(email: "user1@example.com", role: UserRole.user);
+      User user1 = User(email: "user1@example.com", role: UserRole.User);
 
-      User user2 = User(email: "user2@example.com", role: UserRole.user);
+      User user2 = User(email: "user2@example.com", role: UserRole.User);
 
       // Add users
       await userRepository.addUser(user1);

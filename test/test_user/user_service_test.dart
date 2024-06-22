@@ -15,7 +15,7 @@ void main() {
       // Corrected: Use the correct type for the mock repository
       mockUserRepository = MockIUserRepository();
       userService = UserService(userRepository: mockUserRepository);
-      testUser = User(email: "User@gmail.com", role: UserRole.user);
+      testUser = User(email: "User@gmail.com", role: UserRole.User);
 
       // Set up mock responses for your repository
       when(mockUserRepository.getAllUsers())

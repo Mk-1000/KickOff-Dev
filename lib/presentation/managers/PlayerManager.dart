@@ -30,10 +30,10 @@ class PlayerManager {
     try {
       String userId =
           await _authService.signUpWithEmailPassword(email, password);
-      User newUser = User(userId: userId, email: email, role: UserRole.player);
+      User newUser = User(userId: userId, email: email, role: UserRole.Player);
       await _userService.addUser(newUser);
 
-      player.setUserId(userId);
+      player.userId = userId;
 
       await _playerService.createPlayer(player);
 
