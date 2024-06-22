@@ -176,15 +176,14 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
         return;
       }
 
-      List<String> phoneNumbers =
-          _phoneNumbersController.text.split(',').map((e) => e.trim()).toList();
+      String phoneNumbers = _phoneNumbersController.text;
 
       var player = Player(
         email: _emailController.text,
         nickname: _nicknameController.text,
         birthdate: birthdate,
         preferredPosition: _preferredPosition ?? Position.Goalkeeper,
-        phoneNumbers: phoneNumbers,
+        phoneNumber: phoneNumbers,
         jerseySize: _jerseySizeController.text,
       );
 

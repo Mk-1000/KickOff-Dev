@@ -126,6 +126,41 @@ class Team {
     sentSlotInvitations[slotId]!.remove(invitationId);
   }
 
+  PositionSlot? getSlotById(String slotId) {
+    final slotIndex = slots!.indexWhere((slot) => slot.slotId == slotId);
+    if (slotIndex == -1) {
+      throw Exception('Slot ID $slotId does not exist');
+    }
+    return slots![slotIndex];
+  }
+
+  bool isSlotPublic(String slotId) {
+    final slot = getSlotById(slotId);
+    return slot?.type == Type.Public;
+  }
+
+  void updateSlotStatusToPublic(String slotId) {
+    final slotIndex = slots!.indexWhere((slot) => slot.slotId == slotId);
+    if (slotIndex == -1) {
+      throw Exception('Slot ID $slotId does not exist');
+    }
+
+    print('test' + slots![slotIndex].toJson().toString());
+    slots![slotIndex].type = Type.Public;
+    print('test' + slots![slotIndex].toJson().toString());
+
+    updatedAt = DateTime.now().millisecondsSinceEpoch;
+  }
+
+  void updateSlotStatusToPrivate(String slotId) {
+    final slotIndex = slots!.indexWhere((slot) => slot.slotId == slotId);
+    if (slotIndex == -1) {
+      throw Exception('Slot ID $slotId does not exist');
+    }
+    slots![slotIndex].type = Type.Private;
+    updatedAt = DateTime.now().millisecondsSinceEpoch;
+  }
+
   List<PositionSlot> getAllSlots() {
     return List<PositionSlot>.from(slots!);
   }
@@ -163,7 +198,7 @@ class Team {
     final chat = json['chat'] as String?;
 
     final slotsJson = json['slots'] as List;
-    print('slotsJson $slotsJson');
+
     // Convert the slotsJson to a List<PositionSlot>
     List<PositionSlot> slots = [];
     try {
@@ -176,7 +211,6 @@ class Team {
     }
 
     final receivedSlotInvitationsJson = json['receivedSlotInvitations'];
-    print('receivedSlotInvitationsJson $receivedSlotInvitationsJson');
 
     // Convert receivedSlotInvitationsJson to a Map<String, List<String>> if not null
     Map<String, List<String>> receivedSlotInvitations = {};
@@ -192,7 +226,6 @@ class Team {
     }
 
     final sentSlotInvitationsJson = json['sentSlotInvitations'];
-    print('sentSlotInvitationsJson $sentSlotInvitationsJson');
 
     // Convert sentSlotInvitationsJson to a Map<String, List<String>> if not null
     Map<String, List<String>> sentSlotInvitations = {};

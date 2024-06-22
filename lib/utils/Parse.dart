@@ -16,4 +16,8 @@ class ParserUtils {
     return InvitationStatus.values
         .firstWhere((e) => e.toString().split('.').last == status);
   }
+
+  static Type parseType(String type) {
+    return Type.values.firstWhere((e) => e.toString().split('.').last == type);
+  }
 }

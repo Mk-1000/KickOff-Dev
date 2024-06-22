@@ -38,19 +38,22 @@ class InvitationManager {
     required String slotId,
   }) async {
     try {
-      final invitation = Invitation(
-        teamId: teamId,
-        playerId: playerId,
-        slotId: slotId,
-        sentAt: DateTime.now().millisecondsSinceEpoch,
-      );
+      bool slotPublic = await _teamManager.isSlotPublic(teamId, slotId);
+      if (slotPublic) {
+        final invitation = Invitation(
+          teamId: teamId,
+          playerId: playerId,
+          slotId: slotId,
+          sentAt: DateTime.now().millisecondsSinceEpoch,
+        );
 
-      await _invitationService.createInvitation(invitation);
+        await _invitationService.createInvitation(invitation);
 
-      await _playerManager.addSentInvitationToSlot(
-          playerId, invitation.invitationId);
-      await _teamManager.addReceivedInvitationToSlot(
-          teamId, slotId, invitation.invitationId);
+        await _playerManager.addSentInvitationToSlot(
+            playerId, invitation.invitationId);
+        await _teamManager.addReceivedInvitationToSlot(
+            teamId, slotId, invitation.invitationId);
+      }
     } catch (e) {
       throw Exception('Failed to send invitation: $e');
     }

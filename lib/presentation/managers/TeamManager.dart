@@ -243,4 +243,12 @@ class TeamManager {
   Future<List<PositionSlot>> getAllSlotsFromTeam(String teamId) async {
     return await _teamService.getAllSlotsFromTeam(teamId);
   }
+
+  Future<void> updateSlotStatusToPublic(String teamId, String slotId) async {
+    return await _teamService.updateSlotStatusToPublic(teamId, slotId);
+  }
+
+  Future<void> updateSlotStatusToPrivate(String teamId, String slotId) async {
+    return await _teamService.updateSlotStatusToPrivate(teamId, slotId);
+  }
 }

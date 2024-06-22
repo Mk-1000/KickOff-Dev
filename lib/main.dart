@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/business/services/player_service.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/infrastructure/repositories/TeamRepository.dart';
 import 'package:takwira/presentation/managers/InvitationManager.dart';
+import 'package:takwira/presentation/managers/PlayerManager.dart';
+import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/presentation/testManager/ChatManagerTestPage.dart';
 import 'package:takwira/presentation/testManager/ShowAllTeams.dart';
 import 'package:takwira/presentation/testManager/TestSignInPlayer.dart';
@@ -16,10 +19,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // await TeamManager().updateSlotStatusToPublic(
+  //     "30325fa5-a630-4f94-ad61-a78729901407",
+  //     "751c4c78-3406-4c69-b18a-1f6959fe3d2c");
+
   // await InvitationManager().sendInvitationToTeam(
-  //     teamId: "7647f9ec-738f-485c-80b3-8a303ad6c371",
+  //     teamId: "30325fa5-a630-4f94-ad61-a78729901407",
   //     playerId: "whAbpvIFEJOCg1euutJCLcZtHmR2",
-  //     slotId: "c5bfcac8-beb5-4a6a-bcb7-cc7cdc78c678");
+  //     slotId: "751c4c78-3406-4c69-b18a-1f6959fe3d2c");
 
   runApp(const MyApp());
 }

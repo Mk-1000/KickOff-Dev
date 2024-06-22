@@ -7,7 +7,7 @@ class Player extends User {
   String nickname;
   DateTime birthdate;
   Position preferredPosition;
-  String phoneNumbers;
+  String phoneNumber;
   String jerseySize;
   List<String> teamIds;
   List<String> receivedInvitationIds = [];
@@ -19,7 +19,7 @@ class Player extends User {
     required this.nickname,
     required this.birthdate,
     required this.preferredPosition,
-    required this.phoneNumbers,
+    required this.phoneNumber,
     required this.jerseySize,
     this.teamIds = const [],
   }) : super(userId: userId, email: email, role: UserRole.Player);
@@ -72,12 +72,11 @@ class Player extends User {
       'nickname': nickname,
       'birthdate': birthdate.millisecondsSinceEpoch,
       'preferredPosition': preferredPosition.toString().split('.').last,
-      'phoneNumbers': phoneNumbers,
+      'phoneNumber': phoneNumber,
       'jerseySize': jerseySize,
       'teamIds': teamIds,
-      'receivedInvitationIds':
-          receivedInvitationIds, // Serialize received invitation IDs
-      'sentInvitationIds': sentInvitationIds, // Serialize sent invitation IDs
+      'receivedInvitationIds': receivedInvitationIds,
+      'sentInvitationIds': sentInvitationIds,
     };
   }
 
@@ -89,14 +88,13 @@ class Player extends User {
       birthdate: DateTime.fromMillisecondsSinceEpoch(json['birthdate'] as int),
       preferredPosition:
           ParserUtils.parsePosition(json['preferredPosition'] as String),
-      phoneNumbers: json['phoneNumbers'],
+      phoneNumber: json['phoneNumber'],
       jerseySize: json['jerseySize'] as String,
       teamIds:
           json['teamIds'] is List ? List<String>.from(json['teamIds']) : [],
     )
       ..receivedInvitationIds =
           List<String>.from(json['receivedInvitationIds'] ?? [])
-      ..sentInvitationIds = List<String>.from(
-          json['sentInvitationIds'] ?? []); // Deserialize sent invitation IDs
+      ..sentInvitationIds = List<String>.from(json['sentInvitationIds'] ?? []);
   }
 }

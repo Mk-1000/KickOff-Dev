@@ -98,6 +98,42 @@ class TeamService implements ITeamService {
   }
 
   @override
+  Future<bool> isSlotPublic(String teamId, String slotId) async {
+    try {
+      final team = await getTeamById(teamId);
+      return team.isSlotPublic(slotId); // Return the result
+    } catch (e) {
+      print('Error checking slot status: $e');
+      // Return false or handle the error as appropriate
+      return false;
+    }
+  }
+
+  @override
+  Future<void> updateSlotStatusToPublic(String teamId, String slotId) async {
+    try {
+      final team = await getTeamById(teamId);
+      team.updateSlotStatusToPublic(slotId);
+      await updateTeam(team);
+    } catch (e) {
+      print('Error update Slot Status To Public: $e');
+      // Return false or handle the error as appropriate
+    }
+  }
+
+  @override
+  Future<void> updateSlotStatusToPrivate(String teamId, String slotId) async {
+    try {
+      final team = await getTeamById(teamId);
+      team.updateSlotStatusToPrivate(slotId);
+      await updateTeam(team);
+    } catch (e) {
+      print('Error update Slot Status To Private: $e');
+      // Return false or handle the error as appropriate
+    }
+  }
+
+  @override
   Future<void> removeSentInvitationFromSlot(
       String teamId, String slotId, String invitationId) async {
     try {

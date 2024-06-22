@@ -17,8 +17,13 @@ abstract class ITeamService {
 
   Stream<List<Team>> streamTeams();
 
+  Future<void> updateSlotStatusToPublic(String teamId, String slotId);
+
+  Future<void> updateSlotStatusToPrivate(String teamId, String slotId);
+
   Future<void> addSentInvitationToSlot(
       String teamId, String slotId, String invitationId);
+
   Future<void> addReceivedInvitationToSlot(
       String teamId, String slotId, String invitationId);
 
@@ -29,6 +34,8 @@ abstract class ITeamService {
       String teamId, String slotId, String invitationId);
 
   Future<void> addPlayerToSlot(String playerId, String teamId, String slotId);
+
+  Future<bool> isSlotPublic(String teamId, String slotId);
 
   Future<List<PositionSlot>> getAllSlotsFromTeam(String teamId);
 
