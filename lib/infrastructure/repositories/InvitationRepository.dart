@@ -15,9 +15,7 @@ class InvitationRepository implements IInvitationRepository {
     try {
       await _firebaseService.setDocument(
           '$_collectionPath/${invitation.invitationId}', invitation.toJson());
-      print('Invitation added successfully: ${invitation.invitationId}');
     } catch (e) {
-      print('Failed to add invitation: $e');
       throw Exception('Failed to add invitation: $e');
     }
   }
@@ -34,7 +32,6 @@ class InvitationRepository implements IInvitationRepository {
         throw Exception('Invitation not found for ID $invitationId');
       }
     } catch (e) {
-      print('Error fetching invitation by ID $invitationId: $e');
       throw Exception('Error fetching invitation by ID $invitationId: $e');
     }
   }
@@ -55,7 +52,6 @@ class InvitationRepository implements IInvitationRepository {
       final List<Invitation> invitations = await query.first;
       return invitations;
     } catch (e) {
-      print('Failed to retrieve invitations by player $playerId: $e');
       throw Exception('Failed to retrieve invitations by player $playerId');
     }
   }
@@ -76,7 +72,6 @@ class InvitationRepository implements IInvitationRepository {
       final List<Invitation> invitations = await query.first;
       return invitations;
     } catch (e) {
-      print('Failed to retrieve invitations by team $teamId: $e');
       throw Exception('Failed to retrieve invitations by team $teamId');
     }
   }
@@ -86,9 +81,7 @@ class InvitationRepository implements IInvitationRepository {
     try {
       await _firebaseService.updateDocument(
           '$_collectionPath/${invitation.invitationId}', invitation.toJson());
-      print('Invitation updated successfully: ${invitation.invitationId}');
     } catch (e) {
-      print('Failed to update invitation: $e');
       throw Exception('Failed to update invitation: $e');
     }
   }
@@ -97,9 +90,7 @@ class InvitationRepository implements IInvitationRepository {
   Future<void> deleteInvitation(String invitationId) async {
     try {
       await _firebaseService.deleteDocument('$_collectionPath/$invitationId');
-      print('Invitation deleted successfully: $invitationId');
     } catch (e) {
-      print('Failed to delete invitation: $e');
       throw Exception('Failed to delete invitation: $e');
     }
   }

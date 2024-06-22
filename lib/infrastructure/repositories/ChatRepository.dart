@@ -28,7 +28,6 @@ class ChatRepository implements IChatRepository {
 
       return chats;
     } catch (e) {
-      print('Failed to retrieve all chats: $e');
       throw Exception('Failed to retrieve all chats');
     }
   }
@@ -43,14 +42,12 @@ class ChatRepository implements IChatRepository {
         if (chatData is Map<String, dynamic>) {
           return Chat.fromJson(chatData);
         } else {
-          print('Invalid chat data format: $chatData');
           return null;
         }
       } else {
         return null;
       }
     } catch (e) {
-      print('Error fetching chat by ID $id: $e');
       throw Exception('Error fetching chat by ID $id: $e');
     }
   }
@@ -60,9 +57,7 @@ class ChatRepository implements IChatRepository {
     try {
       await _firebaseService.setDocument(
           '$_collectionPath/${chat.chatId}', chat.toJson());
-      print('Chat added successfully: ${chat.chatId}');
     } catch (e) {
-      print('Failed to add chat: $e');
       throw Exception('Failed to add chat: $e');
     }
   }
@@ -72,9 +67,7 @@ class ChatRepository implements IChatRepository {
     try {
       await _firebaseService.updateDocument(
           '$_collectionPath/${chat.chatId}', chat.toJson());
-      print('Chat updated successfully: ${chat.chatId}');
     } catch (e) {
-      print('Failed to update chat: $e');
       throw Exception('Failed to update chat: $e');
     }
   }
@@ -83,9 +76,7 @@ class ChatRepository implements IChatRepository {
   Future<void> deleteChat(String id) async {
     try {
       await _firebaseService.deleteDocument('$_collectionPath/$id');
-      print('Chat deleted successfully: $id');
     } catch (e) {
-      print('Failed to delete chat: $e');
       throw Exception('Failed to delete chat: $e');
     }
   }
@@ -109,7 +100,6 @@ class ChatRepository implements IChatRepository {
 
       return chats;
     } catch (e) {
-      print('Failed to retrieve chats for user $userId: $e');
       throw Exception('Failed to retrieve chats for user $userId');
     }
   }

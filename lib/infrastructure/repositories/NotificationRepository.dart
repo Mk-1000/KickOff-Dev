@@ -11,20 +11,6 @@ class NotificationRepository implements INotificationRepository {
   NotificationRepository({FirebaseService? firebaseService})
       : _firebaseService = firebaseService ?? FirebaseService();
 
-  // @override
-  // Future<List<Notification>> getAllNotifications() async {
-  //   DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);
-  //   if (snapshot.exists && snapshot.value != null) {
-  //     Map<dynamic, dynamic> notificationsMap =
-  //         (snapshot.value as Map).cast<dynamic, dynamic>();
-  //     return notificationsMap.values
-  //         .map(
-  //             (e) => Notification.fromJson(Map<String, dynamic>.from(e as Map)))
-  //         .toList();
-  //   }
-  //   return [];
-  // }
-
   @override
   Future<List<Notification>> getAllNotifications() async {
     // Use Stream to listen for changes in real-time

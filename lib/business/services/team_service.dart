@@ -11,66 +11,37 @@ class TeamService implements ITeamService {
 
   @override
   Future<void> createTeam(Team team) async {
-    try {
-      await _teamRepository.addTeam(team);
-    } catch (e) {
-      throw Exception('Failed to create team: $e');
-    }
+    await _teamRepository.addTeam(team);
   }
 
   @override
   Future<List<Team>> getTeamsForUser(String userId) async {
-    try {
-      return await _teamRepository.getTeamsForUser(userId);
-    } catch (e) {
-      throw Exception('Failed to get teams for user: $e');
-    }
+    return await _teamRepository.getTeamsForUser(userId);
   }
 
   @override
   Future<void> updateTeam(Team team) async {
-    try {
-      await _teamRepository.updateTeam(team);
-    } catch (e) {
-      throw Exception('Failed to update team: $e');
-    }
+    await _teamRepository.updateTeam(team);
   }
 
   @override
   Future<void> deleteTeam(String teamId) async {
-    try {
-      await _teamRepository.deleteTeam(teamId);
-    } catch (e) {
-      throw Exception('Failed to delete team: $e');
-    }
+    await _teamRepository.deleteTeam(teamId);
   }
 
   @override
   Future<List<Team>> getAllTeams() async {
-    try {
-      return await _teamRepository.getAllTeams();
-    } catch (e) {
-      throw Exception('Failed to get all teams: $e');
-    }
+    return await _teamRepository.getAllTeams();
   }
 
   @override
   Future<Team> getTeamById(String teamId) async {
-    try {
-      return await _teamRepository.getTeamById(teamId);
-    } catch (e) {
-      throw Exception('Failed to get team by ID: $e');
-    }
+    return await _teamRepository.getTeamById(teamId);
   }
 
   @override
   Stream<List<Team>> streamTeams() {
-    try {
-      return _teamRepository
-          .streamTeams(); // Call the streamTeams from the repository
-    } catch (e) {
-      throw Exception('Failed to get team by ID: $e');
-    }
+    return _teamRepository.streamTeams();
   }
 
   @override

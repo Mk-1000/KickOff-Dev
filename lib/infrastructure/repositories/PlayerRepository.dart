@@ -26,7 +26,6 @@ class PlayerRepository implements IPlayerRepository {
       });
       return players; // Return the initially loaded players
     } catch (e) {
-      print('Failed to retrieve all players: $e');
       throw Exception('Failed to retrieve all players');
     }
   }
@@ -36,9 +35,7 @@ class PlayerRepository implements IPlayerRepository {
     try {
       await _firebaseService.setDocument(
           '$_collectionPath/${player.playerId}', player.toJson());
-      print('Player added successfully: ${player.playerId}');
     } catch (e) {
-      print('Failed to add player: $e');
       throw Exception('Failed to add player: $e');
     }
   }
@@ -48,9 +45,7 @@ class PlayerRepository implements IPlayerRepository {
     try {
       await _firebaseService.updateDocument(
           '$_collectionPath/${player.playerId}', player.toJson());
-      print('Player updated successfully: ${player.playerId}');
     } catch (e) {
-      print('Failed to update player: $e');
       throw Exception('Failed to update player: $e');
     }
   }
@@ -59,9 +54,7 @@ class PlayerRepository implements IPlayerRepository {
   Future<void> deletePlayer(String id) async {
     try {
       await _firebaseService.deleteDocument('$_collectionPath/$id');
-      print('Player deleted successfully: $id');
     } catch (e) {
-      print('Failed to delete player: $e');
       throw Exception('Failed to delete player: $e');
     }
   }
@@ -82,7 +75,6 @@ class PlayerRepository implements IPlayerRepository {
       final List<Player> players = await query.first;
       return players;
     } catch (e) {
-      print('Failed to retrieve players by team $teamId: $e');
       throw Exception('Failed to retrieve players by team $teamId');
     }
   }
@@ -99,7 +91,6 @@ class PlayerRepository implements IPlayerRepository {
         throw Exception('Player not found for ID $id');
       }
     } catch (e) {
-      print('Error fetching player by ID $id: $e');
       throw Exception('Error fetching player by ID $id: $e');
     }
   }

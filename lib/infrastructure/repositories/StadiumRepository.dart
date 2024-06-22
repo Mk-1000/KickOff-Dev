@@ -10,19 +10,6 @@ class StadiumRepository implements IStadiumRepository {
   StadiumRepository({FirebaseService? firebaseService})
       : _firebaseService = firebaseService ?? FirebaseService();
 
-  // @override
-  // Future<List<Stadium>> getAllStadiums() async {
-  //   DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);
-  //   if (snapshot.exists && snapshot.value != null) {
-  //     Map<dynamic, dynamic> stadiumsMap =
-  //         (snapshot.value as Map).cast<dynamic, dynamic>();
-  //     return stadiumsMap.values
-  //         .map((e) => Stadium.fromJson(Map<String, dynamic>.from(e as Map)))
-  //         .toList();
-  //   }
-  //   return [];
-  // }
-
   @override
   Future<List<Stadium>> getAllStadiums() async {
     // Use Stream to listen for changes in real-time

@@ -10,18 +10,6 @@ class MessageRepository implements IMessageRepository {
 
   MessageRepository({FirebaseService? firebaseService})
       : _firebaseService = firebaseService ?? FirebaseService();
-  // @override
-  // Future<List<Message>> getAllMessages() async {
-  //   DataSnapshot snapshot = await _firebaseService.getDocument(_collectionPath);
-  //   if (snapshot.exists && snapshot.value != null) {
-  //     Map<dynamic, dynamic> messagesMap =
-  //         (snapshot.value as Map).cast<dynamic, dynamic>();
-  //     return messagesMap.values
-  //         .map((e) => Message.fromJson(Map<String, dynamic>.from(e as Map)))
-  //         .toList();
-  //   }
-  //   return [];
-  // }
 
   @override
   Future<List<Message>> getAllMessages() async {

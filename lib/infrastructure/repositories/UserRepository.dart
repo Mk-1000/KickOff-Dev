@@ -18,9 +18,7 @@ class UserRepository implements IUserRepository {
       }
       await _firebaseService.setDocument(
           '$_collectionPath/${user.userId}', user.toJson());
-      print('User added successfully: ${user.userId}');
     } catch (e) {
-      print('Failed to add user: $e');
       throw Exception('Failed to add user: $e');
     }
   }
@@ -35,7 +33,6 @@ class UserRepository implements IUserRepository {
       }
       throw Exception('User not found for ID $id');
     } catch (e) {
-      print('Error fetching user by ID $id: $e');
       throw Exception('Error fetching user by ID $id: $e');
     }
   }
@@ -45,9 +42,7 @@ class UserRepository implements IUserRepository {
     try {
       await _firebaseService.updateDocument(
           '$_collectionPath/${user.userId}', user.toJson());
-      print('User updated successfully: ${user.userId}');
     } catch (e) {
-      print('Failed to update user: $e');
       throw Exception('Failed to update user: $e');
     }
   }
@@ -56,9 +51,7 @@ class UserRepository implements IUserRepository {
   Future<void> deleteUser(String id) async {
     try {
       await _firebaseService.deleteDocument('$_collectionPath/$id');
-      print('User deleted successfully: $id');
     } catch (e) {
-      print('Failed to delete user: $e');
       throw Exception('Failed to delete user: $e');
     }
   }
@@ -78,7 +71,6 @@ class UserRepository implements IUserRepository {
       }
       return [];
     } catch (e) {
-      print('Failed to retrieve all users: $e');
       throw Exception('Failed to retrieve all users');
     }
   }

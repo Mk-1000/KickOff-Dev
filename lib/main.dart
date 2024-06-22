@@ -20,13 +20,13 @@ void main() async {
   );
 
   // await TeamManager().updateSlotStatusToPublic(
-  //     "30325fa5-a630-4f94-ad61-a78729901407",
-  //     "751c4c78-3406-4c69-b18a-1f6959fe3d2c");
+  //     "e0f2004d-1d39-4feb-bb0a-03dbbf74036f",
+  //     "1e7085fe-a55b-4a29-94da-55ddfecbdf0b");
 
   // await InvitationManager().sendInvitationToTeam(
-  //     teamId: "30325fa5-a630-4f94-ad61-a78729901407",
-  //     playerId: "whAbpvIFEJOCg1euutJCLcZtHmR2",
-  //     slotId: "751c4c78-3406-4c69-b18a-1f6959fe3d2c");
+  //     teamId: "e0f2004d-1d39-4feb-bb0a-03dbbf74036f",
+  //     playerId: "8kKrVpmGqiXeHjGI9XDGMDjNc7L2",
+  //     slotId: "1e7085fe-a55b-4a29-94da-55ddfecbdf0b");
 
   runApp(const MyApp());
 }

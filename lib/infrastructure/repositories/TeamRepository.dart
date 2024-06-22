@@ -53,9 +53,7 @@ class TeamRepository implements ITeamRepository {
     try {
       await _firebaseService.setDocument(
           '$_collectionPath/${team.teamId}', team.toJson());
-      print('Team added successfully: ${team.teamId}');
     } catch (e) {
-      print('Failed to add team: $e');
       throw Exception('Failed to add team: $e');
     }
   }
@@ -65,9 +63,7 @@ class TeamRepository implements ITeamRepository {
     try {
       await _firebaseService.updateDocument(
           '$_collectionPath/${team.teamId}', team.toJson());
-      print('Team updated successfully: ${team.teamId}');
     } catch (e) {
-      print('Failed to update team: $e');
       throw Exception('Failed to update team: $e');
     }
   }
@@ -76,9 +72,7 @@ class TeamRepository implements ITeamRepository {
   Future<void> deleteTeam(String id) async {
     try {
       await _firebaseService.deleteDocument('$_collectionPath/$id');
-      print('Team deleted successfully: $id');
     } catch (e) {
-      print('Failed to delete team: $e');
       throw Exception('Failed to delete team: $e');
     }
   }
@@ -92,7 +86,6 @@ class TeamRepository implements ITeamRepository {
         return team.slots!.any((slot) => slot.playerId == userId);
       }).toList();
     } catch (e) {
-      print('Failed to retrieve teams for user $userId: $e');
       throw Exception('Failed to retrieve teams for user');
     }
   }
@@ -119,7 +112,6 @@ class TeamRepository implements ITeamRepository {
         throw Exception('Player not found for ID $id');
       }
     } catch (e) {
-      print('Error fetching player by ID $id: $e');
       throw Exception('Error fetching player by ID $id: $e');
     }
   }
