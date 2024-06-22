@@ -3,7 +3,11 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
+import 'package:takwira/domain/entities/Player.dart';
+import 'package:takwira/domain/entities/PositionSlot.dart';
+import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/view/login%20&%20sign%20up/completeSginup/widget/postion.dart';
+import 'package:takwira/presentation/view/login%20&%20sign%20up/login.dart';
 import 'package:takwira/presentation/view/widgets/button/blueButton/BlueButton.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/InputFild.dart';
@@ -158,7 +162,7 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
             alignment: Alignment.topLeft,
             //  margin: EdgeInsets.only(bottom: 26),
             child: inputFild(
-              controller: UserNameController,
+              controller: phoneController,
               hint: 'Entrez votre nom d\'utilisateur',
               obscureText: false,
               size: size,
@@ -246,6 +250,9 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
           ),
           BlueButton(
             onTap: () {
+              if(state.page == 3) {
+                PlayerManager().signUpPlayer(LoginState.emailController.text, LoginState.passController.text, Player(email: LoginState.emailController.text, nickname: UserNameController.text, birthdate: _selectedDate, preferredPosition: Position.values[PostionState.selected!] , phoneNumber: phoneController.text, jerseySize: "S")) ; 
+              }
               completeSignup.add(changePage(state.page));
             },
             text: 'Suivant',

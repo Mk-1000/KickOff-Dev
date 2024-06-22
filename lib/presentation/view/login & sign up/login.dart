@@ -1,6 +1,7 @@
 /// The Login class is a StatefulWidget that displays a login form with email and password fields, along
 /// with options for forgot password, terms and conditions, and social media login buttons.
 import 'package:flutter/material.dart';
+import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/view/GoogleNavBar/Navbar.dart';
 import 'package:takwira/presentation/view/Home/home_page.dart';
 import 'package:takwira/presentation/view/NavBar/navBarMain.dart';
@@ -15,12 +16,12 @@ class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Login> createState() => LoginState();
 }
 
-class _LoginState extends State<Login> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+class LoginState extends State<Login> {
+ static  TextEditingController emailController = TextEditingController();
+  static  TextEditingController passController = TextEditingController();
   bool isChecked = false;
   bool login = true;
   @override
@@ -28,11 +29,16 @@ class _LoginState extends State<Login> {
     Size size = MediaQuery.of(context).size;
     Login() {
       if (login) {
-        Navigator.push(
+        PlayerManager().signInWithEmailPassword(emailController.text, passController.text).then((value) {
+          if(value != "") {
+            Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => GoogleNavBar()),
         );
+          }
+        });
       } else {
+        
         Navigator.pushReplacement<void, void>(
           context,
           MaterialPageRoute<void>(
