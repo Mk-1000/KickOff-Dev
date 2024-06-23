@@ -130,7 +130,7 @@ class TeamService implements ITeamService {
 
   @override
   Future<void> addPlayerToSlot(
-      String playerId, String teamId, String slotId) async {
+      String teamId, String playerId, String slotId) async {
     try {
       final team = await getTeamById(teamId);
       team.addPlayerToSlot(playerId, slotId);

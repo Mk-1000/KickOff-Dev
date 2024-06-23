@@ -21,4 +21,8 @@ abstract class IPlayerService {
   Future<void> removeSentInvitation(String playerId, String invitationId);
 
   Future<void> removeReceivedInvitation(String playerId, String invitationId);
+
+  Future<void> addTeamId(String playerId, String teamId);
+
+  Future<void> removeTeamId(String playerId, String teamId);
 }

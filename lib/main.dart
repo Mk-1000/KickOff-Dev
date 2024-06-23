@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:takwira/business/services/player_service.dart';
+import 'package:takwira/business/services/team_service.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/infrastructure/repositories/TeamRepository.dart';
 import 'package:takwira/presentation/managers/InvitationManager.dart';
@@ -27,6 +28,9 @@ void main() async {
   //     teamId: "e0f2004d-1d39-4feb-bb0a-03dbbf74036f",
   //     playerId: "8kKrVpmGqiXeHjGI9XDGMDjNc7L2",
   //     slotId: "1e7085fe-a55b-4a29-94da-55ddfecbdf0b");
+
+  await InvitationManager()
+      .respondToInvitation("e5ee04c3-68ec-461f-86d8-42dfd82811ac", true);
 
   runApp(const MyApp());
 }

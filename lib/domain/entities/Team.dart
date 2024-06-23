@@ -12,6 +12,7 @@ class Team {
   int maxDefenders;
   int maxMidfielders;
   int maxForwards;
+  late List<String> players = [];
   late List<PositionSlot>? slots = [];
   late Map<String, List<String>> receivedSlotInvitations = {};
   late Map<String, List<String>> sentSlotInvitations = {};
@@ -71,17 +72,41 @@ class Team {
     );
   }
 
+  void newUpdate() {
+    updatedAt = DateTime.now().millisecondsSinceEpoch;
+  }
+
+  // Method to add a player to the team
+  void addPlayer(String playerId) {
+    if (!players.contains(playerId)) {
+      players.add(playerId);
+      newUpdate();
+    }
+  }
+
+  // Method to remove a player from the team
+  void removePlayer(String playerId) {
+    players.remove(playerId);
+    newUpdate();
+  }
+
   void addPlayerToSlot(String playerId, String slotId) {
-    final index = int.tryParse(slotId);
-    if (index == null || index >= slots!.length) {
+    // Check if the player already exists in the team
+    if (players.contains(playerId)) {
+      throw Exception('Player $playerId already exists in the team');
+    }
+
+    final slotIndex = slots!.indexWhere((slot) => slot.slotId == slotId);
+    if (slotIndex == -1) {
       throw Exception('Slot ID $slotId does not exist');
     }
-    if (slots?[index].status != SlotStatus.Available) {
-      throw Exception('Slot $slotId is not available');
+
+    if (slots![slotIndex].status != SlotStatus.Reserved) {
+      slots![slotIndex].status = SlotStatus.Reserved;
+      slots![slotIndex].playerId = playerId;
+      addPlayer(playerId);
+      newUpdate();
     }
-    slots?[index].status = SlotStatus.Reserved;
-    slots?[index].playerId = playerId;
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
   }
 
   void changeSlotLimits({
@@ -95,7 +120,7 @@ class Team {
 
     _initializeSlots();
 
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
+    newUpdate();
   }
 
   void addReceivedInvitationToSlot(String slotId, String invitationId) {
@@ -149,7 +174,7 @@ class Team {
     slots![slotIndex].type = Type.Public;
     print('test' + slots![slotIndex].toJson().toString());
 
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
+    newUpdate();
   }
 
   void updateSlotStatusToPrivate(String slotId) {
@@ -158,7 +183,7 @@ class Team {
       throw Exception('Slot ID $slotId does not exist');
     }
     slots![slotIndex].type = Type.Private;
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
+    newUpdate();
   }
 
   List<PositionSlot> getAllSlots() {
@@ -182,6 +207,7 @@ class Team {
       'maxDefenders': maxDefenders,
       'maxMidfielders': maxMidfielders,
       'maxForwards': maxForwards,
+      'players': players,
     };
   }
 
@@ -196,8 +222,8 @@ class Team {
     final createdAt = json['createdAt'] as int?;
     final updatedAt = json['updatedAt'] as int?;
     final chat = json['chat'] as String?;
-
     final slotsJson = json['slots'] as List;
+    final players = List<String>.from(json['players'] ?? []);
 
     // Convert the slotsJson to a List<PositionSlot>
     List<PositionSlot> slots = [];
@@ -253,6 +279,7 @@ class Team {
     )
       ..slots?.addAll(slots)
       ..receivedSlotInvitations.addAll(receivedSlotInvitations)
-      ..sentSlotInvitations.addAll(sentSlotInvitations);
+      ..sentSlotInvitations.addAll(sentSlotInvitations)
+      ..players.addAll(players);
   }
 }

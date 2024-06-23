@@ -108,10 +108,17 @@ class TeamManager {
       }
 
       // Remove the team ID from the player's list of team IDs
-      player.removeTeamId(teamId);
+      // player.removeTeamId(teamId);
+      // await _playerManager.updatePlayer(player);
 
-      // Update the player in the database
-      await _playerManager.updatePlayer(player);
+      // Remove the team ID from all players associated with the team
+      for (String playerId in team.players) {
+        Player? teamPlayer = await _playerManager.getPlayerDetails(playerId);
+        if (teamPlayer != null) {
+          teamPlayer.removeTeamId(teamId);
+          await _playerManager.updatePlayer(teamPlayer);
+        }
+      }
 
       // Delete all invitations
       team.receivedSlotInvitations.forEach((slotId, invitations) {
@@ -125,6 +132,7 @@ class TeamManager {
         });
       });
 
+      // Delete the team
       await deleteTeam(teamId);
 
       print('Team, chat, and player records updated successfully');
@@ -172,23 +180,19 @@ class TeamManager {
       // Set the chat ID in the team if the chat ID is available
       team.chat = teamChat.chatId;
 
-      // Assuming the player will be added as a goalkeeper with number 1
-      PositionSlot goalkeeperSlot = team.slots!.firstWhere(
+      PositionSlot slot = team.slots!.firstWhere(
         (slot) =>
             slot.position == player.preferredPosition &&
             slot.status == SlotStatus.Available,
-        orElse: () => throw Exception('No available goalkeeper slot found'),
+        orElse: () => throw Exception('No available slot found'),
       );
 
-      // Add the player to the goalkeeper slot
-      goalkeeperSlot.playerId = player.playerId;
-      goalkeeperSlot.status = SlotStatus.Reserved;
-
-      // Update team's updatedAt timestamp
-      team.updatedAt = DateTime.now().millisecondsSinceEpoch;
+      // Add the player to the slot
+      team.addPlayerToSlot(player.playerId, slot.slotId);
 
       // Create the team
       await _teamService.createTeam(team);
+
       _teams.add(team);
 
       // Add team ID to player's team list
@@ -236,8 +240,8 @@ class TeamManager {
   }
 
   Future<void> addPlayerToSlot(
-      String playerId, String teamId, String slotId) async {
-    return await _teamService.addPlayerToSlot(playerId, teamId, slotId);
+      String teamId, String playerId, String slotId) async {
+    return await _teamService.addPlayerToSlot(teamId, playerId, slotId);
   }
 
   Future<List<PositionSlot>> getAllSlotsFromTeam(String teamId) async {

@@ -144,6 +144,8 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                   SizedBox(height: 10),
                   Text('Team ID: ${_team!.teamId}'),
                   SizedBox(height: 10),
+                  Text('player IDs: ${_team!.players.toString()}'),
+                  SizedBox(height: 10),
                   Text('Captain ID: ${_team!.captainId}'),
                   SizedBox(height: 20),
                   _buildSlotLimitField(

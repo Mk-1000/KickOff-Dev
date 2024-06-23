@@ -110,4 +110,12 @@ class PlayerManager {
       String playerId, String invitationId) async {
     _playerService.removeReceivedInvitation(playerId, invitationId);
   }
+
+  Future<void> addTeamId(String playerId, String teamId) async {
+    await _playerService.addTeamId(playerId, teamId);
+  }
+
+  Future<void> removeTeamId(String playerId, String teamId) async {
+    await _playerService.removeTeamId(playerId, teamId);
+  }
 }

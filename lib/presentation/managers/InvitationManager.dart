@@ -25,6 +25,7 @@ class InvitationManager {
 
       await _playerManager.addReceivedInvitationToSlot(
           playerId, invitation.invitationId);
+
       await _teamManager.addSentInvitationToSlot(
           teamId, slotId, invitation.invitationId);
     } catch (e) {
@@ -67,7 +68,8 @@ class InvitationManager {
       if (accept) {
         invitation.accept();
         await _teamManager.addPlayerToSlot(
-            invitation.playerId, invitation.teamId, invitation.slotId);
+            invitation.teamId, invitation.playerId, invitation.slotId);
+        await _playerManager.addTeamId(invitation.playerId, invitation.teamId);
       } else {
         invitation.reject();
       }

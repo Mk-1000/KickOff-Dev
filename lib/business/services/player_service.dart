@@ -4,7 +4,7 @@ import '../../domain/repositories/IPlayerRepository.dart';
 import '../../domain/services/iplayer_service.dart';
 
 class PlayerService implements IPlayerService {
-  IPlayerRepository _playerRepository;
+  final IPlayerRepository _playerRepository;
 
   PlayerService({IPlayerRepository? playerRepository})
       : _playerRepository = playerRepository ?? PlayerRepository();
@@ -108,6 +108,27 @@ class PlayerService implements IPlayerService {
       await updatePlayer(player);
     } catch (e) {
       print('Failed to remove invitation from Player: $e');
+    }
+  }
+
+  @override
+  Future<void> addTeamId(String playerId, String teamId) async {
+    try {
+      final Player player = await getPlayerDetails(playerId);
+      player.addTeamId(teamId);
+      await updatePlayer(player);
+    } catch (e) {
+      print('Failed to add team to Player: $e');
+    }
+  }
+
+  @override
+  Future<void> removeTeamId(String playerId, String teamId) async {
+    try {
+      final Player player = await getPlayerDetails(playerId);
+      player.removeTeamId(teamId);
+    } catch (e) {
+      print('Failed to add team to Player: $e');
     }
   }
 }
