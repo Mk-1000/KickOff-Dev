@@ -151,6 +151,15 @@ class Team {
     sentSlotInvitations[slotId]!.remove(invitationId);
   }
 
+  String? getPlayerPosition(String playerId) {
+    for (PositionSlot slot in slots!) {
+      if (slot.playerId == playerId) {
+        return slot.position.toString();
+      }
+    }
+    return null;
+  }
+
   PositionSlot? getSlotById(String slotId) {
     final slotIndex = slots!.indexWhere((slot) => slot.slotId == slotId);
     if (slotIndex == -1) {
@@ -169,11 +178,7 @@ class Team {
     if (slotIndex == -1) {
       throw Exception('Slot ID $slotId does not exist');
     }
-
-    print('test' + slots![slotIndex].toJson().toString());
     slots![slotIndex].type = Type.Public;
-    print('test' + slots![slotIndex].toJson().toString());
-
     newUpdate();
   }
 
