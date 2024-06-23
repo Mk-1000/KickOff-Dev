@@ -20,18 +20,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // await TeamManager().updateSlotStatusToPublic(
-  //     "e0f2004d-1d39-4feb-bb0a-03dbbf74036f",
-  //     "1e7085fe-a55b-4a29-94da-55ddfecbdf0b");
-
-  // await InvitationManager().sendInvitationToTeam(
-  //     teamId: "e0f2004d-1d39-4feb-bb0a-03dbbf74036f",
-  //     playerId: "8kKrVpmGqiXeHjGI9XDGMDjNc7L2",
-  //     slotId: "1e7085fe-a55b-4a29-94da-55ddfecbdf0b");
-
-  await InvitationManager()
-      .respondToInvitation("e5ee04c3-68ec-461f-86d8-42dfd82811ac", true);
-
   runApp(const MyApp());
 }
 
