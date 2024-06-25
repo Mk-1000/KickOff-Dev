@@ -3,6 +3,7 @@ import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/presentation/testManager/ImageUploadScreen.dart';
 import 'package:takwira/presentation/testManager/TeamDetailsPage.dart';
 import 'package:takwira/presentation/testManager/TeamSlotsPage.dart';
 import 'package:takwira/presentation/testManager/TestCreateTeamPage.dart';
@@ -66,6 +67,16 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
     }
   }
 
+  // Function to navigate to the upload page
+  void _navigateToUploadPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UploadManagerScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,6 +91,10 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text('Welcome, ${player!.nickname}',
                       style: TextStyle(fontSize: 20)),
+                ),
+                ElevatedButton(
+                  onPressed: _navigateToUploadPage,
+                  child: Text("Upload Images"),
                 ),
                 Expanded(
                   child: ListView.builder(
