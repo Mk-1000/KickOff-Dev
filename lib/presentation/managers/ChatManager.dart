@@ -17,16 +17,16 @@ class ChatManager {
 
   Future<void> createChatForTeam(Chat chat) async {
     try {
-      await _chatService.createChatForTeam(chat);
+      await _chatService.createChat(chat);
     } catch (e) {
       throw Exception('Failed to create chat: $e');
     }
   }
 
-  Future<void> createNewChat(
-      Chat chat, Message initialMessage, String participantId) async {
+  Future<void> createNewChat(Chat chat, String participantId) async {
     try {
-      await _chatService.createChat(chat, initialMessage, participantId);
+      await _chatService.createChat(chat);
+      await _chatService.addParticipantToChat(chat.chatId, participantId);
     } catch (e) {
       throw Exception('Failed to create chat: $e');
     }
@@ -87,6 +87,36 @@ class ChatManager {
       }
     } catch (e) {
       throw Exception('Failed to load chat participants: $e');
+    }
+  }
+
+  Future<List<Message>> getMessagesForChat(String chatId) async {
+    try {
+      final Chat? chat = await _chatService.getChatById(chatId);
+      if (chat != null) {
+        return chat.messages;
+      } else {
+        throw Exception('Chat not found for ID: $chatId');
+      }
+    } catch (e) {
+      throw Exception('Failed to get messages for chat $chatId: $e');
+    }
+  }
+
+  Stream<List<Message>> getMessagesStream(String chatId) {
+    return _chatService.getMessagesStream(chatId);
+  }
+
+  Future<void> sendMessage(String chatId, String messageContent) async {
+    try {
+      final Message message = Message(
+        senderId:
+            'currentUserId', // You should replace this with the actual sender ID
+        content: messageContent,
+      );
+      await _chatService.addMessageToChat(chatId, message);
+    } catch (e) {
+      throw Exception('Failed to send message: $e');
     }
   }
 }

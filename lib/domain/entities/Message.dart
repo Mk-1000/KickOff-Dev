@@ -1,41 +1,34 @@
 import 'package:takwira/utils/IDUtils.dart';
 
 class Message {
-  String _messageId;
-  String _content;
-  int _sendDate;
-  String _senderId;
+  final String messageId;
+  final String content;
+  final int sendAt;
+  final String senderId;
 
   Message({
     String? messageId,
-    required String content,
-    required String senderId,
-    int? sendDate,
-  })  : _messageId = messageId ?? IDUtils.generateUniqueId(),
-        _content = content,
-        _sendDate = sendDate ?? DateTime.now().millisecondsSinceEpoch,
-        _senderId = senderId;
-
-  String get messageId => _messageId;
-  String get content => _content;
-  int get sendDate => _sendDate;
-  String get senderId => _senderId;
+    required this.content,
+    required this.senderId,
+    int? sendAt,
+  })  : messageId = messageId ?? IDUtils.generateUniqueId(),
+        sendAt = sendAt ?? DateTime.now().millisecondsSinceEpoch;
 
   Map<String, dynamic> toJson() {
     return {
-      'messageId': _messageId,
-      'content': _content,
-      'sendDate': _sendDate,
-      'senderId': _senderId,
+      'messageId': messageId,
+      'content': content,
+      'sendAt': sendAt,
+      'senderId': senderId,
     };
   }
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
-      messageId: json['messageId'],
-      content: json['content'] ?? '',
-      sendDate: json['sendDate'] as int?,
-      senderId: json['senderId'] ?? '',
+      messageId: json['messageId'] as String,
+      content: json['content'] as String? ?? '',
+      sendAt: json['sendAt'] as int? ?? DateTime.now().millisecondsSinceEpoch,
+      senderId: json['senderId'] as String? ?? '',
     );
   }
 }

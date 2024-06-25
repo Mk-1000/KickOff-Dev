@@ -22,27 +22,16 @@ class ChatService implements IChatService {
   @override
   Future<Chat?> getChatById(String chatId) async {
     try {
-      return await _chatRepository.getChatById(chatId);
+      Chat? chat = await _chatRepository.getChatById(chatId);
+      return chat;
     } catch (e) {
-      throw Exception('Failed to get chat by ID: $e');
+      throw Exception('Faaaaaaailed to get chat by ID: $e');
     }
   }
 
   @override
-  Future<void> createChatForTeam(Chat chat) async {
+  Future<void> createChat(Chat chat) async {
     try {
-      await _chatRepository.addChat(chat);
-    } catch (e) {
-      throw Exception('Failed to create chat: $e');
-    }
-  }
-
-  @override
-  Future<void> createChat(
-      Chat chat, Message initialMessage, String participantId) async {
-    try {
-      chat.addParticipant(participantId);
-      chat.addMessage(initialMessage);
       await _chatRepository.addChat(chat);
     } catch (e) {
       throw Exception('Failed to create chat: $e');
@@ -93,5 +82,10 @@ class ChatService implements IChatService {
     } catch (e) {
       throw Exception('Failed to add message to chat: $e');
     }
+  }
+
+  @override
+  Stream<List<Message>> getMessagesStream(String chatId) {
+    return _chatRepository.getMessagesStream(chatId);
   }
 }

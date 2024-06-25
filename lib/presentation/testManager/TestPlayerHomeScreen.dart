@@ -3,6 +3,7 @@ import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/presentation/testManager/ChatPage.dart';
 import 'package:takwira/presentation/testManager/ImageUploadScreen.dart';
 import 'package:takwira/presentation/testManager/TeamDetailsPage.dart';
 import 'package:takwira/presentation/testManager/TeamSlotsPage.dart';
@@ -77,6 +78,17 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
     );
   }
 
+  void _navigateToChatPage(String chatId) {
+    print(
+        'ChatId is $chatId'); // Print statement moved outside the MaterialPageRoute builder
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatPage(chatId: chatId),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,10 +124,9 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                                     _deleteTeam(teams[index].teamId),
                               ),
                               IconButton(
-                                icon: Icon(Icons.accessibility,
-                                    color: Colors.blue),
-                                onPressed: () =>
-                                    TeamSlotsPage(team: teams[index]),
+                                icon: Icon(Icons.message, color: Colors.blue),
+                                onPressed: () => _navigateToChatPage(
+                                    teams[index].chat.toString()),
                               ),
                               IconButton(
                                 icon: Icon(Icons.arrow_forward),
