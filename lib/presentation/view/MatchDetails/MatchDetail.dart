@@ -2,6 +2,7 @@ import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/view/CreateTeam/widget/CircleNumber.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/Chat/chat.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/demande.dart';
@@ -11,7 +12,8 @@ import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
 class MatchDetails extends StatefulWidget {
-  const MatchDetails({super.key});
+  final Team team;
+  const MatchDetails({super.key, required this.team});
 
   @override
   State<MatchDetails> createState() => _MatchDetailsState();
@@ -19,7 +21,7 @@ class MatchDetails extends StatefulWidget {
 
 class _MatchDetailsState extends State<MatchDetails> {
   int page = 0;
-  bool dateReserved = true;
+  bool dateReserved = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +53,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       AllText.Autotext(
-                          text: "test1",
+                          text: widget.team.teamName,
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: Colors.white),
@@ -75,7 +77,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                     Row(
                       children: [
                         Hero(
-                          tag: "id_0",
+                          tag: widget.team.teamId,
                           child: ClipRRect(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(30)),
@@ -113,6 +115,8 @@ class _MatchDetailsState extends State<MatchDetails> {
                         fontSize: 32,
                         fontWeight: FontWeight.w500,
                         color: Colors.white),
+                       
+
                     Row(
                       children: [
                         Column(
@@ -228,8 +232,8 @@ class _MatchDetailsState extends State<MatchDetails> {
                       Text("Demandes"),
                     ],
                     views: [
-                      Info(), // Make sure these widgets exist and are imported
-                      Chat(),
+                      Info(team: widget.team,), // Make sure these widgets exist and are imported
+                      Chat(team: widget.team,),
                       Demande(),
                     ],
                     onChange: (index) => print('Selected index: $index'),

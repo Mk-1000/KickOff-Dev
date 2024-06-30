@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
-class Message extends StatelessWidget {
+class MessageUi extends StatelessWidget {
   final String imageUrl;
   final bool me;
-  const Message({super.key, required this.imageUrl, required this.me});
+  final String content ; 
+  const MessageUi({super.key, required this.imageUrl, required this.me, required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class Message extends StatelessWidget {
               // width: MediaQuery.of(context).size.width*0.65 ,
               child: AllText.Autotext(
                   text:
-                      "Nous et nos partenaires sollicitons votre consentement afin de traiter vos donné",
+                    content,
                   fontSize: 14,
                   fontWeight: FontWeight.normal,
                   color: Colors.grey,
@@ -78,8 +79,8 @@ class Message extends StatelessWidget {
                       maxWidth: MediaQuery.of(context).size.width * 0.65),
                   // width: MediaQuery.of(context).size.width*0.65 ,
                   child: AllText.Autotext(
-                      text:
-                          "Nous et nos partenaires sollicitons votre consentement afin de traiter vos donné",
+                      text:content
+                         ,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/view/widgets/StadeWidget/Stade.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
 class Info extends StatefulWidget {
-  const Info({super.key});
+  final Team team; 
+  const Info({super.key, required this.team});
 
   @override
   State<Info> createState() => _InfoState();
@@ -16,7 +18,8 @@ class _InfoState extends State<Info> {
       // margin: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: [
-          Stade(),
+          Stade(defender: widget.team.maxDefenders, mid:  widget.team.maxMidfielders, attack:  widget.team.maxForwards,),
+
           Expanded(
               child: Container(
             width: double.infinity,
@@ -68,7 +71,7 @@ class _InfoState extends State<Info> {
                 Expanded(
                     child: ListView.builder(
                   padding: EdgeInsets.only(top: 8),
-                  itemCount: 6,
+                  itemCount: widget.team.slots!.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 6),
@@ -95,7 +98,7 @@ class _InfoState extends State<Info> {
                           Container(
                             width: 80,
                             child: AllText.Autotext(
-                                text: "Gardien",
+                                text: widget.team.slots![index].position.name,
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey),
@@ -103,7 +106,7 @@ class _InfoState extends State<Info> {
                           Container(
                             width: 80,
                             child: AllText.Autotext(
-                                text: "1",
+                                text: widget.team.slots![index].number.toString(),
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey),

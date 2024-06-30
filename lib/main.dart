@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:takwira/business/services/chat_service.dart';
 import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/presentation/testManager/TestSignInPlayer.dart';
+import 'package:takwira/presentation/view/Onbording/Onbording.dart';
 import 'package:takwira/presentation/view/themes/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: Themes().lightTheme,
-      home: TestSignInPlayer(),
+      home: Onbording(),
     );
   }
 }

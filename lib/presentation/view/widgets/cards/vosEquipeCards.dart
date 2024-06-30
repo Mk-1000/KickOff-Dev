@@ -8,7 +8,7 @@ class VosEquipeCard extends StatefulWidget {
   final String postion;
   final String place;
   final bool captine;
-  final int id;
+  final String id;
 
   const VosEquipeCard(
       {Key? key,
@@ -80,7 +80,7 @@ class _VosEquipeCardState extends State<VosEquipeCard>
       child: Row(
         children: [
           Hero(
-            tag: "id_" + widget.id.toString(),
+            tag: widget.id,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(cornerRadius),

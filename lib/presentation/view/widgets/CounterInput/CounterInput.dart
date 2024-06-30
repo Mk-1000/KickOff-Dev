@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/presentation/view/CreateTeam/CreateTeamMain.dart';
+import 'package:takwira/presentation/view/CreateTeam/bloc/bloc/create_team_bloc.dart';
 
 class CounterInput extends StatefulWidget {
   final double width ;
  final double height ;
  final double iconSize  ; 
-  const CounterInput({super.key, required this.width, required this.height, required this.iconSize});
+ final String titre  ; 
+    int?  counter ; 
+   CounterInput({super.key, required this.width, required this.height, required this.iconSize,this.counter, required this.titre });
   @override
   _CounterInputState createState() => _CounterInputState();
 }
 
 class _CounterInputState extends State<CounterInput> {
-  int _currentValue = 0;
+  
 
   void _increment() {
-    setState(() {
-      _currentValue++;
-    });
+    CreateTeam.CreateTeamController.add(Incrment(titre: widget.titre));
+
   }
 
   void _decrement() {
-    setState(() {
-      if (_currentValue > 0) _currentValue--;
-    });
+        CreateTeam.CreateTeamController.add(Decrement(titre: widget.titre));
+
+    // setState(() {
+    //   if (widget.counter! > 0 && )  widget.counter = widget.counter!+1;
+    // });
   }
 
   @override
@@ -44,7 +49,7 @@ class _CounterInputState extends State<CounterInput> {
           Container(
             // padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              '$_currentValue',
+              widget.counter.toString(),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
