@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
-import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/presentation/managers/InvitationManager.dart';
-import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
+import 'package:takwira/presentation/managers/TeamManager.dart';
 
 class TeamDetailsPage extends StatefulWidget {
   final String teamId;
@@ -210,6 +210,49 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
               Text('Invite Player:'),
               _buildPlayerDropdown(slot.slotId),
             ],
+            SizedBox(height: 10),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      // Toggle slot type
+                      if (slot.slotType == SlotType.Public) {
+                        await _teamManager.updateSlotStatusToPrivate(
+                            _team!.teamId, slot.slotId);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Slot made Private')),
+                        );
+                        setState(() {
+                          _loadTeam;
+                        });
+                        ;
+                      } else {
+                        await _teamManager.updateSlotStatusToPublic(
+                            _team!.teamId, slot.slotId);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Slot made Public')),
+                        );
+                      }
+                      setState(() {
+                        // Update UI to reflect changes
+                        _team = _team!;
+                      });
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to update slot: $e')),
+                      );
+                    }
+                  },
+                  child: Text(
+                    slot.slotType == SlotType.Public
+                        ? 'Make Private'
+                        : 'Make Public',
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

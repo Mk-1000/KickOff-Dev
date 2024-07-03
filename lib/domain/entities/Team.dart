@@ -1,21 +1,23 @@
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/utils/IDUtils.dart';
 
+import '../../utils/DateTimeUtils.dart';
+
 class Team {
   final String teamId;
   final String teamName;
   final String captainId;
-  late String? chat;
+  String? chat;
   final int createdAt;
   int updatedAt;
   final int maxGoalkeepers;
   int maxDefenders;
   int maxMidfielders;
   int maxForwards;
-  late List<String> players = [];
-  late List<PositionSlot>? slots = [];
-  late Map<String, List<String>> receivedSlotInvitations = {};
-  late Map<String, List<String>> sentSlotInvitations = {};
+  List<String> players;
+  List<PositionSlot> slots;
+  Map<String, List<String>> receivedSlotInvitations;
+  Map<String, List<String>> sentSlotInvitations;
 
   Team({
     String? teamId,
@@ -28,12 +30,19 @@ class Team {
     this.maxMidfielders = 4,
     this.maxForwards = 2,
     this.maxGoalkeepers = 1,
+    List<String>? players,
+    List<PositionSlot>? slots,
+    Map<String, List<String>>? receivedSlotInvitations,
+    Map<String, List<String>>? sentSlotInvitations,
   })  : teamId = teamId ?? IDUtils.generateUniqueId(),
-        createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
-        updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch {
-    receivedSlotInvitations = {};
-    sentSlotInvitations = {};
-  }
+        createdAt = createdAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        updatedAt = updatedAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        players = players ?? [],
+        slots = slots ?? [],
+        receivedSlotInvitations = receivedSlotInvitations ?? {},
+        sentSlotInvitations = sentSlotInvitations ?? {};
 
   List<PositionSlot> initializeSlotsList({
     required int goalkeepers,
@@ -47,6 +56,7 @@ class Team {
     void addSlot(Position position, int count) {
       for (int i = 0; i < count; i++) {
         slots.add(PositionSlot(
+          teamId: teamId,
           slotId: IDUtils.generateUniqueId(),
           number: slotNumber,
           position: position,
@@ -73,39 +83,54 @@ class Team {
   }
 
   void newUpdate() {
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
+    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }
 
-  // Method to add a player to the team
+// Method to add a player to the team
   void addPlayer(String playerId) {
-    if (!players.contains(playerId)) {
-      players.add(playerId);
-      newUpdate();
+    try {
+      if (!players.contains(playerId)) {
+        players.add(playerId);
+        newUpdate();
+      }
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
   }
 
-  // Method to remove a player from the team
+// Method to remove a player from the team
   void removePlayer(String playerId) {
-    players.remove(playerId);
-    newUpdate();
+    try {
+      players.remove(playerId);
+      newUpdate();
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
+    }
   }
 
   void addPlayerToSlot(String playerId, String slotId) {
-    // Check if the player already exists in the team
-    if (players.contains(playerId)) {
-      throw Exception('Player $playerId already exists in the team');
-    }
+    try {
+      // Check if the player already exists in the team
+      if (players.contains(playerId)) {
+        throw Exception('Player $playerId already exists in the team');
+      }
 
-    final slotIndex = slots!.indexWhere((slot) => slot.slotId == slotId);
-    if (slotIndex == -1) {
-      throw Exception('Slot ID $slotId does not exist');
-    }
+      final slotIndex = slots.indexWhere((slot) => slot.slotId == slotId);
+      if (slotIndex == -1) {
+        throw Exception('Slot ID $slotId does not exist');
+      }
 
-    if (slots![slotIndex].status != SlotStatus.Reserved) {
-      slots![slotIndex].status = SlotStatus.Reserved;
-      slots![slotIndex].playerId = playerId;
-      addPlayer(playerId);
-      newUpdate();
+      if (slots[slotIndex].status != SlotStatus.Reserved) {
+        slots[slotIndex].status = SlotStatus.Reserved;
+        slots[slotIndex].playerId = playerId;
+        addPlayer(playerId);
+        newUpdate();
+      }
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
   }
 
@@ -114,85 +139,156 @@ class Team {
     int? newMaxMidfielders,
     int? newMaxForwards,
   }) {
-    maxDefenders = newMaxDefenders ?? maxDefenders;
-    maxMidfielders = newMaxMidfielders ?? maxMidfielders;
-    maxForwards = newMaxForwards ?? maxForwards;
+    bool hasChanges = false;
 
-    _initializeSlots();
+    if (newMaxDefenders != null && newMaxDefenders != maxDefenders) {
+      maxDefenders = newMaxDefenders;
+      hasChanges = true;
+    }
 
-    newUpdate();
+    if (newMaxMidfielders != null && newMaxMidfielders != maxMidfielders) {
+      maxMidfielders = newMaxMidfielders;
+      hasChanges = true;
+    }
+
+    if (newMaxForwards != null && newMaxForwards != maxForwards) {
+      maxForwards = newMaxForwards;
+      hasChanges = true;
+    }
+
+    if (hasChanges) {
+      try {
+        _initializeSlots();
+        newUpdate();
+      } catch (e) {
+        // Handle or log the exception if needed
+        rethrow;
+      }
+    }
   }
 
   void addReceivedInvitationToSlot(String slotId, String invitationId) {
-    if (!receivedSlotInvitations.containsKey(slotId)) {
-      receivedSlotInvitations[slotId] = [];
+    try {
+      if (!receivedSlotInvitations.containsKey(slotId)) {
+        receivedSlotInvitations[slotId] = [];
+      }
+      receivedSlotInvitations[slotId]!.add(invitationId);
+      newUpdate();
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
-    receivedSlotInvitations[slotId]!.add(invitationId);
   }
 
   void removeReceivedInvitationFromSlot(String slotId, String invitationId) {
-    if (!receivedSlotInvitations.containsKey(slotId)) {
-      throw Exception('Slot ID $slotId does not exist');
+    try {
+      if (!receivedSlotInvitations.containsKey(slotId)) {
+        throw Exception('Slot ID $slotId does not exist');
+      }
+      receivedSlotInvitations[slotId]!.remove(invitationId);
+      newUpdate();
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
-    receivedSlotInvitations[slotId]!.remove(invitationId);
   }
 
   void addSentInvitationToSlot(String slotId, String invitationId) {
-    if (!sentSlotInvitations.containsKey(slotId)) {
-      sentSlotInvitations[slotId] = [];
+    try {
+      if (!sentSlotInvitations.containsKey(slotId)) {
+        sentSlotInvitations[slotId] = [];
+      }
+      sentSlotInvitations[slotId]!.add(invitationId);
+      newUpdate();
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
-    sentSlotInvitations[slotId]!.add(invitationId);
   }
 
   void removeSentInvitationFromSlot(String slotId, String invitationId) {
-    if (!sentSlotInvitations.containsKey(slotId)) {
-      throw Exception('Slot ID $slotId does not exist');
+    try {
+      if (!sentSlotInvitations.containsKey(slotId)) {
+        throw Exception('Slot ID $slotId does not exist');
+      }
+      sentSlotInvitations[slotId]!.remove(invitationId);
+      newUpdate();
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
-    sentSlotInvitations[slotId]!.remove(invitationId);
   }
 
   String? getPlayerPosition(String playerId) {
-    for (PositionSlot slot in slots!) {
-      if (slot.playerId == playerId) {
-        return slot.position.toString();
+    try {
+      for (PositionSlot slot in slots) {
+        if (slot.playerId == playerId) {
+          return slot.position.toString();
+        }
       }
+      return null;
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
-    return null;
   }
 
   PositionSlot? getSlotById(String slotId) {
-    final slotIndex = slots!.indexWhere((slot) => slot.slotId == slotId);
-    if (slotIndex == -1) {
-      throw Exception('Slot ID $slotId does not exist');
+    try {
+      final slotIndex = slots.indexWhere((slot) => slot.slotId == slotId);
+      if (slotIndex == -1) {
+        throw Exception('Slot ID $slotId does not exist');
+      }
+      return slots[slotIndex];
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
-    return slots![slotIndex];
   }
 
   bool isSlotPublic(String slotId) {
-    final slot = getSlotById(slotId);
-    return slot?.type == Type.Public;
+    try {
+      final slot = getSlotById(slotId);
+      return slot?.slotType == SlotType.Public;
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
+    }
   }
 
   void updateSlotStatusToPublic(String slotId) {
-    final slotIndex = slots!.indexWhere((slot) => slot.slotId == slotId);
-    if (slotIndex == -1) {
-      throw Exception('Slot ID $slotId does not exist');
+    try {
+      final slotIndex = slots.indexWhere((slot) => slot.slotId == slotId);
+      if (slotIndex == -1) {
+        throw Exception('Slot ID $slotId does not exist');
+      }
+      if (slots[slotIndex].playerId != null) {
+        throw Exception('Slot ID $slotId already has a player assigned');
+      }
+      slots[slotIndex].slotType = SlotType.Public;
+      newUpdate();
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
-    slots![slotIndex].type = Type.Public;
-    newUpdate();
   }
 
   void updateSlotStatusToPrivate(String slotId) {
-    final slotIndex = slots!.indexWhere((slot) => slot.slotId == slotId);
-    if (slotIndex == -1) {
-      throw Exception('Slot ID $slotId does not exist');
+    try {
+      final slotIndex = slots.indexWhere((slot) => slot.slotId == slotId);
+      if (slotIndex == -1) {
+        throw Exception('Slot ID $slotId does not exist');
+      }
+      slots[slotIndex].slotType = SlotType.Private;
+      newUpdate();
+    } catch (e) {
+      // Handle or log the exception if needed
+      rethrow;
     }
-    slots![slotIndex].type = Type.Private;
-    newUpdate();
   }
 
   List<PositionSlot> getAllSlots() {
-    return List<PositionSlot>.from(slots!);
+    return List<PositionSlot>.from(slots);
   }
 
   Map<String, dynamic> toJson() {
@@ -200,11 +296,9 @@ class Team {
       'teamId': teamId,
       'teamName': teamName,
       'captainId': captainId,
-      'slots': slots?.map((slot) => slot.toJson()).toList(),
-      'receivedSlotInvitations':
-          receivedSlotInvitations, // Add received invitations to JSON
-      'sentSlotInvitations':
-          sentSlotInvitations, // Add sent invitations to JSON
+      'slots': slots.map((slot) => slot.toJson()).toList(),
+      'receivedSlotInvitations': receivedSlotInvitations,
+      'sentSlotInvitations': sentSlotInvitations,
       'chat': chat,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
@@ -230,7 +324,6 @@ class Team {
     final slotsJson = json['slots'] as List;
     final players = List<String>.from(json['players'] ?? []);
 
-    // Convert the slotsJson to a List<PositionSlot>
     List<PositionSlot> slots = [];
     try {
       slots = slotsJson
@@ -243,7 +336,6 @@ class Team {
 
     final receivedSlotInvitationsJson = json['receivedSlotInvitations'];
 
-    // Convert receivedSlotInvitationsJson to a Map<String, List<String>> if not null
     Map<String, List<String>> receivedSlotInvitations = {};
     if (receivedSlotInvitationsJson != null) {
       receivedSlotInvitationsJson.forEach((key, value) {
@@ -258,7 +350,6 @@ class Team {
 
     final sentSlotInvitationsJson = json['sentSlotInvitations'];
 
-    // Convert sentSlotInvitationsJson to a Map<String, List<String>> if not null
     Map<String, List<String>> sentSlotInvitations = {};
     if (sentSlotInvitationsJson != null) {
       sentSlotInvitationsJson.forEach((key, value) {
@@ -281,10 +372,10 @@ class Team {
       maxDefenders: maxDefenders,
       maxMidfielders: maxMidfielders,
       maxForwards: maxForwards,
-    )
-      ..slots?.addAll(slots)
-      ..receivedSlotInvitations.addAll(receivedSlotInvitations)
-      ..sentSlotInvitations.addAll(sentSlotInvitations)
-      ..players.addAll(players);
+      players: players,
+      slots: slots,
+      receivedSlotInvitations: receivedSlotInvitations,
+      sentSlotInvitations: sentSlotInvitations,
+    );
   }
 }

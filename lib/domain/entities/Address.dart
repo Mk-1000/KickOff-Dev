@@ -1,3 +1,5 @@
+import '../../utils/DateTimeUtils.dart';
+
 class Address {
   String _addressId;
   String _street;
@@ -30,8 +32,8 @@ class Address {
         _latitude = latitude,
         _longitude = longitude,
         _userId = userId,
-        _createdAt = DateTime.now().millisecondsSinceEpoch,
-        _updatedAt = DateTime.now().millisecondsSinceEpoch;
+        _createdAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        _updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
 
   String get addressId => _addressId;
   String get street => _street;
@@ -70,8 +72,8 @@ class Address {
         longitude: json['longitude'],
         userId: json['userId'],
       )
-        .._createdAt =
-            json['createdAt'] as int? ?? DateTime.now().millisecondsSinceEpoch
-        .._updatedAt =
-            json['updatedAt'] as int? ?? DateTime.now().millisecondsSinceEpoch;
+        .._createdAt = json['createdAt'] as int? ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch
+        .._updatedAt = json['updatedAt'] as int? ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
 }

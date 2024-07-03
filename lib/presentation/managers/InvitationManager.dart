@@ -18,7 +18,6 @@ class InvitationManager {
         teamId: teamId,
         playerId: playerId,
         slotId: slotId,
-        sentAt: DateTime.now().millisecondsSinceEpoch,
       );
 
       await _invitationService.createInvitation(invitation);
@@ -45,7 +44,6 @@ class InvitationManager {
           teamId: teamId,
           playerId: playerId,
           slotId: slotId,
-          sentAt: DateTime.now().millisecondsSinceEpoch,
         );
 
         await _invitationService.createInvitation(invitation);

@@ -1,5 +1,7 @@
 import 'package:takwira/utils/IDUtils.dart';
 
+import '../../utils/DateTimeUtils.dart';
+
 class Message {
   final String messageId;
   final String content;
@@ -12,7 +14,8 @@ class Message {
     required this.senderId,
     int? sendAt,
   })  : messageId = messageId ?? IDUtils.generateUniqueId(),
-        sendAt = sendAt ?? DateTime.now().millisecondsSinceEpoch;
+        sendAt =
+            sendAt ?? DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
 
   Map<String, dynamic> toJson() {
     return {
@@ -27,7 +30,8 @@ class Message {
     return Message(
       messageId: json['messageId'] as String,
       content: json['content'] as String? ?? '',
-      sendAt: json['sendAt'] as int? ?? DateTime.now().millisecondsSinceEpoch,
+      sendAt: json['sendAt'] as int? ??
+          DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
       senderId: json['senderId'] as String? ?? '',
     );
   }

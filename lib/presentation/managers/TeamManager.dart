@@ -1,10 +1,9 @@
+import 'package:takwira/business/services/team_service.dart';
 import 'package:takwira/domain/entities/Chat.dart';
-import 'package:takwira/domain/entities/Invitation.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/services/iteam_service.dart';
-import 'package:takwira/business/services/team_service.dart';
 import 'package:takwira/presentation/managers/ChatManager.dart';
 import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
@@ -254,5 +253,13 @@ class TeamManager {
 
   Future<void> updateSlotStatusToPrivate(String teamId, String slotId) async {
     return await _teamService.updateSlotStatusToPrivate(teamId, slotId);
+  }
+
+  Stream<List<PositionSlot>> getPublicAvailableSlotsStream() {
+    return _teamService.getPublicAvailableSlotsStream();
+  }
+
+  Future<List<PositionSlot>> getPublicAvailableSlots() async {
+    return await _teamService.getPublicAvailableSlots();
   }
 }

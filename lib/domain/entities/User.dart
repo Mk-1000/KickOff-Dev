@@ -1,3 +1,4 @@
+import '../../utils/DateTimeUtils.dart';
 import '../../utils/IDUtils.dart';
 
 enum UserRole { User, Player, Stadium }
@@ -18,8 +19,8 @@ class User {
   })  : userId = userId ??
             IDUtils
                 .generateUniqueId(), // Use provided userId or generate a new one
-        createdAt = DateTime.now().millisecondsSinceEpoch,
-        updatedAt = DateTime.now().millisecondsSinceEpoch;
+        createdAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
 
   // Setters for createdAt and updatedAt
   void setCreatedAt(int createdAt) {

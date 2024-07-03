@@ -1,4 +1,6 @@
 import 'package:takwira/utils/IDUtils.dart';
+
+import '../../utils/DateTimeUtils.dart';
 import 'Message.dart';
 
 enum ChatType { private, public }
@@ -20,24 +22,26 @@ class Chat {
     int? updatedAt,
   })  : chatId = chatId ?? IDUtils.generateUniqueId(),
         messages = messages ?? [],
-        createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
-        updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch;
+        createdAt = createdAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        updatedAt = updatedAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
 
   void addParticipant(String participantId) {
     if (!participants.contains(participantId)) {
       participants.add(participantId);
     }
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
+    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }
 
   void removeParticipant(String participantId) {
     participants.remove(participantId);
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
+    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }
 
   void addMessage(Message message) {
     messages.add(message);
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
+    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }
 
   Map<String, dynamic> toJson() {

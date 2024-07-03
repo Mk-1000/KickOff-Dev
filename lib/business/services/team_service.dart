@@ -2,6 +2,7 @@ import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/repositories/ITeamRepository.dart';
 import 'package:takwira/infrastructure/repositories/TeamRepository.dart';
+
 import '../../domain/services/iteam_service.dart';
 
 class TeamService implements ITeamService {
@@ -173,5 +174,15 @@ class TeamService implements ITeamService {
       print('Failed to change team slot limits: $e');
       throw Exception('Failed to change team slot limits: $e');
     }
+  }
+
+  @override
+  Stream<List<PositionSlot>> getPublicAvailableSlotsStream() {
+    return _teamRepository.getPublicAvailableSlotsStream();
+  }
+
+  @override
+  Future<List<PositionSlot>> getPublicAvailableSlots() async {
+    return await _teamRepository.getPublicAvailableSlots();
   }
 }

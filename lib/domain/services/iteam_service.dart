@@ -1,5 +1,5 @@
-import 'package:takwira/domain/entities/Invitation.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
+
 import '../entities/Team.dart';
 
 abstract class ITeamService {
@@ -45,4 +45,8 @@ abstract class ITeamService {
     int? newMaxMidfielders,
     int? newMaxForwards,
   });
+
+  Stream<List<PositionSlot>> getPublicAvailableSlotsStream();
+
+  Future<List<PositionSlot>> getPublicAvailableSlots();
 }

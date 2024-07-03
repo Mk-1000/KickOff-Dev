@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
+
+import '../../domain/entities/PositionSlot.dart';
 import '../../domain/entities/Team.dart';
 import '../../domain/repositories/ITeamRepository.dart';
 import '../firebase/FirebaseService.dart';
@@ -114,5 +116,34 @@ class TeamRepository implements ITeamRepository {
     } catch (e) {
       throw Exception('Error fetching player by ID $id: $e');
     }
+  }
+
+  @override
+  Future<List<PositionSlot>> getPublicAvailableSlots() async {
+    try {
+      final List<Team> allTeams = await getAllTeams();
+      List<PositionSlot> publicAvailableSlots = [];
+      for (var team in allTeams) {
+        publicAvailableSlots.addAll(team.slots!.where((slot) =>
+            slot.slotType == SlotType.Public &&
+            slot.status == SlotStatus.Available));
+      }
+      return publicAvailableSlots;
+    } catch (e) {
+      throw Exception('Failed to retrieve public available slots');
+    }
+  }
+
+  @override
+  Stream<List<PositionSlot>> getPublicAvailableSlotsStream() {
+    return streamTeams().map((teams) {
+      List<PositionSlot> publicAvailableSlots = [];
+      for (var team in teams) {
+        publicAvailableSlots.addAll(team.slots!.where((slot) =>
+            slot.slotType == SlotType.Public &&
+            slot.status == SlotStatus.Available));
+      }
+      return publicAvailableSlots;
+    });
   }
 }

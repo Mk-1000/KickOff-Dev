@@ -1,6 +1,8 @@
 import 'package:takwira/utils/IDUtils.dart';
 import 'package:takwira/utils/Parse.dart';
 
+import '../../utils/DateTimeUtils.dart';
+
 enum InvitationStatus {
   Pending,
   Accepted,
@@ -13,7 +15,6 @@ class Invitation {
   final String playerId;
   final String slotId;
   InvitationStatus status;
-  final int sentAt;
   int? respondedAt;
   final int createdAt;
   int updatedAt;
@@ -24,19 +25,20 @@ class Invitation {
     required this.playerId,
     required this.slotId,
     this.status = InvitationStatus.Pending,
-    required this.sentAt,
     this.respondedAt,
     int? createdAt,
     int? updatedAt,
   })  : invitationId = invitationId ?? IDUtils.generateUniqueId(),
-        createdAt = createdAt ?? DateTime.now().millisecondsSinceEpoch,
-        updatedAt = updatedAt ?? DateTime.now().millisecondsSinceEpoch;
+        createdAt = createdAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        updatedAt = updatedAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
 
   void accept() {
     if (status == InvitationStatus.Pending) {
       status = InvitationStatus.Accepted;
-      respondedAt = DateTime.now().millisecondsSinceEpoch;
-      updatedAt = DateTime.now().millisecondsSinceEpoch;
+      respondedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
+      updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
     } else {
       throw Exception('Cannot accept invitation: Already responded');
     }
@@ -45,8 +47,8 @@ class Invitation {
   void reject() {
     if (status == InvitationStatus.Pending) {
       status = InvitationStatus.Rejected;
-      respondedAt = DateTime.now().millisecondsSinceEpoch;
-      updatedAt = DateTime.now().millisecondsSinceEpoch;
+      respondedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
+      updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
     } else {
       throw Exception('Cannot reject invitation: Already responded');
     }
@@ -59,7 +61,6 @@ class Invitation {
       'playerId': playerId,
       'slotId': slotId,
       'status': status.toString().split('.').last,
-      'sentAt': sentAt,
       'respondedAt': respondedAt,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
@@ -73,7 +74,6 @@ class Invitation {
       playerId: json['playerId'] as String,
       slotId: json['slotId'] as String,
       status: ParserUtils.parseInvitationStatus(json['status'] as String),
-      sentAt: json['sentAt'] as int,
       respondedAt: json['respondedAt'] as int?,
       createdAt: json['createdAt'] as int?,
       updatedAt: json['updatedAt'] as int?,

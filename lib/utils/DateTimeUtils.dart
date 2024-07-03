@@ -1,7 +1,9 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
-class DateUtils {
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
+class DateTimeUtils {
   static const _currentTimeApiUrl = 'https://api.currenttime.co/v1/timestamp';
 
   static DateTime getCurrentDateTime() => DateTime.now();
@@ -36,5 +38,23 @@ class DateUtils {
       default:
         return 0;
     }
+  }
+
+  // Converts DateTime to a timestamp in milliseconds
+  static int toTimestamp(DateTime dateTime) {
+    return dateTime.millisecondsSinceEpoch;
+  }
+
+  // Convertit un timestamp en DateTime
+  static DateTime fromTimestamp(int timestamp) {
+    return DateTime.fromMillisecondsSinceEpoch(timestamp);
+  }
+
+  // Formate un timestamp en chaîne de date
+  static String formatTimestamp(int timestamp,
+      {String format = 'dd/MM/yyyy HH:mm'}) {
+    final dateTime = fromTimestamp(timestamp);
+    final formatter = DateFormat(format);
+    return formatter.format(dateTime);
   }
 }
