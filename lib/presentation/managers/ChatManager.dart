@@ -107,11 +107,11 @@ class ChatManager {
     return _chatService.getMessagesStream(chatId);
   }
 
-  Future<void> sendMessage(String chatId, String messageContent) async {
+  Future<void> sendMessage(
+      String senderId, String chatId, String messageContent) async {
     try {
       final Message message = Message(
-        senderId:
-            'currentUserId', // You should replace this with the actual sender ID
+        senderId: senderId,
         content: messageContent,
       );
       await _chatService.addMessageToChat(chatId, message);

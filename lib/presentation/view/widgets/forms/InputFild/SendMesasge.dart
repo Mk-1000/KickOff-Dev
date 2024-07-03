@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/presentation/managers/ChatManager.dart';
 
 class SendMessage extends StatefulWidget {
@@ -10,12 +11,13 @@ class SendMessage extends StatefulWidget {
 }
 
 class _SendMessageState extends State<SendMessage> {
-    final TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   final ChatManager _chatManager = ChatManager();
 
-     Future<void> _sendMessage(String messageText) async {
+  Future<void> _sendMessage(String messageText) async {
     try {
-      await _chatManager.sendMessage(widget.chatId, messageText);
+      await _chatManager.sendMessage(
+          widget.chatId, messageText, Player.currentPlayer!.playerId);
       _controller.clear();
       print('Message sent: $messageText');
     } catch (e) {
@@ -29,27 +31,25 @@ class _SendMessageState extends State<SendMessage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(bottom: 24),
-        child: TextField(
-          controller: _controller,
-          onSubmitted: (value) {
-            // Optionally handle submission (e.g., when the user presses the enter key)
-            _sendMessage( value);
-          },
-          decoration: InputDecoration(
-            hintText: 'Saisissez votre message',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            suffixIcon: IconButton(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: TextField(
+        controller: _controller,
+        onSubmitted: (value) {
+          // Optionally handle submission (e.g., when the user presses the enter key)
+          _sendMessage(value);
+        },
+        decoration: InputDecoration(
+          hintText: 'Saisissez votre message',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          suffixIcon: IconButton(
               icon: Icon(Icons.send),
               onPressed: () {
- _sendMessage(_controller.text);
-              }
-            ),
-          ),
+                _sendMessage(_controller.text);
+              }),
         ),
-      );
-    
+      ),
+    );
   }
 }

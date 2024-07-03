@@ -21,4 +21,9 @@ class ParserUtils {
     return SlotType.values
         .firstWhere((e) => e.toString().split('.').last == type);
   }
+
+  static InvitationType parseInvitationType(String type) {
+    return InvitationType.values
+        .firstWhere((e) => e.toString().split('.').last == type);
+  }
 }

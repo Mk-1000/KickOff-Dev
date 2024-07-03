@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/utils/DateTimeUtils.dart';
 
 class PublicAvailableSlotsScreen extends StatelessWidget {
   final TeamManager teamManager = TeamManager();
+  final InvitationManager invitationManager = InvitationManager();
+
+  PublicAvailableSlotsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,7 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
                       return _buildSlotTile(slot, null); // No team found case
                     } else {
                       Team team = teamSnapshot.data!;
-                      return _buildTeamWithSlotTile(team, slot);
+                      return _buildTeamWithSlotTile(context, team, slot);
                     }
                   },
                 );
@@ -54,7 +59,8 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamWithSlotTile(Team team, PositionSlot slot) {
+  Widget _buildTeamWithSlotTile(
+      BuildContext context, Team team, PositionSlot slot) {
     return Card(
       margin: const EdgeInsets.all(8.0),
       child: Padding(
@@ -64,7 +70,7 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
           children: [
             // Team Details
             Text(
-              "teamName: ${team.teamName}",
+              "Team Name: ${team.teamName}",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
             ),
             SizedBox(height: 8.0),
@@ -76,6 +82,11 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
               title: Text('${slot.position} - ${slot.status}'),
               subtitle: Text(
                   'Published on: ${DateTimeUtils.formatTimestamp(slot.slotTypeChangedAt)}'),
+            ),
+            SizedBox(height: 8.0),
+            ElevatedButton(
+              onPressed: () => _sendInvitation(context, team, slot),
+              child: Text('Send Invitation'),
             ),
           ],
         ),
@@ -93,7 +104,7 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
           children: [
             team != null
                 ? Text(
-                    "teamName: ${team.teamName}",
+                    "Team Name: ${team.teamName}",
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                   )
@@ -108,5 +119,13 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _sendInvitation(
+      BuildContext context, Team team, PositionSlot slot) async {
+    await invitationManager.sendInvitationToTeam(
+        teamId: slot.teamId,
+        playerId: Player.currentPlayer!.playerId,
+        slotId: slot.slotId);
   }
 }

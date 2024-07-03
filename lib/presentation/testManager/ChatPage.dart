@@ -4,6 +4,8 @@ import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Message.dart';
 import 'package:takwira/presentation/managers/ChatManager.dart';
 
+import '../../domain/entities/Player.dart';
+
 class ChatPage extends StatefulWidget {
   final String chatId;
 
@@ -42,7 +44,8 @@ class _ChatPageState extends State<ChatPage> {
 
   Future<void> _sendMessage(String messageText) async {
     try {
-      await _chatManager.sendMessage(widget.chatId, messageText);
+      await _chatManager.sendMessage(
+          widget.chatId, messageText, Player.currentPlayer!.playerId);
       _messageController.clear();
       print('Message sent: $messageText');
     } catch (e) {

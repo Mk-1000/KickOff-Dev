@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:takwira/presentation/managers/PlayerManager.dart';
-import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/presentation/managers/PlayerManager.dart';
+import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/presentation/testManager/ChatPage.dart';
 import 'package:takwira/presentation/testManager/ImageUploadScreen.dart';
+import 'package:takwira/presentation/testManager/PlayerInvitationPage.dart';
+import 'package:takwira/presentation/testManager/PublicAvailableSlotsScreen.dart';
 import 'package:takwira/presentation/testManager/TeamDetailsPage.dart';
-import 'package:takwira/presentation/testManager/TeamSlotsPage.dart';
+import 'package:takwira/presentation/testManager/TeamSlotsPageInvitaion.dart';
 import 'package:takwira/presentation/testManager/TestCreateTeamPage.dart';
 
 class PlayerHomePage extends StatefulWidget {
@@ -94,6 +96,31 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Player Home'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              // Navigate to players screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        PlayerInvitationPage(playerId: widget.playerId)),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.people),
+            onPressed: () {
+              // Navigate to players screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PublicAvailableSlotsScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: player == null
           ? Center(child: CircularProgressIndicator())
@@ -104,10 +131,10 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                   child: Text('Welcome, ${player!.nickname}',
                       style: TextStyle(fontSize: 20)),
                 ),
-                ElevatedButton(
-                  onPressed: _navigateToUploadPage,
-                  child: Text("Upload Images"),
-                ),
+                // ElevatedButton(
+                //   onPressed: _navigateToUploadPage,
+                //   child: Text("Upload Images"),
+                // ),
                 Expanded(
                   child: ListView.builder(
                     itemCount: teams.length,
@@ -122,6 +149,17 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                                 icon: Icon(Icons.delete, color: Colors.red),
                                 onPressed: () =>
                                     _deleteTeam(teams[index].teamId),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.notification_add_sharp),
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        TeamSlotsPageInvitation(
+                                            teamId: teams[index].teamId),
+                                  ),
+                                ),
                               ),
                               IconButton(
                                 icon: Icon(Icons.message, color: Colors.blue),
@@ -145,14 +183,17 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                     },
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            TestCreateTeamPage(onTeamCreated: _addNewTeam)),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TestCreateTeamPage(onTeamCreated: _addNewTeam)),
+                    ),
+                    child: Text("Create a new Team"),
                   ),
-                  child: Text("Create a new Team"),
                 )
               ],
             ),

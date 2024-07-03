@@ -126,6 +126,7 @@ class Team {
         slots[slotIndex].status = SlotStatus.Reserved;
         slots[slotIndex].playerId = playerId;
         addPlayer(playerId);
+        slots[slotIndex].slotType = SlotType.Private;
         newUpdate();
       }
     } catch (e) {
