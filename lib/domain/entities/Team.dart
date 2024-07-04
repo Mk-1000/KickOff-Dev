@@ -91,7 +91,6 @@ class Team {
     try {
       if (!players.contains(playerId)) {
         players.add(playerId);
-        newUpdate();
       }
     } catch (e) {
       // Handle or log the exception if needed
@@ -103,7 +102,6 @@ class Team {
   void removePlayer(String playerId) {
     try {
       players.remove(playerId);
-      newUpdate();
     } catch (e) {
       // Handle or log the exception if needed
       rethrow;
@@ -127,7 +125,6 @@ class Team {
         slots[slotIndex].playerId = playerId;
         addPlayer(playerId);
         slots[slotIndex].slotType = SlotType.Private;
-        newUpdate();
       }
     } catch (e) {
       // Handle or log the exception if needed
@@ -160,7 +157,6 @@ class Team {
     if (hasChanges) {
       try {
         _initializeSlots();
-        newUpdate();
       } catch (e) {
         // Handle or log the exception if needed
         rethrow;
@@ -174,7 +170,6 @@ class Team {
         receivedSlotInvitations[slotId] = [];
       }
       receivedSlotInvitations[slotId]!.add(invitationId);
-      newUpdate();
     } catch (e) {
       // Handle or log the exception if needed
       rethrow;
@@ -187,7 +182,6 @@ class Team {
         throw Exception('Slot ID $slotId does not exist');
       }
       receivedSlotInvitations[slotId]!.remove(invitationId);
-      newUpdate();
     } catch (e) {
       // Handle or log the exception if needed
       rethrow;
@@ -200,7 +194,6 @@ class Team {
         sentSlotInvitations[slotId] = [];
       }
       sentSlotInvitations[slotId]!.add(invitationId);
-      newUpdate();
     } catch (e) {
       // Handle or log the exception if needed
       rethrow;
@@ -213,7 +206,6 @@ class Team {
         throw Exception('Slot ID $slotId does not exist');
       }
       sentSlotInvitations[slotId]!.remove(invitationId);
-      newUpdate();
     } catch (e) {
       // Handle or log the exception if needed
       rethrow;
@@ -267,7 +259,6 @@ class Team {
         throw Exception('Slot ID $slotId already has a player assigned');
       }
       slots[slotIndex].slotType = SlotType.Public;
-      newUpdate();
     } catch (e) {
       // Handle or log the exception if needed
       rethrow;
@@ -281,7 +272,6 @@ class Team {
         throw Exception('Slot ID $slotId does not exist');
       }
       slots[slotIndex].slotType = SlotType.Private;
-      newUpdate();
     } catch (e) {
       // Handle or log the exception if needed
       rethrow;

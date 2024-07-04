@@ -11,6 +11,16 @@ class ChatService implements IChatService {
       : _chatRepository = chatRepository ?? ChatRepository();
 
   @override
+  Future<void> updateChat(Chat chat) async {
+    try {
+      chat.newUpdate();
+      await _chatRepository.updateChat(chat);
+    } catch (e) {
+      throw Exception('Failed to update player: $e');
+    }
+  }
+
+  @override
   Future<List<Chat>> getAllChats() async {
     try {
       return await _chatRepository.getAllChats();
@@ -39,15 +49,6 @@ class ChatService implements IChatService {
   }
 
   @override
-  Future<void> updateChat(Chat chat) async {
-    try {
-      await _chatRepository.updateChat(chat);
-    } catch (e) {
-      throw Exception('Failed to update chat: $e');
-    }
-  }
-
-  @override
   Future<void> deleteChat(String chatId) async {
     try {
       await _chatRepository.deleteChat(chatId);
@@ -64,7 +65,7 @@ class ChatService implements IChatService {
         throw Exception('Chat not found');
       }
       chat.addParticipant(participantId);
-      await _chatRepository.updateChat(chat);
+      await updateChat(chat);
     } catch (e) {
       throw Exception('Failed to add participant to chat: $e');
     }
@@ -78,7 +79,7 @@ class ChatService implements IChatService {
         throw Exception('Chat not found');
       }
       chat.addMessage(message);
-      await _chatRepository.updateChat(chat);
+      await updateChat(chat);
     } catch (e) {
       throw Exception('Failed to add message to chat: $e');
     }

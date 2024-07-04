@@ -2,6 +2,8 @@ import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/User.dart';
 import 'package:takwira/utils/Parse.dart';
 
+import '../../utils/DateTimeUtils.dart';
+
 class Player extends User {
   static Player? _currentPlayer;
   String nickname;
@@ -12,6 +14,8 @@ class Player extends User {
   List<String> teamIds;
   List<String> receivedInvitationIds = [];
   List<String> sentInvitationIds = [];
+  final int createdAt;
+  int updatedAt;
 
   Player({
     String? userId,
@@ -21,12 +25,22 @@ class Player extends User {
     required this.preferredPosition,
     required this.phoneNumber,
     required this.jerseySize,
+    int? createdAt,
+    int? updatedAt,
     this.teamIds = const [],
-  }) : super(userId: userId, email: email, role: UserRole.Player);
+  })  : createdAt = createdAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        updatedAt = updatedAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        super(userId: userId, email: email, role: UserRole.Player);
 
   static Player? get currentPlayer => _currentPlayer;
 
   String get playerId => userId;
+
+  void newUpdate() {
+    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
+  }
 
   static void setCurrentPlayer(Player player) {
     _currentPlayer = player;
@@ -77,6 +91,8 @@ class Player extends User {
       'teamIds': teamIds,
       'receivedInvitationIds': receivedInvitationIds,
       'sentInvitationIds': sentInvitationIds,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 
@@ -92,6 +108,8 @@ class Player extends User {
       jerseySize: json['jerseySize'] as String,
       teamIds:
           json['teamIds'] is List ? List<String>.from(json['teamIds']) : [],
+      createdAt: json['createdAt'] as int?,
+      updatedAt: json['updatedAt'] as int?,
     )
       ..receivedInvitationIds =
           List<String>.from(json['receivedInvitationIds'] ?? [])

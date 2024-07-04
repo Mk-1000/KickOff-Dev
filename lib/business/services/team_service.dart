@@ -22,6 +22,7 @@ class TeamService implements ITeamService {
 
   @override
   Future<void> updateTeam(Team team) async {
+    team.newUpdate();
     await _teamRepository.updateTeam(team);
   }
 

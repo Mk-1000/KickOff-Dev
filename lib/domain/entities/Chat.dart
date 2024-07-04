@@ -14,6 +14,10 @@ class Chat {
   final int createdAt;
   int updatedAt;
 
+  void newUpdate() {
+    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
+  }
+
   Chat({
     String? chatId,
     required this.participants,
@@ -32,17 +36,14 @@ class Chat {
     if (!participants.contains(participantId)) {
       participants.add(participantId);
     }
-    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }
 
   void removeParticipant(String participantId) {
     participants.remove(participantId);
-    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }
 
   void addMessage(Message message) {
     messages.add(message);
-    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }
 
   Map<String, dynamic> toJson() {
@@ -57,31 +58,16 @@ class Chat {
   }
 
   factory Chat.fromJson(Map<String, dynamic> json) {
-    print('Parsing JSON:');
-    print(json);
-
     try {
       final chatId = json['chatId'] as String;
-      print('chatId: $chatId');
 
       final participants = List<String>.from(json['participants'] ?? []);
-      print('participants: $participants');
-
-      // final typeString = json['type'] as String;
-      // final type = ChatType.values.firstWhere(
-      //   (e) => e.toString().split('.').last == typeString,
-      //   orElse: () => ChatType.public,
-      // );
-      // print('type: $type');
 
       final messagesJson = json['messages'] as List?;
-      print('messagesJson: $messagesJson');
 
       final createdAt = json['createdAt'] as int?;
-      print('createdAt: $createdAt');
 
       final updatedAt = json['updatedAt'] as int?;
-      print('updatedAt: $updatedAt');
 
       // Convert the messagesJson to a List<Message>
       List<Message> messages = [];
@@ -91,7 +77,6 @@ class Chat {
                 Message.fromJson(Map<String, dynamic>.from(messageJson as Map)))
             .toList();
       }
-      print('messages: $messages');
 
       return Chat(
         chatId: chatId,

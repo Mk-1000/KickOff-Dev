@@ -40,6 +40,7 @@ class PlayerService implements IPlayerService {
   @override
   Future<void> updatePlayer(Player player) async {
     try {
+      player.newUpdate();
       await _playerRepository.updatePlayer(player);
     } catch (e) {
       throw Exception('Failed to update player: $e');
