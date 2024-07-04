@@ -74,9 +74,8 @@ class PositionSlot {
       status: ParserUtils.parseSlotStatus(json['status'] as String),
       playerId: json['playerId'] as String?,
       slotType: json.containsKey('slotType')
-          ? ParserUtils.parseSlotType(
-              json['slotType'] as String) // Renamed from type
-          : SlotType.Private, // Renamed from Type.Private
+          ? ParserUtils.parseSlotType(json['slotType'] as String)
+          : SlotType.Private,
     );
     positionSlot.slotTypeChangedAt =
         json['slotTypeChangedAt'] as int; // Renamed from typeChangedAt

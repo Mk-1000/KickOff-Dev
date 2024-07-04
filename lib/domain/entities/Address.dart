@@ -1,79 +1,60 @@
 import '../../utils/DateTimeUtils.dart';
 
 class Address {
-  String _addressId;
-  String _street;
-  String _city;
-  String _state;
-  String _postalCode;
-  String _country;
-  double _latitude;
-  double _longitude;
-  int _createdAt;
-  int _updatedAt;
-  String _userId;
+  String addressId;
+  String? street;
+  String city;
+  String state;
+  String? postalCode;
+  String country;
+  double? latitude;
+  double? longitude;
+  int createdAt;
+  int updatedAt;
+  String userId;
 
   Address({
-    required String addressId,
-    required String street,
-    required String city,
-    required String state,
-    required String postalCode,
-    required String country,
-    required double latitude,
-    required double longitude,
-    required String userId,
-  })  : _addressId = addressId,
-        _street = street,
-        _city = city,
-        _state = state,
-        _postalCode = postalCode,
-        _country = country,
-        _latitude = latitude,
-        _longitude = longitude,
-        _userId = userId,
-        _createdAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
-        _updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
-
-  String get addressId => _addressId;
-  String get street => _street;
-  String get city => _city;
-  String get state => _state;
-  String get postalCode => _postalCode;
-  String get country => _country;
-  double get latitude => _latitude;
-  double get longitude => _longitude;
-  int get createdAt => _createdAt;
-  int get updatedAt => _updatedAt;
-  String get userId => _userId;
+    required this.addressId,
+    required this.street,
+    required this.city,
+    required this.state,
+    required this.postalCode,
+    required this.country,
+    required this.latitude,
+    required this.longitude,
+    required this.userId,
+  })  : createdAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
 
   Map<String, dynamic> toJson() => {
-        'addressId': _addressId,
-        'street': _street,
-        'city': _city,
-        'state': _state,
-        'postalCode': _postalCode,
-        'country': _country,
-        'latitude': _latitude,
-        'longitude': _longitude,
-        'createdAt': _createdAt,
-        'updatedAt': _updatedAt,
-        'userId': _userId,
+        'addressId': addressId,
+        'street': street,
+        'city': city,
+        'state': state,
+        'postalCode': postalCode,
+        'country': country,
+        'latitude': latitude,
+        'longitude': longitude,
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
+        'userId': userId,
       };
 
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
-        addressId: json['addressId'],
-        street: json['street'],
-        city: json['city'],
-        state: json['state'],
-        postalCode: json['postalCode'],
-        country: json['country'],
-        latitude: json['latitude'],
-        longitude: json['longitude'],
-        userId: json['userId'],
-      )
-        .._createdAt = json['createdAt'] as int? ??
-            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch
-        .._updatedAt = json['updatedAt'] as int? ??
-            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+      addressId: json['addressId'] as String,
+      street: json['street'] as String,
+      city: json['city'] as String,
+      state: json['state'] as String,
+      postalCode: json['postalCode'] as String,
+      country: json['country'] as String,
+      latitude: json['latitude'] as double,
+      longitude: json['longitude'] as double,
+      userId: json['userId'] as String,
+    )
+      ..createdAt = json['createdAt'] as int? ??
+          DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch
+      ..updatedAt = json['updatedAt'] as int? ??
+          DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
+  }
 }

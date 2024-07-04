@@ -96,15 +96,51 @@ class TeamManager {
     }
   }
 
+  Future<void> deleteAllTeamInvitations(String teamId) async {
+    try {
+      // Fetch the team details
+      Team team = await getTeamById(teamId);
+
+      // Delete all received slot invitations
+      for (String slotId in team.receivedSlotInvitations.keys) {
+        List<String> receivedInvitations =
+            team.receivedSlotInvitations[slotId]!;
+        for (String invitationId in receivedInvitations) {
+          await _invitationManager.removeInvitation(invitationId);
+        }
+        team.receivedSlotInvitations[slotId] = [];
+      }
+
+      // Delete all sent slot invitations
+      for (String slotId in team.sentSlotInvitations.keys) {
+        List<String> sentInvitations = team.sentSlotInvitations[slotId]!;
+        for (String invitationId in sentInvitations) {
+          await _invitationManager.removeInvitation(invitationId);
+        }
+        team.sentSlotInvitations[slotId] = [];
+      }
+
+      // Update the team to clear all invitations
+      await updateTeam(team);
+
+      print('All invitations related to team $teamId have been deleted.');
+    } catch (e) {
+      print('Failed to delete all team invitations: $e');
+      throw Exception('Failed to delete all team invitations: $e');
+    }
+  }
+
   Future<void> deleteTeamForPlayer(String teamId, Player player) async {
     try {
       // Fetch the team by its ID
       Team? team = await _teamService.getTeamById(teamId);
 
+      // Delete all invitations
+      await deleteAllTeamInvitations(teamId);
+      await Future.delayed(Duration(seconds: 1));
+
       // Delete the chat associated with the team, if any
-      if (team.chat != null) {
-        await _chatManager.deleteChat(team.chat!);
-      }
+      await _chatManager.deleteChat(team.chat!);
 
       // Remove the team ID from the player's list of team IDs
       // player.removeTeamId(teamId);
@@ -112,24 +148,20 @@ class TeamManager {
 
       // Remove the team ID from all players associated with the team
       for (String playerId in team.players) {
-        Player? teamPlayer = await _playerManager.getPlayerDetails(playerId);
-        if (teamPlayer != null) {
-          teamPlayer.removeTeamId(teamId);
-          await _playerManager.updatePlayer(teamPlayer);
-        }
+        _playerManager.removeTeamId(playerId, teamId);
       }
 
       // Delete all invitations
-      team.receivedSlotInvitations.forEach((slotId, invitations) {
-        invitations.forEach((invitationId) async {
-          await _invitationManager.removeInvitationSendFromPlayer(invitationId);
-        });
-      });
-      team.sentSlotInvitations.forEach((slotId, invitations) {
-        invitations.forEach((invitationId) async {
-          await _invitationManager.removeInvitationSendFromTeam(invitationId);
-        });
-      });
+      // team.receivedSlotInvitations.forEach((slotId, invitations) {
+      //   invitations.forEach((invitationId) async {
+      //     await _invitationManager.removeInvitationSendFromPlayer(invitationId);
+      //   });
+      // });
+      // team.sentSlotInvitations.forEach((slotId, invitations) {
+      //   invitations.forEach((invitationId) async {
+      //     await _invitationManager.removeInvitationSendFromTeam(invitationId);
+      //   });
+      // });
 
       // Delete the team
       await deleteTeam(teamId);
@@ -171,7 +203,7 @@ class TeamManager {
       // Create a new chat for the team
       Chat teamChat = Chat(
         participants: [player.playerId],
-        type: ChatType.public,
+        type: ChatType.TeamChat,
       );
 
       await _chatManager.createChatForTeam(teamChat);

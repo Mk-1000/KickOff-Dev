@@ -45,7 +45,7 @@ class _ChatPageState extends State<ChatPage> {
   Future<void> _sendMessage(String messageText) async {
     try {
       await _chatManager.sendMessage(
-          widget.chatId, messageText, Player.currentPlayer!.playerId);
+          Player.currentPlayer!.playerId, widget.chatId, messageText);
       _messageController.clear();
       print('Message sent: $messageText');
     } catch (e) {

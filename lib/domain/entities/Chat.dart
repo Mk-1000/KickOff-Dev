@@ -1,9 +1,10 @@
 import 'package:takwira/utils/IDUtils.dart';
 
 import '../../utils/DateTimeUtils.dart';
+import '../../utils/Parse.dart';
 import 'Message.dart';
 
-enum ChatType { private, public }
+enum ChatType { TeamChat, VsChat }
 
 class Chat {
   final String chatId;
@@ -66,12 +67,12 @@ class Chat {
       final participants = List<String>.from(json['participants'] ?? []);
       print('participants: $participants');
 
-      final typeString = json['type'] as String;
-      final type = ChatType.values.firstWhere(
-        (e) => e.toString().split('.').last == typeString,
-        orElse: () => ChatType.public,
-      );
-      print('type: $type');
+      // final typeString = json['type'] as String;
+      // final type = ChatType.values.firstWhere(
+      //   (e) => e.toString().split('.').last == typeString,
+      //   orElse: () => ChatType.public,
+      // );
+      // print('type: $type');
 
       final messagesJson = json['messages'] as List?;
       print('messagesJson: $messagesJson');
@@ -95,7 +96,9 @@ class Chat {
       return Chat(
         chatId: chatId,
         participants: participants,
-        type: type,
+        type: json.containsKey('type')
+            ? ParserUtils.parseChatType(json['type'] as String)
+            : ChatType.TeamChat,
         messages: messages,
         createdAt: createdAt,
         updatedAt: updatedAt,

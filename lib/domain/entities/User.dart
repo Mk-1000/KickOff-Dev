@@ -1,5 +1,6 @@
 import '../../utils/DateTimeUtils.dart';
 import '../../utils/IDUtils.dart';
+import '../../utils/Parse.dart';
 
 enum UserRole { User, Player, Stadium }
 
@@ -46,11 +47,11 @@ class User {
   // Deserialize from JSON
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      userId: json['userId'], // Accepts userId from JSON, could be null
-      email: json['email'],
-      role: UserRole.values
-          .firstWhere((e) => e.toString().split('.').last == json['role']),
-    )
+        userId: json['userId'], // Accepts userId from JSON, could be null
+        email: json['email'],
+        // role: UserRole.values
+        //     .firstWhere((e) => e.toString().split('.').last == json['role']),
+        role: ParserUtils.parseUserRole(json['role'] as String))
       ..setCreatedAt(json['createdAt'])
       ..setUpdatedAt(json['updatedAt']);
   }

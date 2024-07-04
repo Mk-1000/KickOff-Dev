@@ -1,4 +1,5 @@
 import 'package:takwira/infrastructure/repositories/PlayerRepository.dart';
+
 import '../../domain/entities/Player.dart';
 import '../../domain/repositories/IPlayerRepository.dart';
 import '../../domain/services/iplayer_service.dart';
@@ -127,8 +128,9 @@ class PlayerService implements IPlayerService {
     try {
       final Player player = await getPlayerDetails(playerId);
       player.removeTeamId(teamId);
+      await updatePlayer(player);
     } catch (e) {
-      print('Failed to add team to Player: $e');
+      print('Failed to delete teamId from Player: $e');
     }
   }
 }

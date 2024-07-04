@@ -65,21 +65,26 @@ class InvitationManager {
 
   Future<void> respondToInvitation(String invitationId, bool accept) async {
     try {
+      print('Responding to invitation with ID: $invitationId');
+
       final invitation =
           await _invitationService.getInvitationDetails(invitationId);
 
       if (accept) {
-        invitation.accept();
+        print('Accepting invitation...');
         await _teamManager.addPlayerToSlot(
             invitation.teamId, invitation.playerId, invitation.slotId);
         await _playerManager.addTeamId(invitation.playerId, invitation.teamId);
       } else {
-        invitation.reject();
+        print('Rejecting invitation...');
       }
+
+      print('Removing invitation...');
       await removeInvitation(invitationId);
 
-      // await _invitationService.updateInvitation(invitation);
+      print('Invitation responded successfully.');
     } catch (e) {
+      print('Failed to respond to invitation: $e');
       throw Exception('Failed to respond to invitation: $e');
     }
   }
@@ -87,41 +92,50 @@ class InvitationManager {
   Future<void> removeInvitation(String invitationId) async {
     try {
       Invitation invitation = await fetchInvitationDetails(invitationId);
-      if (invitation.invitationType == InvitationType.TeamToPlayer) {
-        await removeInvitationSendFromTeam(invitationId);
-      } else if (invitation.invitationType == InvitationType.PlayerToTeam) {
-        await removeInvitationSendFromPlayer(invitationId);
+
+      try {
+        if (invitation.invitationType == InvitationType.TeamToPlayer) {
+          await removeInvitationSentFromTeam(invitationId);
+        } else if (invitation.invitationType == InvitationType.PlayerToTeam) {
+          await removeInvitationSentFromPlayer(invitationId);
+        }
+        print('Removing invitation with ID: $invitationId');
+
+        await _invitationService.deleteInvitation(invitationId);
+        print('Invitation deleted.');
+      } catch (fetchError) {
+        print(
+            'Failed to fetch invitation details after deletion. This might be expected if the invitation was already removed: $fetchError');
       }
-      await _invitationService.deleteInvitation(invitationId);
+
+      print('Invitation removal process completed.');
     } catch (e) {
+      print('Failed to remove invitation: $e');
       throw Exception('Failed to remove invitation: $e');
     }
   }
 
-  Future<void> removeInvitationSendFromPlayer(String invitationId) async {
+  Future<void> removeInvitationSentFromPlayer(String invitationId) async {
     try {
       Invitation invitation = await fetchInvitationDetails(invitationId);
       await _playerManager.removeSentInvitation(
           invitation.playerId, invitationId);
-
       await _teamManager.removeReceivedInvitationFromSlot(
           invitation.teamId, invitation.slotId, invitationId);
     } catch (e) {
-      throw Exception('Failed to remove invitation: $e');
+      throw Exception('Failed to remove invitation sent from player: $e');
     }
   }
 
-  Future<void> removeInvitationSendFromTeam(String invitationId) async {
+  Future<void> removeInvitationSentFromTeam(String invitationId) async {
     try {
       Invitation invitation = await fetchInvitationDetails(invitationId);
-
       await _playerManager.removeReceivedInvitation(
           invitation.playerId, invitationId);
-
       await _teamManager.removeSentInvitationFromSlot(
           invitation.teamId, invitation.slotId, invitationId);
     } catch (e) {
-      throw Exception('Failed to remove invitation: $e');
+      throw Exception('Failed to remove invitation sent from team: $e');
     }
   }
 
@@ -144,7 +158,7 @@ class InvitationManager {
       }
       return invitations;
     } catch (e) {
-      throw Exception('Failed to fetch invitations for player: $e');
+      throw Exception('Failed to fetch received invitations for player: $e');
     }
   }
 
@@ -158,14 +172,13 @@ class InvitationManager {
       }
       return invitations;
     } catch (e) {
-      throw Exception('Failed to fetch invitations for player: $e');
+      throw Exception('Failed to fetch sent invitations for player: $e');
     }
   }
 
   Future<List<Invitation>> fetchReceivedInvitationsForTeam(Team team) async {
     try {
       List<Invitation> invitations = [];
-
       for (List<String> slotIds in team.receivedSlotInvitations.values) {
         for (String invitationId in slotIds) {
           Invitation invitation =
@@ -173,7 +186,6 @@ class InvitationManager {
           invitations.add(invitation);
         }
       }
-
       return invitations;
     } catch (e) {
       throw Exception('Failed to fetch received invitations for team: $e');
@@ -183,7 +195,6 @@ class InvitationManager {
   Future<List<Invitation>> fetchSentInvitationsForTeam(Team team) async {
     try {
       List<Invitation> invitations = [];
-
       for (List<String> slotIds in team.sentSlotInvitations.values) {
         for (String invitationId in slotIds) {
           Invitation invitation =
@@ -191,7 +202,6 @@ class InvitationManager {
           invitations.add(invitation);
         }
       }
-
       return invitations;
     } catch (e) {
       throw Exception('Failed to fetch sent invitations for team: $e');
