@@ -156,7 +156,7 @@ class TeamManager {
         await Future.delayed(Duration(seconds: 1));
 
         // Delete the chat associated with the team, if any
-        await _chatManager.deleteChat(team.chat!);
+        await _chatManager.deleteChat(team.chatId!);
 
         // Remove the team ID from all players associated with the team
         for (String playerId in team.players) {
@@ -207,7 +207,7 @@ class TeamManager {
       await _chatManager.createChatForTeam(teamChat);
 
       // Set the chat ID in the team if the chat ID is available
-      team.chat = teamChat.chatId;
+      team.chatId = teamChat.chatId;
 
       PositionSlot slot = team.slots!.firstWhere(
         (slot) =>

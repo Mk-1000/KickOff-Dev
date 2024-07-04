@@ -165,7 +165,7 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                               IconButton(
                                 icon: Icon(Icons.message, color: Colors.blue),
                                 onPressed: () => _navigateToChatPage(
-                                    teams[index].chat.toString()),
+                                    teams[index].chatId.toString()),
                               ),
                               IconButton(
                                 icon: Icon(Icons.arrow_forward),

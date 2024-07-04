@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:takwira/domain/entities/Message.dart';
 import 'package:takwira/domain/entities/Player.dart';
@@ -28,7 +25,7 @@ class _ChatState extends State<Chat> {
         children: [
           Expanded(
             child: StreamBuilder<List<Message>>(
-              stream: _chatManager.getMessagesStream(widget.team.chat!),
+              stream: _chatManager.getMessagesStream(widget.team.chatId!),
               builder: (context, snapshot) {
                 print('Stream snapshot state: ${snapshot.connectionState}');
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -50,7 +47,8 @@ class _ChatState extends State<Chat> {
                       return MessageUi(
                         content: messages[index].content,
                         imageUrl: "",
-                        me: Player.currentPlayer!.playerId ==  messages[index].senderId,
+                        me: Player.currentPlayer!.playerId ==
+                            messages[index].senderId,
                       );
                     },
                   );
@@ -58,7 +56,9 @@ class _ChatState extends State<Chat> {
               },
             ),
           ),
-          SendMessage(chatId: widget.team.chat!,),
+          SendMessage(
+            chatId: widget.team.chatId!,
+          ),
         ],
       ),
     );

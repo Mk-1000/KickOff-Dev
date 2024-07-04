@@ -152,7 +152,7 @@ class TeamService implements ITeamService {
       final team = await getTeamById(teamId);
       team.addPlayerToSlot(playerId, slotId);
       await updateTeam(team);
-      await _chatService.addParticipantToChat(team.chat!, playerId);
+      await _chatService.addParticipantToChat(team.chatId!, playerId);
     } catch (e) {
       print('Failed to add player to slot: $e');
     }

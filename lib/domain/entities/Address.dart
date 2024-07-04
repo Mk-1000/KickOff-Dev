@@ -1,5 +1,7 @@
 import '../../utils/DateTimeUtils.dart';
 
+enum AddressType { PlayerAddress, StadiumAddress }
+
 class Address {
   String addressId;
   String? street;

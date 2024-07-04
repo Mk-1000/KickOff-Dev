@@ -7,7 +7,7 @@ class Team {
   final String teamId;
   final String teamName;
   final String captainId;
-  String? chat;
+  String? chatId;
   final int createdAt;
   int updatedAt;
   final int maxGoalkeepers;
@@ -23,7 +23,7 @@ class Team {
     String? teamId,
     required this.teamName,
     required this.captainId,
-    this.chat,
+    this.chatId,
     int? createdAt,
     int? updatedAt,
     this.maxDefenders = 4,
@@ -290,7 +290,7 @@ class Team {
       'slots': slots.map((slot) => slot.toJson()).toList(),
       'receivedSlotInvitations': receivedSlotInvitations,
       'sentSlotInvitations': sentSlotInvitations,
-      'chat': chat,
+      'chatId': chatId,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'maxGoalkeepers': maxGoalkeepers,
@@ -311,7 +311,7 @@ class Team {
     final maxForwards = json['maxForwards'] as int;
     final createdAt = json['createdAt'] as int?;
     final updatedAt = json['updatedAt'] as int?;
-    final chat = json['chat'] as String?;
+    final chatId = json['chatId'] as String?;
     final slotsJson = json['slots'] as List;
     final players = List<String>.from(json['players'] ?? []);
 
@@ -357,7 +357,7 @@ class Team {
       teamId: teamId,
       teamName: teamName,
       captainId: captainId,
-      chat: chat,
+      chatId: chatId,
       createdAt: createdAt,
       updatedAt: updatedAt,
       maxDefenders: maxDefenders,
