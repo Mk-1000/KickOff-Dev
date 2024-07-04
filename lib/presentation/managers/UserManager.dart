@@ -1,8 +1,8 @@
+import '../../business/services/AuthService.dart';
+import '../../business/services/UserService.dart';
 import '../../domain/entities/User.dart';
-import '../../domain/services/iauth_service.dart';
-import '../../domain/services/iuser_service.dart';
-import '../../business/services/auth_service.dart';
-import '../../business/services/user_service.dart';
+import '../../domain/services/IAuthService.dart';
+import '../../domain/services/IUserService.dart';
 
 class UserManager {
   final IUserService _userService = UserService();

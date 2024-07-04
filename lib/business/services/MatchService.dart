@@ -1,6 +1,6 @@
 import '../../domain/entities/Match.dart';
 import '../../domain/repositories/IMatchRepository.dart';
-import '../../domain/services/imatch_service.dart';
+import '../../domain/services/IMatchService.dart';
 
 class MatchService implements IMatchService {
   final IMatchRepository _matchRepository;

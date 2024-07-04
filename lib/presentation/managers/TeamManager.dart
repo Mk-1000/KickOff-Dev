@@ -1,9 +1,9 @@
-import 'package:takwira/business/services/team_service.dart';
+import 'package:takwira/business/services/TeamService.dart';
 import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
-import 'package:takwira/domain/services/iteam_service.dart';
+import 'package:takwira/domain/services/ITeamService.dart';
 import 'package:takwira/presentation/managers/ChatManager.dart';
 import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
@@ -162,10 +162,6 @@ class TeamManager {
         for (String playerId in team.players) {
           _playerManager.removeTeamId(playerId, teamId);
         }
-
-        // Remove the team ID from the current player
-        // player.removeTeamId(teamId);
-        // await _playerManager.updatePlayer(player);
 
         // Delete the team
         await deleteTeam(teamId);

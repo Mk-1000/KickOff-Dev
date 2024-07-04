@@ -1,7 +1,7 @@
 import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Message.dart';
 import 'package:takwira/domain/repositories/IChatRepository.dart';
-import 'package:takwira/domain/services/ichat_service.dart';
+import 'package:takwira/domain/services/IChatService.dart';
 import 'package:takwira/infrastructure/repositories/ChatRepository.dart';
 
 class ChatService implements IChatService {

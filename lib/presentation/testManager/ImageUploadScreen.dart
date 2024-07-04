@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:takwira/business/services/imageService.dart';
+
+import 'package:flutter/material.dart';
+import 'package:takwira/business/services/ImageService.dart';
 import 'package:takwira/domain/repositories/IImageRepository.dart';
 
 class UploadManagerScreen extends StatefulWidget {

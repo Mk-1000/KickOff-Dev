@@ -1,6 +1,6 @@
 import '../../domain/entities/Message.dart';
 import '../../domain/repositories/IMessageRepository.dart';
-import '../../domain/services/imessage_service.dart';
+import '../../domain/services/IMessageService.dart';
 
 class MessageService implements IMessageService {
   final IMessageRepository _messageRepository;

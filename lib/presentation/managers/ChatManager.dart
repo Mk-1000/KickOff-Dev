@@ -1,7 +1,7 @@
-import 'package:takwira/business/services/chat_service.dart';
+import 'package:takwira/business/services/ChatService.dart';
 import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Message.dart';
-import 'package:takwira/domain/services/ichat_service.dart';
+import 'package:takwira/domain/services/IChatService.dart';
 
 class ChatManager {
   final IChatService _chatService = ChatService();

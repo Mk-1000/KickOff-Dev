@@ -1,11 +1,11 @@
-import 'package:takwira/business/services/chat_service.dart';
+import 'package:takwira/business/services/ChatService.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/repositories/ITeamRepository.dart';
-import 'package:takwira/domain/services/ichat_service.dart';
+import 'package:takwira/domain/services/IChatService.dart';
 import 'package:takwira/infrastructure/repositories/TeamRepository.dart';
 
-import '../../domain/services/iteam_service.dart';
+import '../../domain/services/ITeamService.dart';
 
 class TeamService implements ITeamService {
   final ITeamRepository _teamRepository;

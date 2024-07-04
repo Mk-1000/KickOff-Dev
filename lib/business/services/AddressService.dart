@@ -1,4 +1,5 @@
-import 'package:takwira/domain/services/iaddress_service.dart';
+import 'package:takwira/domain/services/IAddressService.dart';
+
 import '../../domain/entities/Address.dart';
 import '../../domain/repositories/IAddressRepository.dart';
 import '../../infrastructure/repositories/AddressRepository.dart';

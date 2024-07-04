@@ -1,11 +1,11 @@
-import 'package:takwira/business/services/auth_service.dart';
-import 'package:takwira/business/services/player_service.dart';
-import 'package:takwira/business/services/user_service.dart';
+import 'package:takwira/business/services/AuthService.dart';
+import 'package:takwira/business/services/PlayerService.dart';
+import 'package:takwira/business/services/UserService.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/User.dart';
-import 'package:takwira/domain/services/iauth_service.dart';
-import 'package:takwira/domain/services/iplayer_service.dart';
-import 'package:takwira/domain/services/iuser_service.dart';
+import 'package:takwira/domain/services/IAuthService.dart';
+import 'package:takwira/domain/services/IPlayerService.dart';
+import 'package:takwira/domain/services/IUserService.dart';
 
 class PlayerManager {
   final IPlayerService _playerService = PlayerService();

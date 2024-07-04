@@ -1,6 +1,6 @@
 import '../../domain/entities/Notification.dart';
 import '../../domain/repositories/INotificationRepository.dart';
-import '../../domain/services/inotification_service.dart';
+import '../../domain/services/INotificationService.dart';
 
 class NotificationService implements INotificationService {
   final INotificationRepository _notificationRepository;

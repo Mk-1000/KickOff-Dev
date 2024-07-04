@@ -1,7 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:takwira/business/services/user_service.dart';
+import 'package:takwira/business/services/UserService.dart';
 import 'package:takwira/domain/entities/User.dart';
+
 import '../Mocks/user/i_user_repository_test.dart.mocks.dart';
 
 void main() {

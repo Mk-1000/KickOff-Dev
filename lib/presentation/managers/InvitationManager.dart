@@ -1,5 +1,5 @@
-import 'package:takwira/business/services/invitation_service.dart';
-import 'package:takwira/business/services/team_service.dart';
+import 'package:takwira/business/services/InvitationService.dart';
+import 'package:takwira/business/services/TeamService.dart';
 import 'package:takwira/domain/entities/Invitation.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';

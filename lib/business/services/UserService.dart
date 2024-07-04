@@ -1,7 +1,7 @@
 import '../../domain/entities/User.dart';
 import '../../domain/repositories/IUserRepository.dart';
+import '../../domain/services/IUserService.dart';
 import '../../infrastructure/repositories/UserRepository.dart';
-import '../../domain/services/iuser_service.dart';
 
 class UserService implements IUserService {
   final IUserRepository _userRepository;

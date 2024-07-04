@@ -1,6 +1,6 @@
 import 'package:takwira/domain/entities/Invitation.dart';
 import 'package:takwira/domain/repositories/IInvitationRepository.dart';
-import 'package:takwira/domain/services/iinvitation_service.dart';
+import 'package:takwira/domain/services/IInvitationService.dart';
 import 'package:takwira/infrastructure/repositories/InvitationRepository.dart';
 
 class InvitationService implements IInvitationService {

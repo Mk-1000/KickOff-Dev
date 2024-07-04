@@ -2,7 +2,7 @@ import 'package:takwira/infrastructure/repositories/PlayerRepository.dart';
 
 import '../../domain/entities/Player.dart';
 import '../../domain/repositories/IPlayerRepository.dart';
-import '../../domain/services/iplayer_service.dart';
+import '../../domain/services/IPlayerService.dart';
 
 class PlayerService implements IPlayerService {
   final IPlayerRepository _playerRepository;

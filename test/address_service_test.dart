@@ -1,7 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:takwira/business/services/AddressService.dart';
 import 'package:takwira/domain/entities/Address.dart';
-import 'package:takwira/business/services/address_service.dart';
+
 import 'Mocks/address/i_address_repository_test.mocks.dart';
 
 void main() {

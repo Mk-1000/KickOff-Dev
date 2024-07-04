@@ -1,5 +1,5 @@
+import 'package:takwira/business/services/AddressService.dart';
 import 'package:takwira/domain/entities/Address.dart';
-import 'package:takwira/business/services/address_service.dart';
 
 class AddressManager {
   final AddressService _addressService = AddressService();

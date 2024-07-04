@@ -1,6 +1,6 @@
 import '../../domain/entities/Stadium.dart';
 import '../../domain/repositories/IStadiumRepository.dart';
-import '../../domain/services/istadium_service.dart';
+import '../../domain/services/IStadiumService.dart';
 
 class StadiumService implements IStadiumService {
   final IStadiumRepository _stadiumRepository;
