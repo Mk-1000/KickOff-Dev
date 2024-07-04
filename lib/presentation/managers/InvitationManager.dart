@@ -17,20 +17,43 @@ class InvitationManager {
     required String slotId,
   }) async {
     try {
-      final invitation = Invitation(
-        invitationType: InvitationType.TeamToPlayer,
-        teamId: teamId,
-        playerId: playerId,
-        slotId: slotId,
-      );
+      // Validate input parameters
+      if (teamId.isEmpty || playerId.isEmpty || slotId.isEmpty) {
+        throw ArgumentError("Team ID, Player ID, or Slot ID cannot be empty.");
+      }
+      // Check if the current player is the captain of the team
+      bool isCaptain =
+          await _teamManager.isCaptain(Player.currentPlayer!.playerId, teamId);
 
-      await _invitationService.createInvitation(invitation);
+      if (isCaptain) {
+        bool playerExistsInTeam =
+            await _teamManager.checkPlayerExistenceInTeam(teamId, playerId) !=
+                null;
 
-      await _playerManager.addReceivedInvitationToSlot(
-          playerId, invitation.invitationId);
+        if (playerExistsInTeam) {
+          throw Exception("Player already exists in the team.");
+        }
+        // Create an invitation
+        final invitation = Invitation(
+          invitationType: InvitationType.TeamToPlayer,
+          teamId: teamId,
+          playerId: playerId,
+          slotId: slotId,
+        );
 
-      await _teamManager.addSentInvitationToSlot(
-          teamId, slotId, invitation.invitationId);
+        // Create the invitation asynchronously
+        await _invitationService.createInvitation(invitation);
+
+        // Add received invitation to player's slot asynchronously
+        await _playerManager.addReceivedInvitationToSlot(
+            playerId, invitation.invitationId);
+
+        // Add sent invitation to team's slot asynchronously
+        await _teamManager.addSentInvitationToSlot(
+            teamId, slotId, invitation.invitationId);
+      } else {
+        throw Exception("You are not authorized to send invitations.");
+      }
     } catch (e) {
       throw Exception('Failed to send invitation: $e');
     }
@@ -42,25 +65,61 @@ class InvitationManager {
     required String slotId,
   }) async {
     try {
-      bool slotPublic = await _teamManager.isSlotPublic(teamId, slotId);
-      if (slotPublic) {
-        final invitation = Invitation(
-          invitationType: InvitationType.PlayerToTeam,
-          teamId: teamId,
-          playerId: playerId,
-          slotId: slotId,
-        );
-
-        await _invitationService.createInvitation(invitation);
-
-        await _playerManager.addSentInvitationToSlot(
-            playerId, invitation.invitationId);
-        await _teamManager.addReceivedInvitationToSlot(
-            teamId, slotId, invitation.invitationId);
+      // Validate input parameters
+      if (teamId.isEmpty || playerId.isEmpty || slotId.isEmpty) {
+        throw ArgumentError("Team ID, Player ID, or Slot ID cannot be empty.");
       }
-    } catch (e) {
+
+      // Check if the slot is public
+      bool slotPublic = await _teamManager.isSlotPublic(teamId, slotId);
+
+      // Ensure the current player is sending the invitation
+      String? currentPlayerId = Player.currentPlayer?.playerId;
+      if (currentPlayerId != playerId) {
+        throw Exception("Current player does not match the invited player.");
+      }
+
+      // Check if the player exists in the team
+      bool playerExistsInTeam =
+          await _teamManager.checkPlayerExistenceInTeam(teamId, playerId) !=
+              null;
+      if (playerExistsInTeam) {
+        throw Exception("Player already exists in the team.");
+      }
+
+      // Proceed with sending the invitation if conditions are met
+      if (slotPublic) {
+        await _sendInvitation(teamId, playerId, slotId);
+      } else {
+        throw Exception("Slot is not public.");
+      }
+    } catch (e, stackTrace) {
+      // Log the error
+      print('Error in sendInvitationToTeam: $e');
+      print(stackTrace);
       throw Exception('Failed to send invitation: $e');
     }
+  }
+
+  Future<void> _sendInvitation(
+      String teamId, String playerId, String slotId) async {
+    final invitation = Invitation(
+      invitationType: InvitationType.PlayerToTeam,
+      teamId: teamId,
+      playerId: playerId,
+      slotId: slotId,
+    );
+
+    // Create the invitation asynchronously
+    await _invitationService.createInvitation(invitation);
+
+    // Add sent invitation to player's slot asynchronously
+    await _playerManager.addSentInvitationToSlot(
+        playerId, invitation.invitationId);
+
+    // Add received invitation to team's slot asynchronously
+    await _teamManager.addReceivedInvitationToSlot(
+        teamId, slotId, invitation.invitationId);
   }
 
   Future<void> respondToInvitation(String invitationId, bool accept) async {
@@ -99,16 +158,16 @@ class InvitationManager {
         } else if (invitation.invitationType == InvitationType.PlayerToTeam) {
           await removeInvitationSentFromPlayer(invitationId);
         }
-        print('Removing invitation with ID: $invitationId');
+        // print('Removing invitation with ID: $invitationId');
 
         await _invitationService.deleteInvitation(invitationId);
-        print('Invitation deleted.');
+        // print('Invitation deleted.');
       } catch (fetchError) {
         print(
             'Failed to fetch invitation details after deletion. This might be expected if the invitation was already removed: $fetchError');
       }
 
-      print('Invitation removal process completed.');
+      // print('Invitation removal process completed.');
     } catch (e) {
       print('Failed to remove invitation: $e');
       throw Exception('Failed to remove invitation: $e');

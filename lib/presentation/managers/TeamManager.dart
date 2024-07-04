@@ -32,9 +32,22 @@ class TeamManager {
     return _teamService.streamTeams();
   }
 
+  Future<String?> checkPlayerExistenceInTeam(
+      String teamId, String playerId) async {
+    return _teamService.checkPlayerExistenceInTeam(teamId, playerId);
+  }
+
   Future<void> loadTeamDetails(String teamId) async {
     try {
       _currentTeam = await _teamService.getTeamById(teamId);
+    } catch (e) {
+      throw Exception('Failed to load team details: $e');
+    }
+  }
+
+  Future<bool> isCaptain(String playerId, String teamId) async {
+    try {
+      return await _teamService.isCaptain(playerId, teamId);
     } catch (e) {
       throw Exception('Failed to load team details: $e');
     }
@@ -122,51 +135,41 @@ class TeamManager {
 
       // Update the team to clear all invitations
       await updateTeam(team);
-
-      print('All invitations related to team $teamId have been deleted.');
     } catch (e) {
       print('Failed to delete all team invitations: $e');
       throw Exception('Failed to delete all team invitations: $e');
     }
   }
 
-  Future<void> deleteTeamForPlayer(String teamId, Player player) async {
+  Future<void> deleteTeamForPlayer(String teamId, String playerId) async {
     try {
-      // Fetch the team by its ID
-      Team? team = await _teamService.getTeamById(teamId);
+      // Check if the current player is the captain of the team
+      bool isCaptain =
+          await _teamService.isCaptain(Player.currentPlayer!.playerId, teamId);
 
-      // Delete all invitations
-      await deleteAllTeamInvitations(teamId);
-      await Future.delayed(Duration(seconds: 1));
+      if (isCaptain) {
+        // Fetch the team by its ID
+        Team? team = await _teamService.getTeamById(teamId);
 
-      // Delete the chat associated with the team, if any
-      await _chatManager.deleteChat(team.chat!);
+        // Delete all invitations
+        await deleteAllTeamInvitations(teamId);
+        await Future.delayed(Duration(seconds: 1));
 
-      // Remove the team ID from the player's list of team IDs
-      // player.removeTeamId(teamId);
-      // await _playerManager.updatePlayer(player);
+        // Delete the chat associated with the team, if any
+        await _chatManager.deleteChat(team.chat!);
 
-      // Remove the team ID from all players associated with the team
-      for (String playerId in team.players) {
-        _playerManager.removeTeamId(playerId, teamId);
+        // Remove the team ID from all players associated with the team
+        for (String playerId in team.players) {
+          _playerManager.removeTeamId(playerId, teamId);
+        }
+
+        // Remove the team ID from the current player
+        // player.removeTeamId(teamId);
+        // await _playerManager.updatePlayer(player);
+
+        // Delete the team
+        await deleteTeam(teamId);
       }
-
-      // Delete all invitations
-      // team.receivedSlotInvitations.forEach((slotId, invitations) {
-      //   invitations.forEach((invitationId) async {
-      //     await _invitationManager.removeInvitationSendFromPlayer(invitationId);
-      //   });
-      // });
-      // team.sentSlotInvitations.forEach((slotId, invitations) {
-      //   invitations.forEach((invitationId) async {
-      //     await _invitationManager.removeInvitationSendFromTeam(invitationId);
-      //   });
-      // });
-
-      // Delete the team
-      await deleteTeam(teamId);
-
-      print('Team, chat, and player records updated successfully');
     } catch (e) {
       print('Failed to delete team for player: $e');
       throw Exception('Failed to delete team for player: $e');
@@ -184,7 +187,6 @@ class TeamManager {
       try {
         Team team = await getTeamById(teamId);
         teams.add(team);
-        print('Successfully fetched team with ID $teamId');
       } catch (e) {
         print('Error fetching team $teamId: $e');
       }

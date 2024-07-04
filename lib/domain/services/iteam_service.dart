@@ -15,6 +15,8 @@ abstract class ITeamService {
 
   Future<Team> getTeamById(String teamId);
 
+  Future<bool> isCaptain(String playerId, String teamId);
+
   Stream<List<Team>> streamTeams();
 
   Future<void> updateSlotStatusToPublic(String teamId, String slotId);
@@ -49,4 +51,6 @@ abstract class ITeamService {
   Stream<List<PositionSlot>> getPublicAvailableSlotsStream();
 
   Future<List<PositionSlot>> getPublicAvailableSlots();
+
+  Future<String?> checkPlayerExistenceInTeam(String teamId, String playerId);
 }

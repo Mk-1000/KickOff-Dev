@@ -51,7 +51,8 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
       return;
     }
     try {
-      await _teamManager.deleteTeamForPlayer(teamId, player!);
+      await _teamManager.deleteTeamForPlayer(
+          teamId, Player.currentPlayer!.playerId);
       // Update teams list and UI only if delete operation was successful
       teams.removeWhere((team) => team.teamId == teamId);
       setState(() {});

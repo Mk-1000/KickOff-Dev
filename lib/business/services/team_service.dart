@@ -1,14 +1,19 @@
+import 'package:takwira/business/services/chat_service.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/repositories/ITeamRepository.dart';
+import 'package:takwira/domain/services/ichat_service.dart';
 import 'package:takwira/infrastructure/repositories/TeamRepository.dart';
 
 import '../../domain/services/iteam_service.dart';
 
 class TeamService implements ITeamService {
   final ITeamRepository _teamRepository;
-  TeamService({ITeamRepository? teamRepository})
-      : _teamRepository = teamRepository ?? TeamRepository();
+  final IChatService _chatService;
+
+  TeamService({ITeamRepository? teamRepository, IChatService? chatService})
+      : _teamRepository = teamRepository ?? TeamRepository(),
+        _chatService = chatService ?? ChatService();
 
   @override
   Future<void> createTeam(Team team) async {
@@ -39,6 +44,16 @@ class TeamService implements ITeamService {
   @override
   Future<Team> getTeamById(String teamId) async {
     return await _teamRepository.getTeamById(teamId);
+  }
+
+  @override
+  Future<bool> isCaptain(String playerId, String teamId) async {
+    try {
+      Team team = await getTeamById(teamId);
+      return team.captainId == playerId;
+    } catch (e) {
+      throw Exception('Failed to load team details: $e');
+    }
   }
 
   @override
@@ -137,6 +152,7 @@ class TeamService implements ITeamService {
       final team = await getTeamById(teamId);
       team.addPlayerToSlot(playerId, slotId);
       await updateTeam(team);
+      await _chatService.addParticipantToChat(team.chat!, playerId);
     } catch (e) {
       print('Failed to add player to slot: $e');
     }
@@ -185,5 +201,12 @@ class TeamService implements ITeamService {
   @override
   Future<List<PositionSlot>> getPublicAvailableSlots() async {
     return await _teamRepository.getPublicAvailableSlots();
+  }
+
+  @override
+  Future<String?> checkPlayerExistenceInTeam(
+      String teamId, String playerId) async {
+    Team team = await getTeamById(teamId);
+    return team.getPlayerPosition(playerId);
   }
 }
