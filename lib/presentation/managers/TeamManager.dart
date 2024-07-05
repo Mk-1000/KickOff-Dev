@@ -17,20 +17,6 @@ class TeamManager {
   final InvitationManager _invitationManager = InvitationManager();
   final AddressManager _addressManager = AddressManager();
 
-  List<Team> _teams = [];
-  Team? _currentTeam;
-
-  List<Team> get teams => _teams;
-  Team? get currentTeam => _currentTeam;
-
-  Future<void> loadAllTeams() async {
-    try {
-      _teams = await _teamService.getAllTeams();
-    } catch (e) {
-      throw Exception('Failed to load all teams: $e');
-    }
-  }
-
   Stream<List<Team>> streamAllTeams() {
     return _teamService.streamTeams();
   }
@@ -40,9 +26,9 @@ class TeamManager {
     return _teamService.checkPlayerExistenceInTeam(teamId, playerId);
   }
 
-  Future<void> loadTeamDetails(String teamId) async {
+  Future<Team> loadTeamDetails(String teamId) async {
     try {
-      _currentTeam = await _teamService.getTeamById(teamId);
+      return await _teamService.getTeamById(teamId);
     } catch (e) {
       throw Exception('Failed to load team details: $e');
     }
@@ -59,7 +45,6 @@ class TeamManager {
   Future<void> addTeam(Team team) async {
     try {
       await _teamService.createTeam(team);
-      _teams.add(team);
     } catch (e) {
       throw Exception('Failed to add team: $e');
     }
@@ -72,7 +57,6 @@ class TeamManager {
       await _playerManager.updatePlayer(player);
 
       await _teamService.createTeam(team);
-      _teams.add(team);
     } catch (e) {
       throw Exception('Failed to add team: $e');
     }
@@ -81,10 +65,6 @@ class TeamManager {
   Future<void> updateTeam(Team team) async {
     try {
       await _teamService.updateTeam(team);
-      int index = _teams.indexWhere((t) => t.teamId == team.teamId);
-      if (index != -1) {
-        _teams[index] = team;
-      }
     } catch (e) {
       throw Exception('Failed to update team: $e');
     }
@@ -106,7 +86,6 @@ class TeamManager {
   Future<void> deleteTeam(String teamId) async {
     try {
       await _teamService.deleteTeam(teamId);
-      _teams.removeWhere((team) => team.teamId == teamId);
     } catch (e) {
       throw Exception('Failed to delete team: $e');
     }
@@ -241,8 +220,6 @@ class TeamManager {
 
       // Create the team
       await _teamService.createTeam(team);
-
-      _teams.add(team);
 
       // Add team ID to player's team list
       player.addTeamId(team.teamId);
