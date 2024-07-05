@@ -2,7 +2,7 @@ class TunisiaLocations {
   //https://www.tunisieindustrie.nat.tn/fr/doc.asp?mcat=13&mrub=105
   static const String country = "Tunisie";
 
-  static const List<String> governorates = [
+  static const List<String> states = [
     'Ariana',
     'Béja',
     'Ben Arous',
@@ -29,7 +29,7 @@ class TunisiaLocations {
     'Zaghouan',
   ];
 
-  static const Map<String, List<String>> citiesByGovernorate = {
+  static const Map<String, List<String>> citiesBystates = {
     'Ariana': [
       'Ariana',
       'Ettadhamen-Mnihla',

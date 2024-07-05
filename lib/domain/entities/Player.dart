@@ -11,6 +11,7 @@ class Player extends User {
   Position preferredPosition;
   String phoneNumber;
   String jerseySize;
+  String? addressId;
   List<String> teamIds;
   List<String> receivedInvitationIds = [];
   List<String> sentInvitationIds = [];
@@ -25,6 +26,7 @@ class Player extends User {
     required this.preferredPosition,
     required this.phoneNumber,
     required this.jerseySize,
+    this.addressId,
     int? createdAt,
     int? updatedAt,
     this.teamIds = const [],
@@ -91,6 +93,7 @@ class Player extends User {
       'teamIds': teamIds,
       'receivedInvitationIds': receivedInvitationIds,
       'sentInvitationIds': sentInvitationIds,
+      'addressId': addressId,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
@@ -108,6 +111,7 @@ class Player extends User {
       jerseySize: json['jerseySize'] as String,
       teamIds:
           json['teamIds'] is List ? List<String>.from(json['teamIds']) : [],
+      addressId: json['addressId'] as String?,
       createdAt: json['createdAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
     )

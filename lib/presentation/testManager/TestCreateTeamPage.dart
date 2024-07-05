@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/domain/entities/Address.dart';
 import 'package:takwira/domain/entities/Player.dart'; // Import the Player class
+import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
+
+import '../../utils/TunisiaLocations.dart';
 
 class TestCreateTeamPage extends StatefulWidget {
   final Function(Team) onTeamCreated;
@@ -21,6 +24,10 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
       TextEditingController();
   final TextEditingController _forwardCountController = TextEditingController();
 
+  String? selectedState;
+  String? selectedCity;
+  List<String> cities = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +42,45 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
             TextField(
               controller: _teamNameController,
               decoration: InputDecoration(labelText: 'Team Name'),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                DropdownButton<String>(
+                  hint: Text("Select State"),
+                  value: selectedState,
+                  items: TunisiaLocations.states.map((String state) {
+                    return DropdownMenuItem<String>(
+                      value: state,
+                      child: Text(state),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedState = newValue;
+                      selectedCity = null; // Reset city selection
+                      cities = TunisiaLocations.citiesBystates[newValue!] ?? [];
+                    });
+                  },
+                ),
+                if (cities.isNotEmpty)
+                  DropdownButton<String>(
+                    hint: Text("Select City"),
+                    value: selectedCity,
+                    items: cities.map((String city) {
+                      return DropdownMenuItem<String>(
+                        value: city,
+                        child: Text(city),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedCity = newValue;
+                      });
+                    },
+                  ),
+              ],
             ),
             TextField(
               controller: _defenderCountController,
@@ -65,6 +111,12 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
                 int forwardCount =
                     int.tryParse(_forwardCountController.text) ?? 0;
 
+                Address address = Address(
+                  addressType: AddressType.TeamAddress,
+                  city: selectedCity!,
+                  state: selectedState!,
+                  userId: Player.currentPlayer!.playerId,
+                );
                 // Create a new team using input values
                 Team newTeam = Team(
                   teamName: _teamNameController.text,
@@ -81,7 +133,7 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
                 try {
                   // Call createTeamForPlayer method with the new team and current player
                   await _teamManager.createTeamForPlayer(
-                      newTeam, currentPlayer);
+                      newTeam, address, currentPlayer);
                   widget.onTeamCreated(newTeam);
                   Navigator.pop(context);
                 } catch (e) {

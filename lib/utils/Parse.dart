@@ -1,6 +1,7 @@
 import 'package:takwira/domain/entities/Invitation.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 
+import '../domain/entities/Address.dart';
 import '../domain/entities/Chat.dart';
 import '../domain/entities/User.dart';
 
@@ -37,6 +38,11 @@ class ParserUtils {
 
   static InvitationType parseInvitationType(String type) {
     return InvitationType.values
+        .firstWhere((e) => e.toString().split('.').last == type);
+  }
+
+  static AddressType parseAddressType(String type) {
+    return AddressType.values
         .firstWhere((e) => e.toString().split('.').last == type);
   }
 }

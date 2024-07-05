@@ -6,6 +6,9 @@ import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
 
+import '../../domain/entities/Address.dart';
+import '../managers/AddressManager.dart';
+
 class TeamDetailsPage extends StatefulWidget {
   final String teamId;
 
@@ -19,7 +22,10 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
   final TeamManager _teamManager = TeamManager();
   final PlayerManager _playerManager = PlayerManager();
   final InvitationManager _invitationManager = InvitationManager();
+  final AddressManager _addressManager = AddressManager();
+
   Team? _team;
+  Address? _address;
   int? _maxGoalkeepers;
   int? _maxDefenders;
   int? _maxMidfielders;
@@ -36,6 +42,11 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
   Future<void> _loadTeam() async {
     try {
       Team team = await _teamManager.getTeamById(widget.teamId);
+      Address? address;
+      if (team.addressId != null) {
+        address = await _addressManager.getAddressDetails(team.addressId!);
+      }
+
       setState(() {
         _team = team;
         _maxGoalkeepers = team.maxGoalkeepers;
@@ -139,6 +150,10 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                 children: [
                   Text(
                     'Team Name: ${_team!.teamName}',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Address: ${_address != null ? _address!.addressId : 'Address not available'}',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),

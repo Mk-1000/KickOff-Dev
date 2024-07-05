@@ -1,9 +1,11 @@
 import 'package:takwira/business/services/TeamService.dart';
+import 'package:takwira/domain/entities/Address.dart';
 import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/services/ITeamService.dart';
+import 'package:takwira/presentation/managers/AddressManager.dart';
 import 'package:takwira/presentation/managers/ChatManager.dart';
 import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
@@ -13,6 +15,7 @@ class TeamManager {
   final ChatManager _chatManager = ChatManager();
   final PlayerManager _playerManager = PlayerManager();
   final InvitationManager _invitationManager = InvitationManager();
+  final AddressManager _addressManager = AddressManager();
 
   List<Team> _teams = [];
   Team? _currentTeam;
@@ -156,7 +159,18 @@ class TeamManager {
         await Future.delayed(Duration(seconds: 1));
 
         // Delete the chat associated with the team, if any
-        await _chatManager.deleteChat(team.chatId!);
+
+        if (team.addressId != null) {
+          await _addressManager.deleteAddress(team.addressId!);
+        }
+
+        if (team.chatId != null) {
+          await _chatManager.deleteChat(team.chatId!);
+        }
+
+        // Delete the adress associated with the team, if any
+        // print("ok k ok  ${team.addressId!}");
+        // await _addressManager.deleteAddress(team.addressId!);
 
         // Remove the team ID from all players associated with the team
         for (String playerId in team.players) {
@@ -190,8 +204,14 @@ class TeamManager {
     return teams;
   }
 
-  Future<void> createTeamForPlayer(Team team, Player player) async {
+  Future<void> createTeamForPlayer(
+      Team team, Address address, Player player) async {
     try {
+      address.userId = team.teamId;
+      team.addressId = address.addressId;
+
+      await _addressManager.createAddress(address);
+
       team.slots = team.initializeSlotsList(
           goalkeepers: team.maxGoalkeepers,
           defenders: team.maxDefenders,

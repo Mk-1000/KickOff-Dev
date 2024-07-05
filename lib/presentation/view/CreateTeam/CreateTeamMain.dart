@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:takwira/domain/entities/Address.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/presentation/view/CreateTeam/bloc/bloc/create_team_bloc.dart';
-import 'package:takwira/presentation/view/CreateTeam/widget/CircleNumber.dart';
 import 'package:takwira/presentation/view/CreateTeam/widget/avatarPhoto/AvatarCreateTeam';
 import 'package:takwira/presentation/view/KickOff/widget/blocVosEquipe/bloc/vos_equipe_bloc.dart';
 import 'package:takwira/presentation/view/KickOff/widget/vosEquipe.dart';
@@ -17,7 +16,7 @@ import 'package:takwira/presentation/view/widgets/popups/Allpop.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
 class CreateTeam extends StatefulWidget {
-   static CreateTeamBloc CreateTeamController = CreateTeamBloc();
+  static CreateTeamBloc CreateTeamController = CreateTeamBloc();
   const CreateTeam({Key? key}) : super(key: key);
 
   @override
@@ -30,7 +29,6 @@ class _CreateTeamState extends State<CreateTeam>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
- 
 
   @override
   void initState() {
@@ -108,19 +106,22 @@ class _CreateTeamState extends State<CreateTeam>
                       const SizedBox(height: 24),
                       Column(
                         children: [
-                          _animatedElement(_buildCounter("Défenseur", state.defender)),
+                          _animatedElement(
+                              _buildCounter("Défenseur", state.defender)),
                           const SizedBox(height: 16),
-                          _animatedElement(_buildCounter("Milieu",  state.midle)),
+                          _animatedElement(
+                              _buildCounter("Milieu", state.midle)),
                           const SizedBox(height: 16),
-                          _animatedElement(_buildCounter("Attaquant", state.attacker)),
+                          _animatedElement(
+                              _buildCounter("Attaquant", state.attacker)),
                         ],
                       ),
                       const SizedBox(height: 8),
                       _animatedElement(
                         Stade(
-                          defender:  state.defender,
-                          mid:  state.midle,
-                          attack:  state.attacker,
+                          defender: state.defender,
+                          mid: state.midle,
+                          attack: state.attacker,
                         ),
                       ),
                       Row(
@@ -128,18 +129,27 @@ class _CreateTeamState extends State<CreateTeam>
                         children: [
                           BlueButton(
                             onTap: () async {
-                              if(name.text != "") {
+                              if (name.text != "") {
                                 Allpups.loading(context);
-                               await  TeamManager().createTeamForPlayer(
-                                  Team(
-                                      teamName: name.text ,
-                                      captainId: Player.currentPlayer!.playerId, maxDefenders: state.defender,maxForwards: state.attacker, maxMidfielders: state.midle),
-                                  Player.currentPlayer!);
-                                    VosEquipe. VosEquipeController.add(loadData());
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
+                                await TeamManager().createTeamForPlayer(
+                                    Team(
+                                        teamName: name.text,
+                                        captainId:
+                                            Player.currentPlayer!.playerId,
+                                        maxDefenders: state.defender,
+                                        maxForwards: state.attacker,
+                                        maxMidfielders: state.midle),
+                                    Address(
+                                      addressType: AddressType.TeamAddress,
+                                      city: "city",
+                                      state: "state",
+                                    ),
+                                    Player.currentPlayer!);
+
+                                VosEquipe.VosEquipeController.add(loadData());
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
                               }
-                              
                             },
                             text: "Accepter",
                             width: 120,
@@ -167,7 +177,7 @@ class _CreateTeamState extends State<CreateTeam>
     );
   }
 
-  Widget _buildCounter(String title, int counter ) {
+  Widget _buildCounter(String title, int counter) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

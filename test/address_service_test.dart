@@ -15,7 +15,6 @@ void main() {
       mockAddressRepository = MockIAddressRepository();
       addressService = AddressService(addressRepository: mockAddressRepository);
       testAddress = Address(
-        addressId: '1',
         street: '123 Test St',
         city: 'TestCity',
         state: 'TestState',
@@ -23,6 +22,7 @@ void main() {
         country: 'TestCountry',
         latitude: 34.0,
         longitude: -118.0,
+        addressType: AddressType.PlayerAddress,
         userId: 'user-123',
       );
 
@@ -39,7 +39,7 @@ void main() {
     });
 
     test('Add Address', () async {
-      await addressService.addAddress(testAddress);
+      await addressService.createAddress(testAddress);
       verify(mockAddressRepository.addAddress(testAddress)).called(1);
     });
 
@@ -50,7 +50,7 @@ void main() {
     });
 
     test('Get Addresses By User ID', () async {
-      final result = await addressService.getAddressesByUserId('user-123');
+      final result = await addressService.getAddressDetails('user-123');
       expect(result, contains(testAddress));
       verify(mockAddressRepository.getAllAddresses()).called(1);
     });

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
-import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/testManager/TestSignInPlayer.dart';
+
+import '../../domain/entities/Address.dart';
+import '../../utils/TunisiaLocations.dart';
 
 class TestSignUpPlayer extends StatefulWidget {
   @override
@@ -21,6 +23,9 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
   final _jerseySizeController = TextEditingController();
   Position? _preferredPosition; // Selected preferred position
   final PlayerManager _playerManager = PlayerManager();
+  String? selectedState;
+  String? selectedCity;
+  List<String> cities = [];
 
   // List of predefined positions
   final List<Position> _positions = [
@@ -58,6 +63,46 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
                 _nicknameController,
                 'Nickname',
                 'Please enter a nickname',
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DropdownButton<String>(
+                    hint: Text("Select State"),
+                    value: selectedState,
+                    items: TunisiaLocations.states.map((String state) {
+                      return DropdownMenuItem<String>(
+                        value: state,
+                        child: Text(state),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedState = newValue;
+                        selectedCity = null; // Reset city selection
+                        cities =
+                            TunisiaLocations.citiesBystates[newValue!] ?? [];
+                      });
+                    },
+                  ),
+                  if (cities.isNotEmpty)
+                    DropdownButton<String>(
+                      hint: Text("Select City"),
+                      value: selectedCity,
+                      items: cities.map((String city) {
+                        return DropdownMenuItem<String>(
+                          value: city,
+                          child: Text(city),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedCity = newValue;
+                        });
+                      },
+                    ),
+                ],
               ),
               _buildTextField(
                 _birthdateController,
@@ -178,6 +223,12 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
 
       String phoneNumbers = _phoneNumbersController.text;
 
+      Address address = Address(
+        addressType: AddressType.PlayerAddress,
+        city: selectedCity!,
+        state: selectedState!,
+      );
+
       var player = Player(
         email: _emailController.text,
         nickname: _nicknameController.text,
@@ -188,7 +239,8 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
       );
 
       _playerManager
-          .signUpPlayer(_emailController.text, _passwordController.text, player)
+          .signUpPlayer(
+              _emailController.text, _passwordController.text, address, player)
           .then((_) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Player Registered Successfully! Go Sign IN')));

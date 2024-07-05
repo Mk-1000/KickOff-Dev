@@ -1,43 +1,38 @@
 import 'package:takwira/business/services/AddressService.dart';
 import 'package:takwira/domain/entities/Address.dart';
+import 'package:takwira/domain/services/IAddressService.dart';
 
 class AddressManager {
-  final AddressService _addressService = AddressService();
+  final IAddressService _addressService = AddressService();
 
-  List<Address> _addresses = [];
-  Address? _currentAddress;
-
-  List<Address> get addresses => _addresses;
-  Address? get currentAddress => _currentAddress;
-
-  Future<void> loadAddressesByUserId(String userId) async {
-    _addresses = await _addressService.getAddressesByUserId(userId);
-    // No notifyListeners() - You will need to handle UI updates manually
+  Future<Address> getAddressDetails(String addressId) async {
+    return await _addressService.getAddressDetails(addressId);
   }
 
-  Future<void> loadAddressDetails(String addressId) async {
-    _currentAddress = await _addressService.getAddressDetails(addressId);
-    // Manual UI updates as needed
-  }
-
-  Future<void> addAddress(Address address) async {
-    await _addressService.addAddress(address);
-    _addresses.add(address);
-    // Update UI manually if needed
-  }
-
-  Future<void> updateAddress(Address address) async {
-    await _addressService.updateAddress(address);
-    int index = _addresses.indexWhere((a) => a.addressId == address.addressId);
-    if (index != -1) {
-      _addresses[index] = address;
-      // Manually update UI if necessary
+  Future<bool> createAddress(Address address) async {
+    try {
+      await _addressService.createAddress(address);
+      return true;
+    } on Exception {
+      return false;
     }
   }
 
-  Future<void> deleteAddress(String addressId) async {
-    await _addressService.deleteAddress(addressId);
-    _addresses.removeWhere((address) => address.addressId == addressId);
-    // Handle UI updates manually
+  Future<bool> updateAddress(Address address) async {
+    try {
+      await _addressService.updateAddress(address);
+      return true;
+    } on Exception {
+      return false;
+    }
+  }
+
+  Future<bool> deleteAddress(String addressId) async {
+    try {
+      await _addressService.deleteAddress(addressId);
+      return true;
+    } on Exception {
+      return false;
+    }
   }
 }

@@ -6,11 +6,15 @@ import 'package:takwira/domain/entities/User.dart';
 import 'package:takwira/domain/services/IAuthService.dart';
 import 'package:takwira/domain/services/IPlayerService.dart';
 import 'package:takwira/domain/services/IUserService.dart';
+import 'package:takwira/presentation/managers/AddressManager.dart';
+
+import '../../domain/entities/Address.dart';
 
 class PlayerManager {
   final IPlayerService _playerService = PlayerService();
   final IAuthService _authService = AuthService();
   final IUserService _userService = UserService();
+  final AddressManager _addressManager = AddressManager();
 
   // Method to sign in player with email and password
   Future<String> signInWithEmailPassword(String email, String password) async {
@@ -26,7 +30,7 @@ class PlayerManager {
   }
 
   Future<void> signUpPlayer(
-      String email, String password, Player player) async {
+      String email, String password, Address address, Player player) async {
     try {
       String userId =
           await _authService.signUpWithEmailPassword(email, password);
@@ -34,8 +38,11 @@ class PlayerManager {
       await _userService.addUser(newUser);
 
       player.userId = userId;
+      player.addressId = address.addressId;
+      address.userId = userId;
 
       await _playerService.createPlayer(player);
+      await _addressManager.createAddress(address);
 
       Player.setCurrentPlayer(player);
     } catch (e) {

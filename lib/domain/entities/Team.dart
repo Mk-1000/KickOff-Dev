@@ -14,6 +14,7 @@ class Team {
   int maxDefenders;
   int maxMidfielders;
   int maxForwards;
+  String? addressId;
   List<String> players;
   List<PositionSlot> slots;
   Map<String, List<String>> receivedSlotInvitations;
@@ -24,6 +25,7 @@ class Team {
     required this.teamName,
     required this.captainId,
     this.chatId,
+    this.addressId,
     int? createdAt,
     int? updatedAt,
     this.maxDefenders = 4,
@@ -291,6 +293,7 @@ class Team {
       'receivedSlotInvitations': receivedSlotInvitations,
       'sentSlotInvitations': sentSlotInvitations,
       'chatId': chatId,
+      'addressId': addressId,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'maxGoalkeepers': maxGoalkeepers,
@@ -312,6 +315,8 @@ class Team {
     final createdAt = json['createdAt'] as int?;
     final updatedAt = json['updatedAt'] as int?;
     final chatId = json['chatId'] as String?;
+    final addressId = json['addressId'] as String?;
+
     final slotsJson = json['slots'] as List;
     final players = List<String>.from(json['players'] ?? []);
 
@@ -365,6 +370,7 @@ class Team {
       maxForwards: maxForwards,
       players: players,
       slots: slots,
+      addressId: addressId,
       receivedSlotInvitations: receivedSlotInvitations,
       sentSlotInvitations: sentSlotInvitations,
     );

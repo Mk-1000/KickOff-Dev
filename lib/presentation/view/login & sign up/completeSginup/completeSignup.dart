@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:takwira/domain/entities/Player.dart';
@@ -9,9 +7,10 @@ import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/view/login%20&%20sign%20up/completeSginup/widget/postion.dart';
 import 'package:takwira/presentation/view/login%20&%20sign%20up/login.dart';
 import 'package:takwira/presentation/view/widgets/button/blueButton/BlueButton.dart';
-import 'package:takwira/presentation/view/widgets/text/text.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/InputFild.dart';
+import 'package:takwira/presentation/view/widgets/text/text.dart';
 
+import '../../../../domain/entities/Address.dart';
 import 'bloc/bloc/complete_signup_bloc.dart';
 
 class CompleteSignup extends StatefulWidget {
@@ -250,8 +249,23 @@ class _CompleteSignupStateState extends State<CompleteSignup> {
           ),
           BlueButton(
             onTap: () {
-              if(state.page == 3) {
-                PlayerManager().signUpPlayer(LoginState.emailController.text, LoginState.passController.text, Player(email: LoginState.emailController.text, nickname: UserNameController.text, birthdate: _selectedDate, preferredPosition: Position.values[PostionState.selected!] , phoneNumber: phoneController.text, jerseySize: "S")) ; 
+              if (state.page == 3) {
+                PlayerManager().signUpPlayer(
+                    LoginState.emailController.text,
+                    LoginState.passController.text,
+                    Address(
+                      addressType: AddressType.PlayerAddress,
+                      city: "selectedCity",
+                      state: "selectedState",
+                    ),
+                    Player(
+                        email: LoginState.emailController.text,
+                        nickname: UserNameController.text,
+                        birthdate: _selectedDate,
+                        preferredPosition:
+                            Position.values[PostionState.selected!],
+                        phoneNumber: phoneController.text,
+                        jerseySize: "S"));
               }
               completeSignup.add(changePage(state.page));
             },
