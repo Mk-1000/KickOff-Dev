@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
@@ -197,15 +196,6 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                     child: Text("Create a new Team"),
                   ),
                 ),
-                 
-                 GestureDetector(
-                  onTap: () async {
-                      player = await _playerManager.getPlayerDetails(widget.playerId);
-      if (player != null) {
-        teams = await _teamManager.getTeamsForPlayer(player!);
-      }
-                  },
-                  child: Container(color: Colors.amber, width: 200,height: 100,))
               ],
             ),
     );

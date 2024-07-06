@@ -102,7 +102,8 @@ class TeamRepository implements ITeamRepository {
         var teamData = snapshot.value;
 
         // Check if teamData is a Map or a JSON string
-        print("hello"+snapshot.value.toString());
+        // print("hello"+snapshot.value.toString());
+
         if (teamData is Map) {
           return Team.fromJson(Map<String, dynamic>.from(teamData));
         } else if (teamData is String) {

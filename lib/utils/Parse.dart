@@ -3,6 +3,7 @@ import 'package:takwira/domain/entities/PositionSlot.dart';
 
 import '../domain/entities/Address.dart';
 import '../domain/entities/Chat.dart';
+import '../domain/entities/Game.dart';
 import '../domain/entities/User.dart';
 
 class ParserUtils {
@@ -24,6 +25,11 @@ class ParserUtils {
   static InvitationStatus parseInvitationStatus(String invitationStatus) {
     return InvitationStatus.values
         .firstWhere((e) => e.toString().split('.').last == invitationStatus);
+  }
+
+  static GameStatus parseGameStatus(String matchStatus) {
+    return GameStatus.values
+        .firstWhere((e) => e.toString().split('.').last == matchStatus);
   }
 
   static SlotType parseSlotType(String slotType) {

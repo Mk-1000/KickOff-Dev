@@ -5,7 +5,7 @@ import '../../utils/Parse.dart';
 enum AddressType { PlayerAddress, TeamAddress, StadiumAddress, Address }
 
 class Address {
-  String? addressId;
+  String addressId;
   String? street;
   String city;
   String state;
@@ -14,7 +14,7 @@ class Address {
   double? latitude;
   double? longitude;
   AddressType addressType;
-  int createdAt;
+  final int createdAt;
   int updatedAt;
   String? userId; // Make userId nullable
 
@@ -27,10 +27,18 @@ class Address {
     this.country = 'Tunisie', // Provide a default value for country
     this.latitude,
     this.longitude,
-    this.userId, // Make userId nullable
-  })  : createdAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
-        updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
-        addressId = IDUtils.generateUniqueId();
+    this.userId,
+    int? createdAt,
+    int? updatedAt,
+  })  : addressId = IDUtils.generateUniqueId(),
+        createdAt = createdAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        updatedAt = updatedAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
+
+  void newUpdate() {
+    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
+  }
 
   Map<String, dynamic> toJson() => {
         'addressId': addressId,
@@ -63,12 +71,9 @@ class Address {
       country: json['country'] as String? ?? 'Tunisie',
       latitude: json['latitude'] as double?,
       longitude: json['longitude'] as double?,
-      userId: json['userId'] as String?, // Make userId nullable
-    )
-      ..addressId = addressId
-      ..createdAt = json['createdAt'] as int? ??
-          DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch
-      ..updatedAt = json['updatedAt'] as int? ??
-          DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
+      userId: json['userId'] as String?,
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+    )..addressId = addressId;
   }
 }
