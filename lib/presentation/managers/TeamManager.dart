@@ -151,6 +151,7 @@ class TeamManager {
         for (String playerId in team.players) {
           _playerManager.removeTeamId(playerId, teamId);
         }
+        Player.currentPlayer?.removeTeamId(teamId);
 
         // Delete the team
         await deleteTeam(teamId);
