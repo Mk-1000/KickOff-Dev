@@ -34,7 +34,7 @@ class InvitationManager {
           throw Exception("Player already exists in the team.");
         }
         // Create an invitation
-        Invitation invitation = Invitation(
+        final invitation = Invitation(
           invitationType: InvitationType.TeamToPlayer,
           teamId: teamId,
           playerId: playerId,
@@ -103,7 +103,7 @@ class InvitationManager {
 
   Future<void> _sendInvitation(
       String teamId, String playerId, String slotId) async {
-    Invitation invitation = Invitation(
+    final invitation = Invitation(
       invitationType: InvitationType.PlayerToTeam,
       teamId: teamId,
       playerId: playerId,
@@ -126,7 +126,7 @@ class InvitationManager {
     try {
       print('Responding to invitation with ID: $invitationId');
 
-      Invitation invitation =
+      final invitation =
           await _invitationService.getInvitationDetails(invitationId);
 
       if (accept) {

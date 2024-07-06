@@ -16,7 +16,7 @@ class Address {
   AddressType addressType;
   final int createdAt;
   int updatedAt;
-  String? userId; // Make userId nullable
+  String? userId;
 
   Address({
     this.street,
@@ -24,7 +24,7 @@ class Address {
     required this.city,
     required this.state,
     this.postalCode,
-    this.country = 'Tunisie', // Provide a default value for country
+    this.country = 'Tunisie',
     this.latitude,
     this.longitude,
     this.userId,
@@ -56,7 +56,6 @@ class Address {
       };
 
   factory Address.fromJson(Map<String, dynamic> json) {
-    // Ensure addressId is generated if not present in JSON
     String addressId =
         json['addressId'] as String? ?? IDUtils.generateUniqueId();
 

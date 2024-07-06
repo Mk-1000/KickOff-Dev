@@ -13,6 +13,7 @@ class Chat {
   final List<Message> messages;
   final int createdAt;
   int updatedAt;
+  String? distinationId;
 
   void newUpdate() {
     updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
@@ -25,6 +26,7 @@ class Chat {
     List<Message>? messages,
     int? createdAt,
     int? updatedAt,
+    this.distinationId,
   })  : chatId = chatId ?? IDUtils.generateUniqueId(),
         messages = messages ?? [],
         createdAt = createdAt ??
@@ -52,6 +54,7 @@ class Chat {
       'participants': participants,
       'type': type.toString().split('.').last,
       'messages': messages.map((message) => message.toJson()).toList(),
+      'distinationId': distinationId,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
@@ -63,6 +66,8 @@ class Chat {
     final messagesJson = json['messages'] as List?;
     final createdAt = json['createdAt'] as int?;
     final updatedAt = json['updatedAt'] as int?;
+
+    final distinationId = json['distinationId'] as String?;
 
     // Convert the messagesJson to a List<Message>
     List<Message> messages = [];
@@ -80,6 +85,7 @@ class Chat {
           ? ParserUtils.parseChatType(json['type'] as String)
           : ChatType.TeamChat,
       messages: messages,
+      distinationId: distinationId,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );

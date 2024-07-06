@@ -50,18 +50,6 @@ class TeamManager {
     }
   }
 
-  Future<void> addTeamForPlayer(Team team, Player player) async {
-    try {
-      player.addTeamId(team.teamId);
-
-      await _playerManager.updatePlayer(player);
-
-      await _teamService.createTeam(team);
-    } catch (e) {
-      throw Exception('Failed to add team: $e');
-    }
-  }
-
   Future<void> updateTeam(Team team) async {
     try {
       await _teamService.updateTeam(team);
@@ -198,6 +186,7 @@ class TeamManager {
       Chat teamChat = Chat(
         participants: [player.playerId],
         type: ChatType.TeamChat,
+        distinationId: team.teamId,
       );
 
       await _chatManager.createChatForTeam(teamChat);
@@ -221,6 +210,7 @@ class TeamManager {
       // Add team ID to player's team list
       player.addTeamId(team.teamId);
       await _playerManager.updatePlayer(player);
+      Player.currentPlayer?.addTeamId(team.teamId);
     } catch (e) {
       throw Exception('Failed to create team for player: $e');
     }
