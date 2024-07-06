@@ -276,4 +276,68 @@ class TeamManager {
   Future<List<PositionSlot>> getPublicAvailableSlots() async {
     return await _teamService.getPublicAvailableSlots();
   }
+
+  Future<bool> addGameHistoryId(String teamId, String gameId) async {
+    try {
+      await _teamService.addGameHistoryId(teamId, gameId);
+      return true;
+    } catch (e) {
+      // Optionally, log the error or handle it accordingly
+      return false;
+    }
+  }
+
+  Future<bool> removeGameHistoryId(String teamId, String gameId) async {
+    try {
+      await _teamService.removeGameHistoryId(teamId, gameId);
+      return true;
+    } catch (e) {
+      // Optionally, log the error or handle it accordingly
+      return false;
+    }
+  }
+
+  Future<bool> addSentGameInvitationIds(
+      String teamId, String invitationId) async {
+    try {
+      await _teamService.addSentGameInvitationIds(teamId, invitationId);
+      return true;
+    } catch (e) {
+      // Optionally, log the error or handle it accordingly
+      return false;
+    }
+  }
+
+  Future<bool> removeSentGameInvitationIds(
+      String teamId, String invitationId) async {
+    try {
+      await _teamService.removeSentGameInvitationIds(teamId, invitationId);
+      return true;
+    } catch (e) {
+      // Optionally, log the error or handle it accordingly
+      return false;
+    }
+  }
+
+  Future<bool> addReceivedGameInvitationIds(
+      String teamId, String invitationId) async {
+    try {
+      await _teamService.addReceivedGameInvitationIds(teamId, invitationId);
+      return true;
+    } catch (e) {
+      // Optionally, log the error or handle it accordingly
+      return false;
+    }
+  }
+
+  Future<bool> removeReceivedGameInvitationIds(
+      String teamId, String invitationId) async {
+    try {
+      await _teamService.removeReceivedGameInvitationIds(teamId, invitationId);
+      return true;
+    } catch (e) {
+      // Optionally, log the error or handle it accordingly
+      return false;
+    }
+  }
 }

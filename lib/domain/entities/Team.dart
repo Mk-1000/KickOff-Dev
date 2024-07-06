@@ -131,6 +131,22 @@ class Team {
     gameHistoryIds.remove(id);
   }
 
+  void addSentGameInvitationIds(String id) {
+    sentGameInvitationIds.add(id);
+  }
+
+  void removeSentGameInvitationIds(String id) {
+    sentGameInvitationIds.remove(id);
+  }
+
+  void addReceivedGameInvitationIds(String id) {
+    receivedGameInvitationIds.add(id);
+  }
+
+  void removeReceivedGameInvitationIds(String id) {
+    receivedGameInvitationIds.remove(id);
+  }
+
   void addPlayerToSlot(String playerId, String slotId) {
     try {
       // Check if the player already exists in the team
@@ -138,7 +154,8 @@ class Team {
         throw Exception('Player $playerId already exists in the team');
       }
 
-      final slotIndex = slots.indexWhere((slot) => slot.slotId == slotId);
+      final slotIndex =
+          slots.indexWhere((slot) => slot.slotId.compareTo(slotId) == 0);
       if (slotIndex == -1) {
         throw Exception('Slot ID $slotId does not exist');
       }

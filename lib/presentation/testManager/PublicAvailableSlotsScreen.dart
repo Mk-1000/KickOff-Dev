@@ -123,7 +123,7 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
 
   Future<void> _sendInvitation(
       BuildContext context, Team team, PositionSlot slot) async {
-    await invitationManager.sendInvitationToTeam(
+    await invitationManager.sendInvitationFromPlayerToTeam(
         teamId: slot.teamId,
         playerId: Player.currentPlayer!.playerId,
         slotId: slot.slotId);

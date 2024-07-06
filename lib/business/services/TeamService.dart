@@ -209,4 +209,74 @@ class TeamService implements ITeamService {
     Team team = await getTeamById(teamId);
     return team.getPlayerPosition(playerId);
   }
+
+  @override
+  Future<void> addGameHistoryId(String teamId, String gameId) async {
+    try {
+      Team team = await getTeamById(teamId);
+      team.addGameHistoryId(gameId);
+      await updateTeam(team);
+    } catch (e) {
+      print('Failed to remove invitation for team slot: $e');
+    }
+  }
+
+  @override
+  Future<void> removeGameHistoryId(String teamId, String gameId) async {
+    try {
+      Team team = await getTeamById(teamId);
+      team.removeGameHistoryId(gameId);
+      await updateTeam(team);
+    } catch (e) {
+      print('Failed to remove invitation for team slot: $e');
+    }
+  }
+
+  @override
+  Future<void> addSentGameInvitationIds(
+      String teamId, String invitationId) async {
+    try {
+      Team team = await getTeamById(teamId);
+      team.addSentGameInvitationIds(invitationId);
+      await updateTeam(team);
+    } catch (e) {
+      print('Failed to remove invitation for team slot: $e');
+    }
+  }
+
+  @override
+  Future<void> removeSentGameInvitationIds(
+      String teamId, String invitationId) async {
+    try {
+      Team team = await getTeamById(teamId);
+      team.removeSentGameInvitationIds(invitationId);
+      await updateTeam(team);
+    } catch (e) {
+      print('Failed to remove invitation for team slot: $e');
+    }
+  }
+
+  @override
+  Future<void> addReceivedGameInvitationIds(
+      String teamId, String invitationId) async {
+    try {
+      Team team = await getTeamById(teamId);
+      team.addReceivedGameInvitationIds(invitationId);
+      await updateTeam(team);
+    } catch (e) {
+      print('Failed to remove invitation for team slot: $e');
+    }
+  }
+
+  @override
+  Future<void> removeReceivedGameInvitationIds(
+      String teamId, String invitationId) async {
+    try {
+      Team team = await getTeamById(teamId);
+      team.removeReceivedGameInvitationIds(invitationId);
+      await updateTeam(team);
+    } catch (e) {
+      print('Failed to remove invitation for team slot: $e');
+    }
+  }
 }

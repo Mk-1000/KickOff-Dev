@@ -53,4 +53,17 @@ abstract class ITeamService {
   Future<List<PositionSlot>> getPublicAvailableSlots();
 
   Future<String?> checkPlayerExistenceInTeam(String teamId, String playerId);
+
+  Future<void> addGameHistoryId(String teamId, String gameId);
+
+  Future<void> removeGameHistoryId(String teamId, String gameId);
+
+  Future<void> addSentGameInvitationIds(String teamId, String invitationId);
+
+  Future<void> removeSentGameInvitationIds(String teamId, String invitationId);
+
+  Future<void> addReceivedGameInvitationIds(String teamId, String invitationId);
+
+  Future<void> removeReceivedGameInvitationIds(
+      String teamId, String invitationId);
 }

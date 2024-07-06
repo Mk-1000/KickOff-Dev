@@ -17,7 +17,7 @@ enum InvitationType {
 
 class Invitation {
   final String invitationId;
-  final String teamId;
+  final String? teamId; // Making teamId optional
   final String playerId;
   final String slotId;
   final InvitationType invitationType;
@@ -28,7 +28,7 @@ class Invitation {
 
   Invitation({
     String? invitationId,
-    required this.teamId,
+    this.teamId, // Making teamId optional
     required this.playerId,
     required this.slotId,
     required this.invitationType,
@@ -95,7 +95,7 @@ class Invitation {
   factory Invitation.fromJson(Map<String, dynamic> json) {
     return Invitation(
       invitationId: json['invitationId'] as String?,
-      teamId: json['teamId'] as String,
+      teamId: json['teamId'] as String?, // Allow teamId to be null
       playerId: json['playerId'] as String,
       slotId: json['slotId'] as String,
       invitationType: ParserUtils.parseInvitationType(json['type'] as String),
