@@ -20,6 +20,12 @@ class Team {
   Map<String, List<String>> receivedSlotInvitations;
   Map<String, List<String>> sentSlotInvitations;
 
+  // New fields for Game
+  String? currentGameId;
+  List<String> gameHistoryIds;
+  List<String> receivedGameInvitationIds;
+  List<String> sentGameInvitationIds;
+
   Team({
     String? teamId,
     required this.teamName,
@@ -36,6 +42,10 @@ class Team {
     List<PositionSlot>? slots,
     Map<String, List<String>>? receivedSlotInvitations,
     Map<String, List<String>>? sentSlotInvitations,
+    this.currentGameId,
+    List<String>? gameHistoryIds,
+    List<String>? receivedGameInvitationIds,
+    List<String>? sentGameInvitationIds,
   })  : teamId = teamId ?? IDUtils.generateUniqueId(),
         createdAt = createdAt ??
             DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
@@ -44,7 +54,10 @@ class Team {
         players = players ?? [],
         slots = slots ?? [],
         receivedSlotInvitations = receivedSlotInvitations ?? {},
-        sentSlotInvitations = sentSlotInvitations ?? {};
+        sentSlotInvitations = sentSlotInvitations ?? {},
+        gameHistoryIds = gameHistoryIds ?? [],
+        receivedGameInvitationIds = receivedGameInvitationIds ?? [],
+        sentGameInvitationIds = sentGameInvitationIds ?? [];
 
   List<PositionSlot> initializeSlotsList({
     required int goalkeepers,
@@ -108,6 +121,14 @@ class Team {
       // Handle or log the exception if needed
       rethrow;
     }
+  }
+
+  void addGameHistoryId(String id) {
+    gameHistoryIds.add(id);
+  }
+
+  void removeGameHistoryId(String id) {
+    gameHistoryIds.remove(id);
   }
 
   void addPlayerToSlot(String playerId, String slotId) {
@@ -301,6 +322,10 @@ class Team {
       'maxMidfielders': maxMidfielders,
       'maxForwards': maxForwards,
       'players': players,
+      'currentGameId': currentGameId,
+      'gameHistoryIds': gameHistoryIds,
+      'receivedGameInvitationIds': receivedGameInvitationIds,
+      'sentGameInvitationIds': sentGameInvitationIds,
     };
   }
 
@@ -316,9 +341,15 @@ class Team {
     final updatedAt = json['updatedAt'] as int?;
     final chatId = json['chatId'] as String?;
     final addressId = json['addressId'] as String?;
-
     final slotsJson = json['slots'] as List;
     final players = List<String>.from(json['players'] ?? []);
+
+    final currentGameId = json['currentGameId'] as String?;
+    final gameHistoryIds = List<String>.from(json['gameHistoryIds'] ?? []);
+    final receivedGameInvitationIds =
+        List<String>.from(json['receivedGameInvitationIds'] ?? []);
+    final sentGameInvitationIds =
+        List<String>.from(json['sentGameInvitationIds'] ?? []);
 
     List<PositionSlot> slots = [];
     try {
@@ -373,6 +404,10 @@ class Team {
       addressId: addressId,
       receivedSlotInvitations: receivedSlotInvitations,
       sentSlotInvitations: sentSlotInvitations,
+      currentGameId: currentGameId,
+      gameHistoryIds: gameHistoryIds,
+      receivedGameInvitationIds: receivedGameInvitationIds,
+      sentGameInvitationIds: sentGameInvitationIds,
     );
   }
 }

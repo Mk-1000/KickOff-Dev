@@ -60,7 +60,7 @@ class ChatService implements IChatService {
   @override
   Future<void> addParticipantToChat(String chatId, String participantId) async {
     try {
-      final chat = await _chatRepository.getChatById(chatId);
+      Chat? chat = await _chatRepository.getChatById(chatId);
       if (chat == null) {
         throw Exception('Chat not found');
       }
@@ -74,7 +74,7 @@ class ChatService implements IChatService {
   @override
   Future<void> addMessageToChat(String chatId, Message message) async {
     try {
-      final chat = await _chatRepository.getChatById(chatId);
+      Chat? chat = await _chatRepository.getChatById(chatId);
       if (chat == null) {
         throw Exception('Chat not found');
       }

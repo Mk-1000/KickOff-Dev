@@ -12,6 +12,7 @@ enum InvitationStatus {
 enum InvitationType {
   TeamToPlayer,
   PlayerToTeam,
+  TeamToTeam,
 }
 
 class Invitation {

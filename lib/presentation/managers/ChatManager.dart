@@ -92,7 +92,7 @@ class ChatManager {
 
   Future<List<Message>> getMessagesForChat(String chatId) async {
     try {
-      final Chat? chat = await _chatService.getChatById(chatId);
+      Chat? chat = await _chatService.getChatById(chatId);
       if (chat != null) {
         return chat.messages;
       } else {
@@ -110,7 +110,7 @@ class ChatManager {
   Future<void> sendMessage(
       String senderId, String chatId, String messageContent) async {
     try {
-      final Message message = Message(
+      Message message = Message(
         senderId: senderId,
         content: messageContent,
       );

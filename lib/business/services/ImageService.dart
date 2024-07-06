@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:takwira/domain/repositories/IImageRepository.dart';
 import 'package:takwira/domain/services/IImageService.dart';
@@ -26,8 +27,8 @@ class ImageService implements IImageService {
 
   @override
   Future<File?> selectImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    ImagePicker _picker = ImagePicker();
+    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       return File(image.path);
     }

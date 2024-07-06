@@ -69,7 +69,7 @@ class PlayerService implements IPlayerService {
   Future<void> addSentInvitationToSlot(
       String playerId, String invitationId) async {
     try {
-      final player = await getPlayerDetails(playerId);
+      Player player = await getPlayerDetails(playerId);
       player.addSentInvitation(invitationId);
       await updatePlayer(player);
     } catch (e) {
@@ -81,7 +81,7 @@ class PlayerService implements IPlayerService {
   Future<void> addReceivedInvitationToSlot(
       String playerId, String invitationId) async {
     try {
-      final player = await getPlayerDetails(playerId);
+      Player player = await getPlayerDetails(playerId);
       player.addReceivedInvitation(invitationId);
       await updatePlayer(player);
     } catch (e) {
@@ -93,7 +93,7 @@ class PlayerService implements IPlayerService {
   Future<void> removeSentInvitation(
       String playerId, String invitationId) async {
     try {
-      final player = await getPlayerDetails(playerId);
+      Player player = await getPlayerDetails(playerId);
       player.removeSentInvitation(invitationId);
       await updatePlayer(player);
     } catch (e) {
@@ -105,7 +105,7 @@ class PlayerService implements IPlayerService {
   Future<void> removeReceivedInvitation(
       String playerId, String invitationId) async {
     try {
-      final player = await getPlayerDetails(playerId);
+      Player player = await getPlayerDetails(playerId);
       player.removeReceivedInvitation(invitationId);
       await updatePlayer(player);
     } catch (e) {
@@ -116,7 +116,7 @@ class PlayerService implements IPlayerService {
   @override
   Future<void> addTeamId(String playerId, String teamId) async {
     try {
-      final Player player = await getPlayerDetails(playerId);
+      Player player = await getPlayerDetails(playerId);
       player.addTeamId(teamId);
       await updatePlayer(player);
     } catch (e) {
@@ -127,7 +127,7 @@ class PlayerService implements IPlayerService {
   @override
   Future<void> removeTeamId(String playerId, String teamId) async {
     try {
-      final Player player = await getPlayerDetails(playerId);
+      Player player = await getPlayerDetails(playerId);
       player.removeTeamId(teamId);
       await updatePlayer(player);
     } catch (e) {

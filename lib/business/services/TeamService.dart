@@ -65,7 +65,7 @@ class TeamService implements ITeamService {
   Future<void> addSentInvitationToSlot(
       String teamId, String slotId, String invitationId) async {
     try {
-      final team = await getTeamById(teamId);
+      Team team = await getTeamById(teamId);
       team.addSentInvitationToSlot(slotId, invitationId);
       await updateTeam(team);
     } catch (e) {
@@ -77,7 +77,7 @@ class TeamService implements ITeamService {
   Future<void> addReceivedInvitationToSlot(
       String teamId, String slotId, String invitationId) async {
     try {
-      final team = await getTeamById(teamId);
+      Team team = await getTeamById(teamId);
       team.addReceivedInvitationToSlot(slotId, invitationId);
       await updateTeam(team);
     } catch (e) {
@@ -88,7 +88,7 @@ class TeamService implements ITeamService {
   @override
   Future<bool> isSlotPublic(String teamId, String slotId) async {
     try {
-      final team = await getTeamById(teamId);
+      Team team = await getTeamById(teamId);
       return team.isSlotPublic(slotId); // Return the result
     } catch (e) {
       print('Error checking slot status: $e');
@@ -100,7 +100,7 @@ class TeamService implements ITeamService {
   @override
   Future<void> updateSlotStatusToPublic(String teamId, String slotId) async {
     try {
-      final team = await getTeamById(teamId);
+      Team team = await getTeamById(teamId);
       team.updateSlotStatusToPublic(slotId);
       await updateTeam(team);
     } catch (e) {
@@ -112,7 +112,7 @@ class TeamService implements ITeamService {
   @override
   Future<void> updateSlotStatusToPrivate(String teamId, String slotId) async {
     try {
-      final team = await getTeamById(teamId);
+      Team team = await getTeamById(teamId);
       team.updateSlotStatusToPrivate(slotId);
       await updateTeam(team);
     } catch (e) {
@@ -125,7 +125,7 @@ class TeamService implements ITeamService {
   Future<void> removeSentInvitationFromSlot(
       String teamId, String slotId, String invitationId) async {
     try {
-      final team = await getTeamById(teamId);
+      Team team = await getTeamById(teamId);
       team.removeSentInvitationFromSlot(slotId, invitationId);
       await updateTeam(team);
     } catch (e) {
@@ -137,7 +137,7 @@ class TeamService implements ITeamService {
   Future<void> removeReceivedInvitationFromSlot(
       String teamId, String slotId, String invitationId) async {
     try {
-      final team = await getTeamById(teamId);
+      Team team = await getTeamById(teamId);
       team.removeReceivedInvitationFromSlot(slotId, invitationId);
       await updateTeam(team);
     } catch (e) {
@@ -149,7 +149,7 @@ class TeamService implements ITeamService {
   Future<void> addPlayerToSlot(
       String teamId, String playerId, String slotId) async {
     try {
-      final team = await getTeamById(teamId);
+      Team team = await getTeamById(teamId);
       team.addPlayerToSlot(playerId, slotId);
       await updateTeam(team);
       await _chatService.addParticipantToChat(team.chatId!, playerId);
@@ -161,7 +161,7 @@ class TeamService implements ITeamService {
   @override
   Future<List<PositionSlot>> getAllSlotsFromTeam(String teamId) async {
     try {
-      final team = await getTeamById(teamId);
+      Team team = await getTeamById(teamId);
       return team.getAllSlots();
     } catch (e) {
       print('Failed to get all slots from team: $e');

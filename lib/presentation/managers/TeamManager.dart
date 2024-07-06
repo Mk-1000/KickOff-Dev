@@ -147,10 +147,6 @@ class TeamManager {
           await _chatManager.deleteChat(team.chatId!);
         }
 
-        // Delete the adress associated with the team, if any
-        // print("ok k ok  ${team.addressId!}");
-        // await _addressManager.deleteAddress(team.addressId!);
-
         // Remove the team ID from all players associated with the team
         for (String playerId in team.players) {
           _playerManager.removeTeamId(playerId, teamId);
