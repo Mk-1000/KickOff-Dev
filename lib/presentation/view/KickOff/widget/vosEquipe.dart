@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/presentation/view/KickOff/widget/blocVosEquipe/bloc/vos_equipe_bloc.dart';
 import 'package:takwira/presentation/view/MatchDetails/MatchDetail.dart';
 import 'package:takwira/presentation/view/widgets/cards/vosEquipeCards.dart';
@@ -71,6 +72,7 @@ class _VosEquipeState extends State<VosEquipe> {
       padding: const EdgeInsets.only(top: 8, bottom: 16),
       itemCount: teams.length,
       itemBuilder: (context, index) {
+      //  TeamManager().updateSlotStatusToPublic(teams[index].teamId,teams[index].slots[2].slotId);
         return _buildSlideFromBottomCard(index ,teams);
       },
     );

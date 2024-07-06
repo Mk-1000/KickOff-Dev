@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/domain/entities/PositionSlot.dart';
+import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/presentation/view/widgets/button/dropDownButton/DropDownButton.dart';
 import 'package:takwira/presentation/view/widgets/cards/rechercheEquipeCard.dart';
 import 'package:takwira/presentation/view/widgets/cards/vosEquipeCards.dart';
@@ -19,6 +22,7 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Column(
       children: [
         _buildAnimatedSearchBar(),
@@ -62,16 +66,40 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
   }
 
   Widget _buildAnimatedListView() {
-    return ListView.builder(
+    return
+    
+    
+    StreamBuilder<List<PositionSlot>>(
+        stream: TeamManager().getPublicAvailableSlotsStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No available slots found.'));
+          } else {
+            return ListView.builder(
       padding: const EdgeInsets.only(top: 8, bottom: 16),
-      itemCount: itemCount,
+      itemCount: snapshot.data!.length,
       itemBuilder: (context, index) {
-        return _buildSlideFromBottomCard(index);
+           PositionSlot slot = snapshot.data![index];
+        return  _buildSlideFromBottomCard(index , slot);
+   
       },
     );
+            
+            
+          
+          }
+        },
+      );
+     
+
+
   }
 
-  Widget _buildSlideFromBottomCard(int index) {
+  Widget _buildSlideFromBottomCard(int index, PositionSlot slot) {
     return TweenAnimationBuilder(
         duration: Duration(milliseconds: 400 + index * 200),
         curve: Curves.easeOut,
@@ -85,8 +113,9 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
             ),
           );
         },
-        child: RechrcheEquipe(
-          send: true,
+        child:  RechrcheEquipe(
+          
+          send: true, slot: slot,
         )
         //  const VosEquipeCard(
         //   name: 'WaaBroo',

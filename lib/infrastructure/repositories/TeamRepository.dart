@@ -102,6 +102,7 @@ class TeamRepository implements ITeamRepository {
         var teamData = snapshot.value;
 
         // Check if teamData is a Map or a JSON string
+        print("hello"+snapshot.value.toString());
         if (teamData is Map) {
           return Team.fromJson(Map<String, dynamic>.from(teamData));
         } else if (teamData is String) {
@@ -111,10 +112,10 @@ class TeamRepository implements ITeamRepository {
           throw Exception('Unexpected data format for team data: $teamData');
         }
       } else {
-        throw Exception('Player not found for ID $id');
+        throw Exception('Team not found for ID $id');
       }
     } catch (e) {
-      throw Exception('Error fetching player by ID $id: $e');
+      throw Exception('Error fetching Team by ID $id: $e');
     }
   }
 

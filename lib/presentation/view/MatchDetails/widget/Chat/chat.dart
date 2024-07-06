@@ -20,25 +20,21 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: [
           Expanded(
             child: StreamBuilder<List<Message>>(
               stream: _chatManager.getMessagesStream(widget.team.chatId!),
               builder: (context, snapshot) {
-                print('Stream snapshot state: ${snapshot.connectionState}');
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  print('Stream snapshot error: ${snapshot.error}');
                   return Center(child: Text('Error loading messages'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  print('Stream snapshot has no data');
                   return Center(child: Text('No messages'));
                 } else {
-                  final messages = snapshot.data!;
-                  print('Messages loaded: ${messages.length}');
+                  // Reverse the messages list here
+                  final messages = snapshot.data!.reversed.toList();
                   return ListView.builder(
                     padding: EdgeInsets.only(bottom: 16),
                     reverse: true,

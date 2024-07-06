@@ -34,9 +34,11 @@ class _SendMessageState extends State<SendMessage> {
       padding: const EdgeInsets.only(bottom: 24),
       child: TextField(
         controller: _controller,
-        onSubmitted: (value) {
+        onSubmitted: (value) async {
           // Optionally handle submission (e.g., when the user presses the enter key)
-          _sendMessage(value);
+          //  await _chatManager.sendMessage(
+          // Player.currentPlayer!.playerId, widget.chatId, _controller.text);
+          //    _controller.clear();
         },
         decoration: InputDecoration(
           hintText: 'Saisissez votre message',
@@ -45,8 +47,14 @@ class _SendMessageState extends State<SendMessage> {
           ),
           suffixIcon: IconButton(
               icon: Icon(Icons.send),
-              onPressed: () {
-                _sendMessage(_controller.text);
+              onPressed: () async {
+                  
+               // _sendMessage(_controller.text);
+                await _chatManager.sendMessage(
+          Player.currentPlayer!.playerId, widget.chatId, _controller.text);
+          _controller.clear();
+          //      _sendMessage(
+          // Player.currentPlayer!.playerId, widget.chatId ,_controller.text );
               }),
         ),
       ),

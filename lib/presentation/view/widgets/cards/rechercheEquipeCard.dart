@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:takwira/domain/entities/PositionSlot.dart';
+import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
 class RechrcheEquipe extends StatefulWidget {
-  final bool send;
-  const RechrcheEquipe({super.key, required this.send});
+ final  PositionSlot slot; 
+ final bool send;
+  const RechrcheEquipe({super.key, required this.send, required this.slot,});
 
   @override
   State<RechrcheEquipe> createState() => _RechrcheEquipeState();
@@ -49,7 +52,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  "WaBBro2",
+                 "widget.team.teamName,",
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -100,7 +103,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                   children: [
                     Icon(Icons.directions_run, size: 16),
                     Text(
-                      "Gardien",
+                     widget.slot.position.name,
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
