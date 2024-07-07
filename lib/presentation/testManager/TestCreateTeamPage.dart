@@ -61,6 +61,9 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
                       selectedState = newValue;
                       selectedCity = null; // Reset city selection
                       cities = TunisiaLocations.citiesBystates[newValue!] ?? [];
+                      // Debugging output
+                      print('Selected state: $selectedState');
+                      print('Cities: $cities');
                     });
                   },
                 ),
@@ -77,6 +80,8 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
                     onChanged: (newValue) {
                       setState(() {
                         selectedCity = newValue;
+                        // Debugging output
+                        print('Selected city: $selectedCity');
                       });
                     },
                   ),

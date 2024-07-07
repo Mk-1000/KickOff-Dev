@@ -83,7 +83,7 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Received Invitations:',
+                      'Received Invitations to join team:',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -135,7 +135,7 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Sent Invitations:',
+                      'Sent Invitations to join team :',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -163,6 +163,100 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                               title: Text(
                                   'Invitation ID: ${invitation.invitationId}'),
                               subtitle: Text('Receiver: ${invitation.teamId}'),
+                              trailing: IconButton(
+                                icon: Icon(Icons.cancel),
+                                onPressed: () =>
+                                    _cancelInvitation(invitation.invitationId),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Received Invitations to join Game:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  FutureBuilder<List<Invitation>>(
+                    future: _invitationManager
+                        .fetchReceivedInvitationsForGame(team!),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(child: Text('No received invitations.'));
+                      } else {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            Invitation invitation = snapshot.data![index];
+                            return ListTile(
+                              title: Text(
+                                  'Invitation ID: ${invitation.invitationId}'),
+                              subtitle: Text('Sender: ${invitation.playerId}'),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.check),
+                                    onPressed: () => _respondToInvitation(
+                                        invitation.invitationId, true),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.close),
+                                    onPressed: () => _respondToInvitation(
+                                        invitation.invitationId, false),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Sent Invitations to join Game :',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  FutureBuilder<List<Invitation>>(
+                    future:
+                        _invitationManager.fetchSentInvitationsForGame(team!),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(child: Text('No sent invitations.'));
+                      } else {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            Invitation invitation = snapshot.data![index];
+                            return ListTile(
+                              title: Text(
+                                  'Invitation ID: ${invitation.invitationId}'),
+                              subtitle: Text('Receiver: ${invitation.slotId}'),
                               trailing: IconButton(
                                 icon: Icon(Icons.cancel),
                                 onPressed: () =>

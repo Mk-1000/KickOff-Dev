@@ -84,7 +84,7 @@ class PlayerManager {
 
   Future<List<Player>> getPlayers() async {
     try {
-      return await _playerService!.getAllPlayers();
+      return await _playerService.getAllPlayers();
     } catch (e) {
       throw Exception('Failed to get players: $e');
     }

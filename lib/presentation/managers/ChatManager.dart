@@ -23,13 +23,8 @@ class ChatManager {
     }
   }
 
-  Future<void> createNewChat(Chat chat, String participantId) async {
-    try {
-      await _chatService.createChat(chat);
-      await _chatService.addParticipantToChat(chat.chatId, participantId);
-    } catch (e) {
-      throw Exception('Failed to create chat: $e');
-    }
+  Future<void> createNewChat(Chat chat) async {
+    await _chatService.createChat(chat);
   }
 
   Future<void> addNewPlayerToChat(String chatId, String playerId) async {

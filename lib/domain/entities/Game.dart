@@ -2,12 +2,7 @@ import '../../utils/DateTimeUtils.dart';
 import '../../utils/IDUtils.dart';
 import '../../utils/Parse.dart';
 
-enum GameStatus {
-  Scheduled,
-  InProgress,
-  Completed,
-  Canceled,
-}
+enum GameStatus { Scheduled, InProgress, Completed, Canceled, Pending }
 
 class Game {
   String gameId;
@@ -15,23 +10,25 @@ class Game {
   String awayTeam;
   int? _gameDate; // Private field for internal storage
   String? stadiumId;
-  String chatId;
-  GameStatus gameStatus;
+  String? chatId;
+  GameStatus? gameStatus;
   final int createdAt;
   int updatedAt;
 
   Game({
     required this.homeTeam,
     required this.awayTeam,
-    DateTime? gameDate, // Accept DateTime type input
+    DateTime? gameDate,
     this.stadiumId,
-    required this.chatId,
-    required this.gameStatus,
+    String? chatId,
+    GameStatus? gameStatus,
     int? createdAt,
     int? updatedAt,
   })  : _gameDate =
             gameDate != null ? DateTimeUtils.toTimestamp(gameDate) : null,
         gameId = IDUtils.generateUniqueId(),
+        gameStatus =
+            gameStatus ?? GameStatus.Pending, // Default value for gameStatus
         createdAt = createdAt ??
             DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
         updatedAt = updatedAt ??
@@ -83,7 +80,7 @@ class Game {
           ? DateTime.fromMillisecondsSinceEpoch(json['gameDate'])
           : null,
       stadiumId: json['stadiumId'],
-      chatId: json['chatId'],
+      chatId: json['chatId'] as String?,
       gameStatus: ParserUtils.parseGameStatus(json['gameStatus']),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],

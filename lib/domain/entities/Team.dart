@@ -101,6 +101,10 @@ class Team {
     updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }
 
+  bool isAvailable() {
+    return currentGameId == null;
+  }
+
 // Method to add a player to the team
   void addPlayer(String playerId) {
     try {

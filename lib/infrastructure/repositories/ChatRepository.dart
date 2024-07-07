@@ -1,8 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:takwira/domain/entities/Chat.dart';
 import 'package:takwira/domain/entities/Message.dart';
-import 'package:takwira/infrastructure/firebase/FirebaseService.dart';
 import 'package:takwira/domain/repositories/IChatRepository.dart';
+import 'package:takwira/infrastructure/firebase/FirebaseService.dart';
 
 class ChatRepository implements IChatRepository {
   final String _collectionPath = 'chats';
@@ -24,19 +24,14 @@ class ChatRepository implements IChatRepository {
   @override
   Future<Chat?> getChatById(String id) async {
     try {
-      print('Fetching chat by ID: $id');
       final DataSnapshot snapshot =
           await _firebaseService.getDocument('$_collectionPath/$id');
       if (snapshot.exists && snapshot.value != null) {
-        print('Chat document found for ID: $id');
         final dynamic chatData = snapshot.value;
-        print('Raw chat data: $chatData');
         if (chatData is Map<dynamic, dynamic>) {
           final chatDataMap = Map<String, dynamic>.from(chatData);
-          print('Chat data map: $chatDataMap');
           return Chat.fromJson(chatDataMap);
         } else {
-          print('Chat data is not in the expected format');
           return null;
         }
       } else {

@@ -65,7 +65,7 @@ class TeamManager {
         Team team = await getTeamById(teamId);
         playerTeams.add(team);
       } catch (e) {
-        print('Error fetching team with ID $teamId: $e');
+        throw Exception('Failed to get team: $e');
       }
     }
     return playerTeams;
@@ -106,7 +106,6 @@ class TeamManager {
       // Update the team to clear all invitations
       await updateTeam(team);
     } catch (e) {
-      print('Failed to delete all team invitations: $e');
       throw Exception('Failed to delete all team invitations: $e');
     }
   }
@@ -123,7 +122,7 @@ class TeamManager {
 
         // Delete all invitations
         await deleteAllTeamInvitations(teamId);
-        await Future.delayed(Duration(seconds: 1));
+        await Future.delayed(const Duration(seconds: 1));
 
         // Delete the chat associated with the team, if any
 
@@ -145,7 +144,6 @@ class TeamManager {
         await deleteTeam(teamId);
       }
     } catch (e) {
-      print('Failed to delete team for player: $e');
       throw Exception('Failed to delete team for player: $e');
     }
   }
@@ -161,9 +159,7 @@ class TeamManager {
       try {
         Team team = await getTeamById(teamId);
         teams.add(team);
-      } catch (e) {
-        print('Error fetching team $teamId: $e');
-      }
+      } catch (e) {}
     }
     return teams;
   }
@@ -194,7 +190,7 @@ class TeamManager {
       // Set the chat ID in the team if the chat ID is available
       team.chatId = teamChat.chatId;
 
-      PositionSlot slot = team.slots!.firstWhere(
+      PositionSlot slot = team.slots.firstWhere(
         (slot) =>
             slot.position == player.preferredPosition &&
             slot.status == SlotStatus.Available,

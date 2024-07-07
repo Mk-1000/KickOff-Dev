@@ -5,6 +5,7 @@ import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
+import 'package:takwira/presentation/testManager/TeamListPage.dart';
 
 import '../../domain/entities/Address.dart';
 import '../managers/AddressManager.dart';
@@ -25,7 +26,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
   final AddressManager _addressManager = AddressManager();
 
   Team? _team;
-  Address? _address;
+  Address? address;
   int? _maxGoalkeepers;
   int? _maxDefenders;
   int? _maxMidfielders;
@@ -42,11 +43,9 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
   Future<void> _loadTeam() async {
     try {
       Team team = await _teamManager.getTeamById(widget.teamId);
-      Address? address;
       if (team.addressId != null) {
         address = await _addressManager.getAddressDetails(team.addressId!);
       }
-
       setState(() {
         _team = team;
         _maxGoalkeepers = team.maxGoalkeepers;
@@ -102,20 +101,17 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
 
   void _invitePlayerToSlot(String slotId, Player player) async {
     try {
-      if (_team != null && _team!.slots!.any((slot) => slot.slotId == slotId)) {
-        // Check if the slot is available for invitation
-        if (_team!.slots!.any((slot) =>
+      if (_team != null && _team!.slots.any((slot) => slot.slotId == slotId)) {
+        if (_team!.slots.any((slot) =>
             slot.slotId == slotId && slot.status == SlotStatus.Available)) {
           await _invitationManager.sendInvitationFromTeamToPlayer(
             playerId: player.playerId,
             slotId: slotId,
             teamId: _team!.teamId,
           );
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Invitation sent to ${player.nickname}')),
           );
-
           setState(() {
             _team = _team!;
           });
@@ -140,10 +136,24 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Team Details'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.bug_report),
+            onPressed: () {
+              // Navigate to players screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        TeamListPage(homeTeamId: widget.teamId)),
+              );
+            },
+          ),
+        ],
       ),
       body: _team == null
           ? Center(child: CircularProgressIndicator())
-          : Padding(
+          : SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,13 +163,13 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Address: ${_address != null ? _address!.addressId : 'Address not available'}',
+                    'Address: ${address?.country}, ${address?.state}, ${address?.city}',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
                   Text('Team ID: ${_team!.teamId}'),
                   SizedBox(height: 10),
-                  Text('player IDs: ${_team!.players.toString()}'),
+                  Text('Player IDs: ${_team!.players.toString()}'),
                   SizedBox(height: 10),
                   Text('Captain ID: ${_team!.captainId}'),
                   SizedBox(height: 20),
@@ -189,15 +199,14 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                     child: Text('Update Slot Limits'),
                   ),
                   SizedBox(height: 20),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: _team!.slots?.length,
-                      itemBuilder: (context, index) {
-                        String slotId = _team!.slots![index].slotId;
-                        PositionSlot slot = _team!.slots![index];
-                        return _buildSlotCard(slot);
-                      },
-                    ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: _team!.slots?.length,
+                    itemBuilder: (context, index) {
+                      PositionSlot slot = _team!.slots![index];
+                      return _buildSlotCard(slot);
+                    },
                   ),
                 ],
               ),
@@ -215,6 +224,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
           children: [
             Text(
               'Slot ${slot.number} - ${slot.position.toString().split('.').last}',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             Text('Status: ${slot.status.toString().split('.').last}'),
             if (slot.playerId != null) ...[
@@ -231,18 +241,12 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                 ElevatedButton(
                   onPressed: () async {
                     try {
-                      // Toggle slot type
                       if (slot.slotType == SlotType.Public) {
                         await _teamManager.updateSlotStatusToPrivate(
                             _team!.teamId, slot.slotId);
-
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Slot made Private')),
                         );
-                        setState(() {
-                          _loadTeam;
-                        });
-                        ;
                       } else {
                         await _teamManager.updateSlotStatusToPublic(
                             _team!.teamId, slot.slotId);
@@ -251,7 +255,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                         );
                       }
                       setState(() {
-                        // Update UI to reflect changes
                         _team = _team!;
                       });
                     } catch (e) {
