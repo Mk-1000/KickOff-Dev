@@ -16,8 +16,11 @@ class ImageService implements IImageService {
     return await _imageRepository.uploadImage(image, path);
   }
 
-  Future<String> uploadImageWithType(File image, UploadType uploadType) async {
-    return await _imageRepository.uploadImageWithType(image, uploadType);
+  @override
+  Future<String> uploadImageWithType(
+      File image, UploadType uploadType, String referenceId) async {
+    return await _imageRepository.uploadImageWithType(
+        image, uploadType, referenceId);
   }
 
   @override

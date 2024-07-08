@@ -1,50 +1,71 @@
-import 'package:takwira/domain/entities/User.dart';
+import '../../utils/DateTimeUtils.dart';
+import '../../utils/IDUtils.dart';
+import 'Address.dart';
+import 'Field.dart';
 
-class Stadium extends User {
-  String _name;
-  int _capacity;
-  List<String> _services;
-  String _address;
-  String _phone;
+class Stadium {
+  String stadiumId;
+  String name;
+  Address address;
+  String? mainImage;
+  String phoneNumber;
+  List<String> services;
+  DateTime startAt;
+  DateTime closeAt;
+  List<Field> fields;
+  final int createdAt;
+  int updatedAt;
 
   Stadium({
-    required String email,
-    required String name,
-    required int capacity,
-    required List<String> services,
-    required String address,
-    required String phone,
-  })  : _name = name,
-        _capacity = capacity,
-        _services = services,
-        _address = address,
-        _phone = phone,
-        super(email: email, role: UserRole.Stadium);
+    required this.name,
+    required this.address,
+    String? mainImage,
+    required this.phoneNumber,
+    required this.services,
+    required this.startAt,
+    required this.closeAt,
+    List<Field>? fields,
+    int? createdAt,
+    int? updatedAt,
+  })  : stadiumId = IDUtils.generateUniqueId(),
+        fields = fields ?? [],
+        createdAt = createdAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
+        updatedAt = updatedAt ??
+            DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
 
-  // Stadium ID is now the User ID
-  String get stadiumId => userId;
-
-  // Other getters remain the same
-
-  Map<String, dynamic> toJson() {
-    return {
-      ...super.toJson(),
-      'name': _name,
-      'capacity': _capacity,
-      'services': _services,
-      'address': _address,
-      'phone': _phone,
-    };
+  void newUpdate() {
+    updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }
+
+  Map<String, dynamic> toJson() => {
+        'stadiumId': stadiumId,
+        'name': name,
+        'address': address.toJson(),
+        'mainImage': mainImage,
+        'phoneNumber': phoneNumber,
+        'services': services,
+        'startAt': startAt.toIso8601String(),
+        'closeAt': closeAt.toIso8601String(),
+        'fields': fields.map((field) => field.toJson()).toList(),
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
+      };
 
   factory Stadium.fromJson(Map<String, dynamic> json) {
     return Stadium(
-      email: json['email'],
       name: json['name'],
-      capacity: json['capacity'],
+      address: Address.fromJson(json['address']),
+      mainImage: json['mainImage'] as String?,
+      phoneNumber: json['phoneNumber'],
       services: List<String>.from(json['services']),
-      address: json['address'],
-      phone: json['phone'],
-    );
+      startAt: DateTime.parse(json['startAt']),
+      closeAt: DateTime.parse(json['closeAt']),
+      fields: (json['fields'] as List)
+          .map((field) => Field.fromJson(field))
+          .toList(),
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+    )..stadiumId = json['stadiumId'] ?? IDUtils.generateUniqueId();
   }
 }

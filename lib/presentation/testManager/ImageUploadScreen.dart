@@ -80,7 +80,7 @@ class _UploadManagerScreenState extends State<UploadManagerScreen> {
       });
       try {
         String imageUrl = await _imageService.uploadImageWithType(
-            image, _selectedUploadType!);
+            image, _selectedUploadType!, "zdaezaeazeaze");
         setState(() {
           _uploadedImageUrls.add(imageUrl);
         });

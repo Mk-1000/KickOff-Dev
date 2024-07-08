@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
 import 'package:image/image.dart' as img;
+import 'package:path/path.dart';
 import 'package:takwira/domain/repositories/IImageRepository.dart';
 
 class ImageRepository implements IImageRepository {
@@ -18,6 +19,8 @@ class ImageRepository implements IImageRepository {
         return 'images/league';
       case UploadType.Player:
         return 'images/player';
+      case UploadType.Stadium:
+        return 'images/Stadium';
       default:
         throw Exception('Unknown upload type');
     }
@@ -47,8 +50,9 @@ class ImageRepository implements IImageRepository {
   }
 
   @override
-  Future<String> uploadImageWithType(File image, UploadType uploadType) async {
-    String path = _getPathForUploadType(uploadType);
+  Future<String> uploadImageWithType(
+      File image, UploadType uploadType, String referenceId) async {
+    String path = "${_getPathForUploadType(uploadType)}/$referenceId";
     return await uploadImage(image, path);
   }
 

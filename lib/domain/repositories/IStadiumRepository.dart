@@ -1,9 +1,8 @@
-import '../entities/Stadium.dart';
+import '../../domain/entities/Stadium.dart';
 
 abstract class IStadiumRepository {
-  Future<List<Stadium>> getAllStadiums();
-  Future<Stadium> getStadiumById(String id);
   Future<void> addStadium(Stadium stadium);
+  Future<Stadium> getStadiumById(String stadiumId);
   Future<void> updateStadium(Stadium stadium);
-  Future<void> deleteStadium(String id);
+  Future<void> deleteStadium(String stadiumId);
 }

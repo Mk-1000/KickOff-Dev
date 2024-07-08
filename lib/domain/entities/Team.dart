@@ -23,6 +23,7 @@ class Team {
   // New fields for Game
   String? currentGameId;
   List<String> gameHistoryIds;
+
   List<String> receivedGameInvitationIds;
   List<String> sentGameInvitationIds;
 

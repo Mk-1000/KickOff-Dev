@@ -1,58 +1,58 @@
 import 'package:firebase_database/firebase_database.dart';
+
 import '../../domain/entities/Stadium.dart';
 import '../../domain/repositories/IStadiumRepository.dart';
-import '../firebase/FirebaseService.dart';
+import '../../infrastructure/firebase/FirebaseService.dart';
 
 class StadiumRepository implements IStadiumRepository {
   final String _collectionPath = 'stadiums';
-  final FirebaseService _firebaseService; // Instance field for FirebaseService
+  final FirebaseService _firebaseService;
 
   StadiumRepository({FirebaseService? firebaseService})
       : _firebaseService = firebaseService ?? FirebaseService();
 
   @override
-  Future<List<Stadium>> getAllStadiums() async {
-    // Use Stream to listen for changes in real-time
-    final Stream<DatabaseEvent> stream =
-        _firebaseService.getCollectionStream(_collectionPath);
-
-    // Handle initial data and subsequent updates
-    final stadiums = <Stadium>[];
-    stream.listen((event) {
-      if (event.snapshot.exists) {
-        final data = event.snapshot.value as Map<dynamic, dynamic>;
-        data.forEach((key, value) {
-          stadiums.add(Stadium.fromJson(Map<String, dynamic>.from(value)));
-        });
-      }
-    });
-
-    return stadiums; // Return the initially loaded stadiums
-  }
-
-  @override
-  Future<Stadium> getStadiumById(String id) async {
-    DataSnapshot snapshot =
-        await _firebaseService.getDocument('$_collectionPath/$id');
-    if (snapshot.exists && snapshot.value != null) {
-      return Stadium.fromJson(Map<String, dynamic>.from(snapshot.value as Map));
-    }
-    throw Exception('Stadium not found');
-  }
-
-  @override
   Future<void> addStadium(Stadium stadium) async {
-    await _firebaseService.setDocument(_collectionPath, stadium.toJson());
+    try {
+      await _firebaseService.setDocument(
+          '$_collectionPath/${stadium.stadiumId}', stadium.toJson());
+    } catch (e) {
+      throw Exception('Failed to add stadium: $e');
+    }
+  }
+
+  @override
+  Future<Stadium> getStadiumById(String stadiumId) async {
+    try {
+      DataSnapshot snapshot =
+          await _firebaseService.getDocument('$_collectionPath/$stadiumId');
+      if (snapshot.exists && snapshot.value != null) {
+        var stadiumData = snapshot.value as Map;
+        return Stadium.fromJson(Map<String, dynamic>.from(stadiumData));
+      } else {
+        throw Exception('Stadium not found for ID $stadiumId');
+      }
+    } catch (e) {
+      throw Exception('Error fetching stadium by ID $stadiumId: $e');
+    }
   }
 
   @override
   Future<void> updateStadium(Stadium stadium) async {
-    await _firebaseService.updateDocument(
-        '$_collectionPath/${stadium.stadiumId}', stadium.toJson());
+    try {
+      await _firebaseService.updateDocument(
+          '$_collectionPath/${stadium.stadiumId}', stadium.toJson());
+    } catch (e) {
+      throw Exception('Failed to update stadium: $e');
+    }
   }
 
   @override
-  Future<void> deleteStadium(String id) async {
-    await _firebaseService.deleteDocument('$_collectionPath/$id');
+  Future<void> deleteStadium(String stadiumId) async {
+    try {
+      await _firebaseService.deleteDocument('$_collectionPath/$stadiumId');
+    } catch (e) {
+      throw Exception('Failed to delete stadium: $e');
+    }
   }
 }
