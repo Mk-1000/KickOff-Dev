@@ -34,6 +34,18 @@ class Stadium {
         updatedAt = updatedAt ??
             DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
 
+  void addField(Field field) {
+    fields.add(field);
+    newUpdate();
+  }
+
+  void removeField(int index) {
+    if (index >= 0 && index < fields.length) {
+      fields.removeAt(index);
+      newUpdate();
+    }
+  }
+
   void newUpdate() {
     updatedAt = DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch;
   }

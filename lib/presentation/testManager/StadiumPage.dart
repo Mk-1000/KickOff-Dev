@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:takwira/business/services/ImageService.dart';
 import 'package:takwira/business/services/StadiumService.dart';
 import 'package:takwira/domain/entities/Address.dart';
+import 'package:takwira/domain/entities/Field.dart';
 import 'package:takwira/domain/entities/Stadium.dart';
 import 'package:takwira/domain/services/IImageService.dart';
 
@@ -28,7 +29,10 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
   DateTime? _startAt;
   DateTime? _closeAt;
   File? selectedMainImage;
+  List<File?> _selectedFieldImages =
+      []; // List to hold selected images for fields
   final IImageService _imageService = ImageService();
+  List<Field> _fields = []; // List to hold the fields
 
   Future<void> _pickDateTime(BuildContext context, DateTime initialDate,
       Function(DateTime) onConfirm) async {
@@ -58,11 +62,11 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
     }
   }
 
-  Future<void> _selectImage() async {
+  Future<void> _selectImageForField(int fieldIndex) async {
     File? image = await _imageService.selectImage();
     if (image != null) {
       setState(() {
-        selectedMainImage = image;
+        _selectedFieldImages[fieldIndex] = image;
       });
     }
   }
@@ -71,16 +75,28 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
     if (selectedMainImage != null) {
       String imageUrl = await _imageService.uploadImageWithType(
           selectedMainImage!, UploadType.Stadium, stadiumId);
-      // Assuming `_imageService.uploadImageWithType` returns the URL
+      // Assuming _imageService.uploadImageWithType returns the URL
       return imageUrl;
     }
     return null;
   }
 
+  void _addNewField() {
+    setState(() {
+      _fields.add(Field(capacity: 0, matchPrice: 0.0));
+      _selectedFieldImages.add(null);
+    });
+  }
+
+  void _removeField(int index) {
+    setState(() {
+      _fields.removeAt(index);
+      _selectedFieldImages.removeAt(index);
+    });
+  }
+
   void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
-      // Assuming `_uploadImageAndSetUrl` sets the URL to `imageUrl`
-
       final address = Address(
         addressType: AddressType.StadiumAddress,
         street: _streetController.text,
@@ -100,13 +116,22 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
             _servicesController.text.split(',').map((s) => s.trim()).toList(),
         startAt: _startAt!,
         closeAt: _closeAt!,
+        fields: _fields, // Assign the list of fields
       );
       String? imageUrl = await _uploadImageAndSetUrl(stadium.stadiumId);
       if (imageUrl != null) {
         stadium.mainImage = imageUrl;
       }
 
-      // Create stadium
+      // Upload images for each field
+      for (int i = 0; i < _fields.length; i++) {
+        if (_selectedFieldImages[i] != null) {
+          String imageUrl = await _imageService.uploadImageWithType(
+              _selectedFieldImages[i]!, UploadType.Stadium, _fields[i].fieldId);
+          _fields[i].images.add(imageUrl);
+        }
+      }
+
       await StadiumService().createStadium(stadium);
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -131,6 +156,8 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
       _startAt = null;
       _closeAt = null;
       selectedMainImage = null;
+      _fields.clear(); // Clear the fields list
+      _selectedFieldImages.clear();
     });
   }
 
@@ -240,7 +267,11 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                     : 'Start Time: ${DateFormat('yyyy-MM-dd – kk:mm').format(_startAt!)}'),
                 trailing: Icon(Icons.calendar_today),
                 onTap: () => _pickDateTime(context, _startAt ?? DateTime.now(),
-                    (picked) => setState(() => _startAt = picked)),
+                    (DateTime dateTime) {
+                  setState(() {
+                    _startAt = dateTime;
+                  });
+                }),
               ),
               ListTile(
                 title: Text(_closeAt == null
@@ -248,17 +279,83 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                     : 'Close Time: ${DateFormat('yyyy-MM-dd – kk:mm').format(_closeAt!)}'),
                 trailing: Icon(Icons.calendar_today),
                 onTap: () => _pickDateTime(context, _closeAt ?? DateTime.now(),
-                    (picked) => setState(() => _closeAt = picked)),
+                    (DateTime dateTime) {
+                  setState(() {
+                    _closeAt = dateTime;
+                  });
+                }),
               ),
-              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _addNewField,
+                child: Text('Add Field'),
+              ),
+              ..._fields.asMap().entries.map((entry) {
+                int index = entry.key;
+                Field field = entry.value;
+                return Column(
+                  children: [
+                    Text('Field ${index + 1}'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _selectedFieldImages[index] != null
+                              ? Image.file(_selectedFieldImages[index]!)
+                              : Container(),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.image),
+                          onPressed: () => _selectImageForField(index),
+                        ),
+                      ],
+                    ),
+                    TextFormField(
+                      initialValue: field.capacity.toString(),
+                      decoration: InputDecoration(labelText: 'Capacity'),
+                      onChanged: (value) {
+                        setState(() {
+                          field.capacity = int.tryParse(value) ?? 0;
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: field.matchPrice.toString(),
+                      decoration: InputDecoration(labelText: 'Match Price'),
+                      onChanged: (value) {
+                        setState(() {
+                          field.matchPrice = double.tryParse(value) ?? 0.0;
+                        });
+                      },
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _removeField(index),
+                      child: Text('Remove Field'),
+                    ),
+                  ],
+                );
+              }),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Add Stadium'),
+                child: Text('Submit'),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _selectImage() async {
+    File? image = await _imageService.selectImage();
+    if (image != null) {
+      setState(() {
+        selectedMainImage = image;
+      });
+    }
+  }
+}
+
+class IDUtils {
+  static String generateUniqueId() {
+    throw UnimplementedError();
   }
 }

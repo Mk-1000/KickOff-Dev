@@ -2,7 +2,7 @@ import '../../utils/IDUtils.dart';
 
 class Field {
   String fieldId;
-  List<String> images;
+  List<String> images; // List of images for the field
   int capacity;
   double matchPrice;
 
@@ -11,7 +11,7 @@ class Field {
     required this.capacity,
     required this.matchPrice,
   })  : fieldId = IDUtils.generateUniqueId(),
-        images = images ?? [];
+        images = images ?? []; // Initialize images with an empty list
 
   Map<String, dynamic> toJson() => {
         'fieldId': fieldId,
