@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:takwira/business/services/ImageService.dart';
-import 'package:takwira/business/services/StadiumService.dart';
 import 'package:takwira/domain/entities/Address.dart';
 import 'package:takwira/domain/entities/Field.dart';
 import 'package:takwira/domain/entities/Stadium.dart';
@@ -29,10 +28,23 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
   DateTime? _startAt;
   DateTime? _closeAt;
   File? selectedMainImage;
-  List<File?> _selectedFieldImages =
-      []; // List to hold selected images for fields
+  List<Field> _fields = [];
   final IImageService _imageService = ImageService();
-  List<Field> _fields = []; // List to hold the fields
+
+  @override
+  void initState() {
+    super.initState();
+    _fields.add(Field(capacity: 0, matchPrice: 0.0)); // Initial field
+  }
+
+  Future<void> _selectImageForMain() async {
+    File? image = await _imageService.selectImage();
+    if (image != null) {
+      setState(() {
+        selectedMainImage = image;
+      });
+    }
+  }
 
   Future<void> _pickDateTime(BuildContext context, DateTime initialDate,
       Function(DateTime) onConfirm) async {
@@ -66,7 +78,7 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
     File? image = await _imageService.selectImage();
     if (image != null) {
       setState(() {
-        _selectedFieldImages[fieldIndex] = image;
+        _fields[fieldIndex].images.add(image.path); // Store image path
       });
     }
   }
@@ -75,7 +87,6 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
     if (selectedMainImage != null) {
       String imageUrl = await _imageService.uploadImageWithType(
           selectedMainImage!, UploadType.Stadium, stadiumId);
-      // Assuming _imageService.uploadImageWithType returns the URL
       return imageUrl;
     }
     return null;
@@ -84,21 +95,18 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
   void _addNewField() {
     setState(() {
       _fields.add(Field(capacity: 0, matchPrice: 0.0));
-      _selectedFieldImages.add(null);
     });
   }
 
   void _removeField(int index) {
     setState(() {
       _fields.removeAt(index);
-      _selectedFieldImages.removeAt(index);
     });
   }
 
   void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
       final address = Address(
-        addressType: AddressType.StadiumAddress,
         street: _streetController.text,
         city: _cityController.text,
         state: _stateController.text,
@@ -106,6 +114,7 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
         country: _countryController.text.isNotEmpty
             ? _countryController.text
             : 'Tunisie',
+        addressType: AddressType.StadiumAddress,
       );
 
       final stadium = Stadium(
@@ -116,23 +125,15 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
             _servicesController.text.split(',').map((s) => s.trim()).toList(),
         startAt: _startAt!,
         closeAt: _closeAt!,
-        fields: _fields, // Assign the list of fields
+        fields: _fields,
       );
       String? imageUrl = await _uploadImageAndSetUrl(stadium.stadiumId);
       if (imageUrl != null) {
         stadium.mainImage = imageUrl;
       }
 
-      // Upload images for each field
-      for (int i = 0; i < _fields.length; i++) {
-        if (_selectedFieldImages[i] != null) {
-          String imageUrl = await _imageService.uploadImageWithType(
-              _selectedFieldImages[i]!, UploadType.Stadium, _fields[i].fieldId);
-          _fields[i].images.add(imageUrl);
-        }
-      }
-
-      await StadiumService().createStadium(stadium);
+      // Simulate API call to save stadium
+      await Future.delayed(Duration(seconds: 1));
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Stadium added successfully!')),
@@ -157,7 +158,6 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
       _closeAt = null;
       selectedMainImage = null;
       _fields.clear(); // Clear the fields list
-      _selectedFieldImages.clear();
     });
   }
 
@@ -175,7 +175,7 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(labelText: 'Stadium Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the stadium name';
@@ -183,19 +183,23 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: selectedMainImage != null
-                        ? Image.file(selectedMainImage!)
-                        : Container(),
+              SizedBox(height: 16),
+              GestureDetector(
+                onTap: _selectImageForMain,
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.image),
-                    onPressed: _selectImage,
-                  ),
-                ],
+                  child: selectedMainImage != null
+                      ? Image.file(
+                          selectedMainImage!,
+                          fit: BoxFit.cover,
+                        )
+                      : Center(child: Icon(Icons.image)),
+                ),
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _phoneNumberController,
                 decoration: InputDecoration(labelText: 'Phone Number'),
@@ -206,6 +210,7 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _servicesController,
                 decoration:
@@ -217,16 +222,18 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _streetController,
-                decoration: InputDecoration(labelText: 'Street'),
+                decoration: InputDecoration(labelText: 'Street Address'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the street';
+                    return 'Please enter the street address';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _cityController,
                 decoration: InputDecoration(labelText: 'City'),
@@ -237,16 +244,18 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _stateController,
-                decoration: InputDecoration(labelText: 'State'),
+                decoration: InputDecoration(labelText: 'State/Province'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the state';
+                    return 'Please enter the state/province';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _postalCodeController,
                 decoration: InputDecoration(labelText: 'Postal Code'),
@@ -257,14 +266,16 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _countryController,
                 decoration: InputDecoration(labelText: 'Country'),
               ),
+              SizedBox(height: 16),
               ListTile(
                 title: Text(_startAt == null
-                    ? 'Select Start Time'
-                    : 'Start Time: ${DateFormat('yyyy-MM-dd – kk:mm').format(_startAt!)}'),
+                    ? 'Select Opening Time'
+                    : 'Opening Time: ${DateFormat('yyyy-MM-dd – kk:mm').format(_startAt!)}'),
                 trailing: Icon(Icons.calendar_today),
                 onTap: () => _pickDateTime(context, _startAt ?? DateTime.now(),
                     (DateTime dateTime) {
@@ -273,10 +284,11 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   });
                 }),
               ),
+              SizedBox(height: 16),
               ListTile(
                 title: Text(_closeAt == null
-                    ? 'Select Close Time'
-                    : 'Close Time: ${DateFormat('yyyy-MM-dd – kk:mm').format(_closeAt!)}'),
+                    ? 'Select Closing Time'
+                    : 'Closing Time: ${DateFormat('yyyy-MM-dd – kk:mm').format(_closeAt!)}'),
                 trailing: Icon(Icons.calendar_today),
                 onTap: () => _pickDateTime(context, _closeAt ?? DateTime.now(),
                     (DateTime dateTime) {
@@ -285,77 +297,83 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   });
                 }),
               ),
+              SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _addNewField,
                 child: Text('Add Field'),
               ),
+              SizedBox(height: 16),
               ..._fields.asMap().entries.map((entry) {
                 int index = entry.key;
                 Field field = entry.value;
-                return Column(
-                  children: [
-                    Text('Field ${index + 1}'),
-                    Row(
+                return Card(
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(vertical: 8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: _selectedFieldImages[index] != null
-                              ? Image.file(_selectedFieldImages[index]!)
-                              : Container(),
+                        Text('Field ${index + 1}'),
+                        SizedBox(height: 8),
+                        TextFormField(
+                          initialValue: field.capacity.toString(),
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              InputDecoration(labelText: 'Capacity of field'),
+                          onChanged: (value) {
+                            setState(() {
+                              _fields[index].capacity = int.parse(value);
+                            });
+                          },
                         ),
-                        IconButton(
-                          icon: Icon(Icons.image),
+                        SizedBox(height: 8),
+                        TextFormField(
+                          initialValue: field.matchPrice.toString(),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(labelText: 'Match price'),
+                          onChanged: (value) {
+                            setState(() {
+                              _fields[index].matchPrice = double.parse(value);
+                            });
+                          },
+                        ),
+                        SizedBox(height: 8),
+                        ElevatedButton(
                           onPressed: () => _selectImageForField(index),
+                          child: Text('Select Image for Field'),
+                        ),
+                        SizedBox(height: 8),
+                        ...field.images.map((imagePath) {
+                          return Image.file(
+                            File(imagePath),
+                            height: 100,
+                            width: 100,
+                            fit: BoxFit.cover,
+                          );
+                        }),
+                        SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            onPressed: () => _removeField(index),
+                            child: Text('Remove Field'),
+                          ),
                         ),
                       ],
                     ),
-                    TextFormField(
-                      initialValue: field.capacity.toString(),
-                      decoration: InputDecoration(labelText: 'Capacity'),
-                      onChanged: (value) {
-                        setState(() {
-                          field.capacity = int.tryParse(value) ?? 0;
-                        });
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: field.matchPrice.toString(),
-                      decoration: InputDecoration(labelText: 'Match Price'),
-                      onChanged: (value) {
-                        setState(() {
-                          field.matchPrice = double.tryParse(value) ?? 0.0;
-                        });
-                      },
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _removeField(index),
-                      child: Text('Remove Field'),
-                    ),
-                  ],
+                  ),
                 );
               }),
+              SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Submit'),
+                child: Text('Add Stadium'),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> _selectImage() async {
-    File? image = await _imageService.selectImage();
-    if (image != null) {
-      setState(() {
-        selectedMainImage = image;
-      });
-    }
-  }
-}
-
-class IDUtils {
-  static String generateUniqueId() {
-    throw UnimplementedError();
   }
 }
