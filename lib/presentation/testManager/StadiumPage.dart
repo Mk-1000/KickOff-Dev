@@ -1,14 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:takwira/business/services/ImageService.dart';
-import 'package:takwira/domain/entities/Address.dart';
-import 'package:takwira/domain/entities/Field.dart';
-import 'package:takwira/domain/entities/Stadium.dart';
-import 'package:takwira/domain/services/IImageService.dart';
 
+import '../../business/services/AddressService.dart';
+import '../../business/services/ImageService.dart';
+import '../../business/services/StadiumService.dart';
+import '../../domain/entities/Address.dart';
+import '../../domain/entities/Field.dart';
+import '../../domain/entities/Stadium.dart';
 import '../../domain/repositories/IImageRepository.dart';
+import '../../utils/TunisiaLocations.dart';
 
 class AddStadiumScreen extends StatefulWidget {
   @override
@@ -20,21 +21,27 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
   final _nameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _servicesController = TextEditingController();
-  final _streetController = TextEditingController();
-  final _cityController = TextEditingController();
-  final _stateController = TextEditingController();
-  final _postalCodeController = TextEditingController();
-  final _countryController = TextEditingController();
-  DateTime? _startAt;
-  DateTime? _closeAt;
+  TimeOfDay? _startAt;
+  TimeOfDay? _closeAt;
   File? selectedMainImage;
   List<Field> _fields = [];
-  final IImageService _imageService = ImageService();
-
+  Stadium? currentStadium; // Updated to use Stadium type directly
+  final ImageService _imageService =
+      ImageService(); // Your image service implementation
+  final StadiumService _stadiumService =
+      StadiumService(); // Your stadium service implementation
+  String? selectedState;
+  String? selectedCity;
+  List<String> cities = [];
+  final _mapLink = TextEditingController();
+  final _street = TextEditingController();
+  final _postalCode = TextEditingController();
+  final _latitude = TextEditingController();
+  final _longitude = TextEditingController();
   @override
   void initState() {
     super.initState();
-    _fields.add(Field(capacity: 0, matchPrice: 0.0)); // Initial field
+    currentStadium = Stadium(name: '', phoneNumber: '', services: []);
   }
 
   Future<void> _selectImageForMain() async {
@@ -46,31 +53,15 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
     }
   }
 
-  Future<void> _pickDateTime(BuildContext context, DateTime initialDate,
-      Function(DateTime) onConfirm) async {
-    DateTime? pickedDate = await showDatePicker(
+  Future<void> _pickTime(BuildContext context, TimeOfDay initialTime,
+      Function(TimeOfDay) onConfirm) async {
+    TimeOfDay? pickedTime = await showTimePicker(
       context: context,
-      initialDate: initialDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      initialTime: initialTime,
     );
 
-    if (pickedDate != null) {
-      TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(initialDate),
-      );
-
-      if (pickedTime != null) {
-        final pickedDateTime = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-          pickedTime.hour,
-          pickedTime.minute,
-        );
-        onConfirm(pickedDateTime);
-      }
+    if (pickedTime != null) {
+      onConfirm(pickedTime);
     }
   }
 
@@ -83,18 +74,31 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
     }
   }
 
-  Future<String?> _uploadImageAndSetUrl(String stadiumId) async {
-    if (selectedMainImage != null) {
+  Future<String?> _uploadImageAndSetUrl(File image, String path) async {
+    if (image != null) {
       String imageUrl = await _imageService.uploadImageWithType(
-          selectedMainImage!, UploadType.Stadium, stadiumId);
+          image, UploadType.Stadium, path);
       return imageUrl;
     }
     return null;
   }
 
+  Future<List<String>> _uploadImagesAndSetUrls(
+      List<File> images, String stadiumId, String fieldId) async {
+    List<String> imageUrls = [];
+    for (File image in images) {
+      String path = '$stadiumId/$fieldId/images';
+      String? imageUrl = await _uploadImageAndSetUrl(image, path);
+      if (imageUrl != null) {
+        imageUrls.add(imageUrl);
+      }
+    }
+    return imageUrls;
+  }
+
   void _addNewField() {
     setState(() {
-      _fields.add(Field(capacity: 0, matchPrice: 0.0));
+      _fields.add(Field(capacity: 0, matchPrice: 0.0, images: []));
     });
   }
 
@@ -106,34 +110,53 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
 
   void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
-      final address = Address(
-        street: _streetController.text,
-        city: _cityController.text,
-        state: _stateController.text,
-        postalCode: _postalCodeController.text,
-        country: _countryController.text.isNotEmpty
-            ? _countryController.text
-            : 'Tunisie',
-        addressType: AddressType.StadiumAddress,
-      );
+      currentStadium!.name = _nameController.text;
+      currentStadium!.phoneNumber = _phoneNumberController.text;
+      currentStadium!.services =
+          _servicesController.text.split(',').map((s) => s.trim()).toList();
+      currentStadium!.startAt =
+          DateTime(2000, 1, 1, _startAt!.hour, _startAt!.minute);
+      currentStadium!.closeAt =
+          DateTime(2000, 1, 1, _closeAt!.hour, _closeAt!.minute);
 
-      final stadium = Stadium(
-        name: _nameController.text,
-        address: address,
-        phoneNumber: _phoneNumberController.text,
-        services:
-            _servicesController.text.split(',').map((s) => s.trim()).toList(),
-        startAt: _startAt!,
-        closeAt: _closeAt!,
-        fields: _fields,
-      );
-      String? imageUrl = await _uploadImageAndSetUrl(stadium.stadiumId);
-      if (imageUrl != null) {
-        stadium.mainImage = imageUrl;
+      // create staduim address
+      Address address = Address(
+          addressType: AddressType.StadiumAddress,
+          city: selectedCity!,
+          state: selectedState!,
+          street: _street.text,
+          postalCode: _postalCode.text,
+          latitude: double.parse(_latitude.text),
+          longitude: double.parse(_longitude.text),
+          link: _mapLink.text);
+
+      await AddressService().createAddress(address);
+      currentStadium!.address = address.addressId;
+
+      // Upload main image
+      String stadiumId = currentStadium!.stadiumId;
+      String mainImagePath = '$stadiumId/mainImage';
+      String? mainImageUrl =
+          await _uploadImageAndSetUrl(selectedMainImage!, mainImagePath);
+      if (mainImageUrl != null) {
+        currentStadium!.mainImage = mainImageUrl;
+      }
+
+      // Upload field images
+      for (int i = 0; i < _fields.length; i++) {
+        List<String> fieldImageUrls = await _uploadImagesAndSetUrls(
+          _fields[i].images.map((path) => File(path)).toList(),
+          stadiumId,
+          _fields[i].fieldId,
+        );
+        _fields[i].images = fieldImageUrls;
       }
 
       // Simulate API call to save stadium
       await Future.delayed(Duration(seconds: 1));
+
+      currentStadium?.fields = _fields;
+      _stadiumService.createStadium(currentStadium!);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Stadium added successfully!')),
@@ -148,16 +171,19 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
     _nameController.clear();
     _phoneNumberController.clear();
     _servicesController.clear();
-    _streetController.clear();
-    _cityController.clear();
-    _stateController.clear();
-    _postalCodeController.clear();
-    _countryController.clear();
+    _mapLink.clear();
+    _street.clear();
+    _postalCode.clear();
+    _latitude.clear();
+    _longitude.clear();
+
     setState(() {
       _startAt = null;
       _closeAt = null;
       selectedMainImage = null;
       _fields.clear(); // Clear the fields list
+      currentStadium = Stadium(
+          name: '', phoneNumber: '', services: []); // Reset currentStadium
     });
   }
 
@@ -223,41 +249,71 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                 },
               ),
               SizedBox(height: 16),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DropdownButton<String>(
+                    hint: Text("Select State"),
+                    value: selectedState,
+                    items: TunisiaLocations.states.map((String state) {
+                      return DropdownMenuItem<String>(
+                        value: state,
+                        child: Text(state),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedState = newValue;
+                        selectedCity = null; // Reset city selection
+                        cities =
+                            TunisiaLocations.citiesBystates[newValue!] ?? [];
+                      });
+                    },
+                  ),
+                  if (cities.isNotEmpty)
+                    DropdownButton<String>(
+                      hint: Text("Select City"),
+                      value: selectedCity,
+                      items: cities.map((String city) {
+                        return DropdownMenuItem<String>(
+                          value: city,
+                          child: Text(city),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedCity = newValue;
+                        });
+                      },
+                    ),
+                ],
+              ),
+              SizedBox(height: 16),
               TextFormField(
-                controller: _streetController,
-                decoration: InputDecoration(labelText: 'Street Address'),
+                controller: _mapLink,
+                decoration: InputDecoration(labelText: 'Map Link'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the street address';
+                    return 'Please enter the map link';
                   }
                   return null;
                 },
               ),
               SizedBox(height: 16),
               TextFormField(
-                controller: _cityController,
-                decoration: InputDecoration(labelText: 'City'),
+                controller: _street,
+                decoration: InputDecoration(labelText: 'Street'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the city';
+                    return 'Please enter the street';
                   }
                   return null;
                 },
               ),
               SizedBox(height: 16),
               TextFormField(
-                controller: _stateController,
-                decoration: InputDecoration(labelText: 'State/Province'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the state/province';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: _postalCodeController,
+                controller: _postalCode,
                 decoration: InputDecoration(labelText: 'Postal Code'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -268,107 +324,123 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
               ),
               SizedBox(height: 16),
               TextFormField(
-                controller: _countryController,
-                decoration: InputDecoration(labelText: 'Country'),
+                controller: _latitude,
+                decoration: InputDecoration(labelText: 'Latitude'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the latitude';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _longitude,
+                decoration: InputDecoration(labelText: 'Longitude'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the longitude';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 16),
               ListTile(
                 title: Text(_startAt == null
-                    ? 'Select Opening Time'
-                    : 'Opening Time: ${DateFormat('yyyy-MM-dd – kk:mm').format(_startAt!)}'),
-                trailing: Icon(Icons.calendar_today),
-                onTap: () => _pickDateTime(context, _startAt ?? DateTime.now(),
-                    (DateTime dateTime) {
-                  setState(() {
-                    _startAt = dateTime;
-                  });
-                }),
+                    ? 'Select Start Time'
+                    : 'Start Time: ${_startAt!.format(context)}'),
+                trailing: Icon(Icons.access_time),
+                onTap: () => _pickTime(
+                  context,
+                  _startAt ?? TimeOfDay.now(),
+                  (pickedTime) {
+                    setState(() {
+                      _startAt = pickedTime;
+                    });
+                  },
+                ),
               ),
               SizedBox(height: 16),
               ListTile(
                 title: Text(_closeAt == null
-                    ? 'Select Closing Time'
-                    : 'Closing Time: ${DateFormat('yyyy-MM-dd – kk:mm').format(_closeAt!)}'),
-                trailing: Icon(Icons.calendar_today),
-                onTap: () => _pickDateTime(context, _closeAt ?? DateTime.now(),
-                    (DateTime dateTime) {
-                  setState(() {
-                    _closeAt = dateTime;
-                  });
-                }),
+                    ? 'Select Close Time'
+                    : 'Close Time: ${_closeAt!.format(context)}'),
+                trailing: Icon(Icons.access_time),
+                onTap: () => _pickTime(
+                  context,
+                  _closeAt ?? TimeOfDay.now(),
+                  (pickedTime) {
+                    setState(() {
+                      _closeAt = pickedTime;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(height: 16),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: _fields.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text('Field ${index + 1}'),
+                          SizedBox(height: 8),
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'Capacity'),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              _fields[index].capacity = int.parse(value);
+                            },
+                          ),
+                          SizedBox(height: 8),
+                          TextFormField(
+                            decoration:
+                                InputDecoration(labelText: 'Match Price'),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              _fields[index].matchPrice = double.parse(value);
+                            },
+                          ),
+                          SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () => _selectImageForField(index),
+                            child: Text('Select Field Images'),
+                          ),
+                          SizedBox(height: 8),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: _fields[index].images.length,
+                            itemBuilder: (context, imgIndex) {
+                              return Image.file(
+                                File(_fields[index].images[imgIndex]),
+                                height: 100,
+                              );
+                            },
+                          ),
+                          SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () => _removeField(index),
+                            child: Text('Remove Field'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _addNewField,
-                child: Text('Add Field'),
+                child: Text('Add New Field'),
               ),
-              SizedBox(height: 16),
-              ..._fields.asMap().entries.map((entry) {
-                int index = entry.key;
-                Field field = entry.value;
-                return Card(
-                  elevation: 4,
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Field ${index + 1}'),
-                        SizedBox(height: 8),
-                        TextFormField(
-                          initialValue: field.capacity.toString(),
-                          keyboardType: TextInputType.number,
-                          decoration:
-                              InputDecoration(labelText: 'Capacity of field'),
-                          onChanged: (value) {
-                            setState(() {
-                              _fields[index].capacity = int.parse(value);
-                            });
-                          },
-                        ),
-                        SizedBox(height: 8),
-                        TextFormField(
-                          initialValue: field.matchPrice.toString(),
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(labelText: 'Match price'),
-                          onChanged: (value) {
-                            setState(() {
-                              _fields[index].matchPrice = double.parse(value);
-                            });
-                          },
-                        ),
-                        SizedBox(height: 8),
-                        ElevatedButton(
-                          onPressed: () => _selectImageForField(index),
-                          child: Text('Select Image for Field'),
-                        ),
-                        SizedBox(height: 8),
-                        ...field.images.map((imagePath) {
-                          return Image.file(
-                            File(imagePath),
-                            height: 100,
-                            width: 100,
-                            fit: BoxFit.cover,
-                          );
-                        }),
-                        SizedBox(height: 8),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: ElevatedButton(
-                            onPressed: () => _removeField(index),
-                            child: Text('Remove Field'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Add Stadium'),
+                child: Text('Submit'),
               ),
             ],
           ),

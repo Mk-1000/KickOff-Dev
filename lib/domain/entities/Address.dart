@@ -14,9 +14,10 @@ class Address {
   double? latitude;
   double? longitude;
   AddressType addressType;
+  String? link;
   final int createdAt;
   int updatedAt;
-  String? userId;
+  String? distinationId;
 
   Address({
     this.street,
@@ -27,7 +28,8 @@ class Address {
     this.country = 'Tunisie',
     this.latitude,
     this.longitude,
-    this.userId,
+    this.distinationId,
+    String? link,
     int? createdAt,
     int? updatedAt,
   })  : addressId = IDUtils.generateUniqueId(),
@@ -50,9 +52,10 @@ class Address {
         'country': country,
         'latitude': latitude,
         'longitude': longitude,
+        'link': link,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
-        'userId': userId,
+        'distinationId': distinationId,
       };
 
   factory Address.fromJson(Map<String, dynamic> json) {
@@ -70,7 +73,8 @@ class Address {
       country: json['country'] as String? ?? 'Tunisie',
       latitude: json['latitude'] as double?,
       longitude: json['longitude'] as double?,
-      userId: json['userId'] as String?,
+      link: json['link'] as String?,
+      distinationId: json['distinationId'] as String?,
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
     )..addressId = addressId;

@@ -55,4 +55,24 @@ class StadiumRepository implements IStadiumRepository {
       throw Exception('Failed to delete stadium: $e');
     }
   }
+
+  @override
+  Future<List<Stadium>> getAllStadiums() async {
+    try {
+      DataSnapshot snapshot =
+          await _firebaseService.getDocument(_collectionPath);
+      if (snapshot.exists && snapshot.value != null) {
+        var stadiumsMap = snapshot.value as Map<dynamic, dynamic>;
+        return stadiumsMap.entries
+            .map((e) => Stadium.fromJson(
+                Map<String, dynamic>.from(e.value as Map)
+                  ..['stadiumId'] = e.key))
+            .toList();
+      }
+      return []; // Return an empty list if no stadiums found
+    } catch (e) {
+      print('Failed to retrieve all stadiums: $e');
+      throw Exception('Failed to retrieve all stadiums');
+    }
+  }
 }

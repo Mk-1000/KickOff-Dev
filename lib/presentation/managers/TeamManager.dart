@@ -167,7 +167,7 @@ class TeamManager {
   Future<void> createTeamForPlayer(
       Team team, Address address, Player player) async {
     try {
-      address.userId = team.teamId;
+      address.distinationId = team.teamId;
       team.addressId = address.addressId;
 
       await _addressManager.createAddress(address);
