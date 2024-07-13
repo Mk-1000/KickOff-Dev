@@ -120,7 +120,7 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
                   addressType: AddressType.TeamAddress,
                   city: selectedCity!,
                   state: selectedState!,
-                  userId: Player.currentPlayer!.playerId,
+                  distinationId: Player.currentPlayer!.playerId,
                 );
                 // Create a new team using input values
                 Team newTeam = Team(

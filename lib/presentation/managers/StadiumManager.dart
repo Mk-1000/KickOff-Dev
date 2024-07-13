@@ -1,57 +1,50 @@
+import '../../business/services/StadiumService.dart';
 import '../../domain/entities/Stadium.dart';
-import '../../domain/repositories/IStadiumRepository.dart';
 import '../../domain/services/IStadiumService.dart';
-import '../../infrastructure/repositories/StadiumRepository.dart';
 
-class StadiumService implements IStadiumService {
-  final IStadiumRepository _stadiumRepository;
+class StadiumManager {
+  final IStadiumService _stadiumService;
 
-  StadiumService({IStadiumRepository? stadiumRepository})
-      : _stadiumRepository = stadiumRepository ?? StadiumRepository();
+  StadiumManager({IStadiumService? stadiumService})
+      : _stadiumService = stadiumService ?? StadiumService();
 
-  @override
   Future<void> createStadium(Stadium stadium) async {
     try {
-      await _stadiumRepository.addStadium(stadium);
+      await _stadiumService.createStadium(stadium);
     } catch (e) {
       throw Exception('Failed to create stadium: $e');
     }
   }
 
-  @override
   Future<Stadium> getStadiumDetails(String stadiumId) async {
     try {
-      return await _stadiumRepository.getStadiumById(stadiumId);
+      return await _stadiumService.getStadiumDetails(stadiumId);
     } catch (e) {
       throw Exception('Failed to get stadium details: $e');
     }
   }
 
-  @override
   Future<void> updateStadium(Stadium stadium) async {
     try {
-      stadium.newUpdate();
-      await _stadiumRepository.updateStadium(stadium);
+      await _stadiumService.updateStadium(stadium);
     } catch (e) {
       throw Exception('Failed to update stadium: $e');
     }
   }
 
-  @override
   Future<void> deleteStadium(String stadiumId) async {
     try {
-      await _stadiumRepository.deleteStadium(stadiumId);
+      await _stadiumService.deleteStadium(stadiumId);
     } catch (e) {
       throw Exception('Failed to delete stadium: $e');
     }
   }
 
-  @override
   Future<List<Stadium>> getAllStadiums() async {
     try {
-      return await _stadiumRepository.getAllStadiums();
+      return await _stadiumService.getAllStadiums();
     } catch (e) {
-      throw Exception('Failed to delete stadium: $e');
+      throw Exception('Failed to get all stadiums: $e');
     }
   }
 }

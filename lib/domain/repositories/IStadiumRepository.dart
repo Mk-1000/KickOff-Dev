@@ -5,4 +5,5 @@ abstract class IStadiumRepository {
   Future<Stadium> getStadiumById(String stadiumId);
   Future<void> updateStadium(Stadium stadium);
   Future<void> deleteStadium(String stadiumId);
+  Future<List<Stadium>> getAllStadiums();
 }

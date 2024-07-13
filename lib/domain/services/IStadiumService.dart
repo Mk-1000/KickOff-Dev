@@ -5,4 +5,5 @@ abstract class IStadiumService {
   Future<Stadium> getStadiumDetails(String stadiumId);
   Future<void> updateStadium(Stadium stadium);
   Future<void> deleteStadium(String stadiumId);
+  Future<List<Stadium>> getAllStadiums();
 }

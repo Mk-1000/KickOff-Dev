@@ -39,7 +39,7 @@ class PlayerManager {
 
       player.userId = userId;
       player.addressId = address.addressId;
-      address.userId = userId;
+      address.distinationId = userId;
 
       await _playerService.createPlayer(player);
       await _addressManager.createAddress(address);

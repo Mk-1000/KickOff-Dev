@@ -2,14 +2,14 @@ import '../../utils/IDUtils.dart';
 
 class Field {
   String fieldId;
-  List<String> images; // List of images for the field
+  List<String> images;
   int capacity;
   double matchPrice;
 
   Field({
-    List<String>? images,
     required this.capacity,
     required this.matchPrice,
+    List<String>? images,
   })  : fieldId = IDUtils.generateUniqueId(),
         images = images ?? []; // Initialize images with an empty list
 
@@ -21,10 +21,17 @@ class Field {
       };
 
   factory Field.fromJson(Map<String, dynamic> json) {
+    List<String> images = [];
+    try {
+      images = List<String>.from(json['images'] ?? []);
+    } catch (e) {
+      print("Error parsing images: $e");
+    }
+
     return Field(
-      images: List<String>.from(json['images']),
-      capacity: json['capacity'],
-      matchPrice: json['matchPrice'],
+      images: images,
+      capacity: json['capacity'] as int,
+      matchPrice: (json['matchPrice'] as num).toDouble(),
     )..fieldId = json['fieldId'] ?? IDUtils.generateUniqueId();
   }
 }
