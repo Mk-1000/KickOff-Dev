@@ -1,24 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/presentation/view/MatchDetails/widget/blocDemande/bloc/bloc_demande_bloc.dart';
 import 'package:takwira/presentation/view/widgets/cards/demandeCard.dart';
 
 class Demande extends StatefulWidget {
-  const Demande({super.key});
+  final Team team ;
+  static BlocDemandeBloc demande = BlocDemandeBloc();
+  const Demande({super.key, required this.team});
 
   @override
   State<Demande> createState() => _DemandeState();
 }
 
 class _DemandeState extends State<Demande> {
+    @override
+  void initState() {
+    //TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((_)  {
+     Demande.demande.add(loadData(team:widget.team ));
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+    BlocBuilder<BlocDemandeBloc, BlocDemandeState>(
+            bloc:   Demande.demande,
+            builder: (context, state) {
+              if (state is BlocDemandeInitial) {
+                return Container();
+              } else if (state is dataLoaded) {
+                return Container(
       // margin: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: [
           Expanded(
               child: ListView.builder(
             padding: EdgeInsets.zero,
-            itemCount: 6,
+            itemCount: state.invitation.length,
             itemBuilder: (context, index) {
               return DemandeCard(
                   name: "WaBBro2",
@@ -32,5 +52,10 @@ class _DemandeState extends State<Demande> {
         ],
       ),
     );
+              }
+
+              return Container();
+            });
+    
   }
 }

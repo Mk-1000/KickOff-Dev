@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
+import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
 class RechrcheEquipe extends StatefulWidget {
  final  PositionSlot slot; 
+ final Team team;
  final bool send;
-  const RechrcheEquipe({super.key, required this.send, required this.slot,});
+  const RechrcheEquipe({super.key, required this.send, required this.slot, required this.team,});
 
   @override
   State<RechrcheEquipe> createState() => _RechrcheEquipeState();
@@ -52,7 +55,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                 "widget.team.teamName,",
+                widget.team.teamName,
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -149,7 +152,10 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                       ),
                       borderRadius: BorderRadius.circular(4)),
                   child: OutlinedButton(
-                    onPressed: () {
+                    onPressed: () async {
+
+                      print("this is the player id: " +  Player.currentPlayer!.playerId + "this is the team id:" +widget.team.teamId + "this is the slot id: " +widget.slot.slotId);
+                    await  InvitationManager().sendInvitationFromPlayerToTeam(playerId: Player.currentPlayer!.playerId, teamId: widget.team.teamId, slotId:widget.slot.slotId) ; 
                       setState(() => send = !send);
                     },
                     // style:

@@ -5,9 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/view/CreateTeam/widget/CircleNumber.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/Chat/chat.dart';
+import 'package:takwira/presentation/view/MatchDetails/widget/bottomSheet/selectDateBottomSheet.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/demande.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/info.dart';
 import 'package:takwira/presentation/view/widgets/StadeWidget/Stade.dart';
+import 'package:takwira/presentation/view/widgets/bottomSheet/AllButtomSheet.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
@@ -192,7 +194,11 @@ class _MatchDetailsState extends State<MatchDetails> {
                   ),
                 )
               } else ...{
-                Container(
+                GestureDetector(
+                  onTap: () {
+                      AllBottomSheet().FunBottomSheet(context, selectDateBottomSheet());
+                  },
+                  child: Container(
                   alignment: Alignment.center,
                   height: 30,
                   width: 108,
@@ -205,7 +211,9 @@ class _MatchDetailsState extends State<MatchDetails> {
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).primaryColor),
-                ),
+                ), 
+                )
+               
               },
               SizedBox(height: 8),
               Expanded(
@@ -234,7 +242,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                     views: [
                       Info(team: widget.team,), // Make sure these widgets exist and are imported
                       Chat(team: widget.team,),
-                      Demande(),
+                      Demande(team: widget.team ,),
                     ],
                     onChange: (index) => print('Selected index: $index'),
                   ),

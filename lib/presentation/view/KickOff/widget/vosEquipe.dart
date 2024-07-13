@@ -72,7 +72,7 @@ class _VosEquipeState extends State<VosEquipe> {
       padding: const EdgeInsets.only(top: 8, bottom: 16),
       itemCount: teams.length,
       itemBuilder: (context, index) {
-      //  TeamManager().updateSlotStatusToPublic(teams[index].teamId,teams[index].slots[2].slotId);
+       //TeamManager().updateSlotStatusToPublic(teams[index].teamId,teams[index].slots[2].slotId);
         return _buildSlideFromBottomCard(index ,teams);
       },
     );

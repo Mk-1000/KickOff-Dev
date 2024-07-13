@@ -17,6 +17,7 @@ class RechercheEquipe extends StatefulWidget {
 class _RechercheEquipeState extends State<RechercheEquipe> {
   final TextEditingController searchController = TextEditingController();
   static const int itemCount = 10;
+   final TeamManager teamManager = TeamManager();
   List<String> postion = ['Gardien', 'Défenseur', 'Milieu', 'Attaquant'];
   List<String> ville = ["Monastir"];
 
@@ -70,7 +71,7 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
     
     
     StreamBuilder<List<PositionSlot>>(
-        stream: TeamManager().getPublicAvailableSlotsStream(),
+        stream: teamManager.getPublicAvailableSlotsStream(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -80,14 +81,40 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
             return Center(child: Text('No available slots found.'));
           } else {
             return ListView.builder(
-      padding: const EdgeInsets.only(top: 8, bottom: 16),
-      itemCount: snapshot.data!.length,
-      itemBuilder: (context, index) {
-           PositionSlot slot = snapshot.data![index];
-        return  _buildSlideFromBottomCard(index , slot);
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                PositionSlot slot = snapshot.data![index];
+
+                // Use FutureBuilder to asynchronously fetch team details
+                return FutureBuilder<Team>(
+                  future:teamManager.getTeamById(slot.teamId),
+                  builder: (context, teamSnapshot) {
+                    if (teamSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Text("null team fetched"); // Placeholder until team details are fetched
+                    } else if (teamSnapshot.hasError) {
+                     return Text("error1"+teamSnapshot.error.toString());  // Handle error case
+                    } else if (!teamSnapshot.hasData) {
+                      return Text("no team");  // No team found case
+                    } else {
+                      Team team = teamSnapshot.data!;
+                      return _buildSlideFromBottomCard(index, team , slot);
+                    }
+                  },
+                );
+              },
+            );
+            
+            
+    //         ListView.builder(
+    //   padding: const EdgeInsets.only(top: 8, bottom: 16),
+    //   itemCount: snapshot.data!.length,
+    //   itemBuilder: (context, index) {
+    //        PositionSlot slot = snapshot.data![index];
+    //     return  _buildSlideFromBottomCard(index , slot);
    
-      },
-    );
+    //   },
+    // );
             
             
           
@@ -99,7 +126,7 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
 
   }
 
-  Widget _buildSlideFromBottomCard(int index, PositionSlot slot) {
+  Widget _buildSlideFromBottomCard(int index,Team team , PositionSlot slot) {
     return TweenAnimationBuilder(
         duration: Duration(milliseconds: 400 + index * 200),
         curve: Curves.easeOut,
@@ -114,8 +141,8 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
           );
         },
         child:  RechrcheEquipe(
-          
-          send: true, slot: slot,
+          team: team,
+          send: false, slot: slot,
         )
         //  const VosEquipeCard(
         //   name: 'WaaBroo',
