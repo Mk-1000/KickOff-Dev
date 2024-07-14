@@ -316,24 +316,34 @@ class InvitationManager {
     }
   }
 
-  Future<List<Invitation>> fetchReceivedInvitationsForPlayer(
-      Player player) async {
-    try {
-      List<Invitation> invitations = [];
-      for (String invitationId in player.receivedInvitationIds) {
-        Invitation invitation =
-            await _invitationService.getInvitationDetails(invitationId);
-        invitations.add(invitation);
-      }
-      return invitations;
-    } catch (e) {
-      throw Exception('Failed to fetch received invitations for player: $e');
-    }
-  }
+  // Future<List<Invitation>> fetchSentInvitationsForPlayer(Player player) async {
+  //   try {
+  //     List<Invitation> invitations = [];
+  //     for (String invitationId in player.sentInvitationIds) {
+  //       Invitation invitation =
+  //           await _invitationService.getInvitationDetails(invitationId);
+  //       invitations.add(invitation);
+  //     }
+  //     return invitations;
+  //   } catch (e) {
+  //     throw Exception('Failed to fetch sent invitations for player: $e');
+  //   }
+  // }
 
-  Future<List<Invitation>> fetchSentInvitationsForPlayer(Player player) async {
+  Future<List<Invitation>> fetchSentInvitationsForPlayer(
+      String playerId) async {
     try {
+      Player player = await _playerManager.getPlayerDetails(playerId);
+      // Check if the player ID matches the current player's ID
+      if (playerId != Player.currentPlayer!.playerId) {
+        return []; // Return an empty list if the IDs do not match
+      }
+      // Check if the player has sent any invitations
+      if (player.sentInvitationIds.isEmpty) {
+        return []; // Return an empty list if there are no sent invitations
+      }
       List<Invitation> invitations = [];
+      // Fetch details for each sent invitation
       for (String invitationId in player.sentInvitationIds) {
         Invitation invitation =
             await _invitationService.getInvitationDetails(invitationId);
@@ -341,13 +351,80 @@ class InvitationManager {
       }
       return invitations;
     } catch (e) {
+      // Handle any exceptions that may occur
       throw Exception('Failed to fetch sent invitations for player: $e');
     }
   }
 
-  Future<List<Invitation>> fetchReceivedInvitationsForTeam(Team team) async {
+  // Future<List<Invitation>> fetchReceivedInvitationsForPlayer(
+  //     Player player) async {
+  //   try {
+  //     List<Invitation> invitations = [];
+  //     for (String invitationId in player.receivedInvitationIds) {
+  //       Invitation invitation =
+  //           await _invitationService.getInvitationDetails(invitationId);
+  //       invitations.add(invitation);
+  //     }
+  //     return invitations;
+  //   } catch (e) {
+  //     throw Exception('Failed to fetch received invitations for player: $e');
+  //   }
+  // }
+
+  Future<List<Invitation>> fetchReceivedInvitationsForPlayer(
+      String playerId) async {
     try {
+      Player player = await _playerManager.getPlayerDetails(playerId);
+
+      // Check if the player has received any invitations
+      if (player.receivedInvitationIds.isEmpty) {
+        return []; // Return an empty list if there are no received invitations
+      }
       List<Invitation> invitations = [];
+      // Fetch details for each received invitation
+      for (String invitationId in player.receivedInvitationIds) {
+        Invitation invitation =
+            await _invitationService.getInvitationDetails(invitationId);
+        invitations.add(invitation);
+      }
+      return invitations;
+    } catch (e) {
+      // Handle any exceptions that may occur
+      throw Exception('Failed to fetch received invitations for player: $e');
+    }
+  }
+
+  // Future<List<Invitation>> fetchReceivedInvitationsForTeam(Team team) async {
+  //   try {
+  //     List<Invitation> invitations = [];
+  //     for (List<String> slotIds in team.receivedSlotInvitations.values) {
+  //       for (String invitationId in slotIds) {
+  //         Invitation invitation =
+  //             await _invitationService.getInvitationDetails(invitationId);
+  //         invitations.add(invitation);
+  //       }
+  //     }
+  //     return invitations;
+  //   } catch (e) {
+  //     throw Exception('Failed to fetch received invitations for team: $e');
+  //   }
+  // }
+
+  Future<List<Invitation>> fetchReceivedInvitationsForTeam(
+      String teamId) async {
+    try {
+      Team team = await _teamManager.getTeamById(teamId);
+
+      // Check if the current player is the captain of the team
+      if (team.captainId != Player.currentPlayer!.playerId) {
+        throw Exception('Current player is not the captain of the team');
+      }
+      // Check if the team has received any invitations
+      if (team.receivedSlotInvitations.isEmpty) {
+        return []; // Return an empty list if there are no received invitations
+      }
+      List<Invitation> invitations = [];
+      // Fetch details for each received invitation
       for (List<String> slotIds in team.receivedSlotInvitations.values) {
         for (String invitationId in slotIds) {
           Invitation invitation =
@@ -357,13 +434,37 @@ class InvitationManager {
       }
       return invitations;
     } catch (e) {
+      // Handle any exceptions that may occur
       throw Exception('Failed to fetch received invitations for team: $e');
     }
   }
 
-  Future<List<Invitation>> fetchSentInvitationsForTeam(Team team) async {
+  // Future<List<Invitation>> fetchSentInvitationsForTeam(String teamId) async {
+  //   try {
+  //     List<Invitation> invitations = [];
+  //     for (List<String> slotIds in team.sentSlotInvitations.values) {
+  //       for (String invitationId in slotIds) {
+  //         Invitation invitation =
+  //             await _invitationService.getInvitationDetails(invitationId);
+  //         invitations.add(invitation);
+  //       }
+  //     }
+  //     return invitations;
+  //   } catch (e) {
+  //     throw Exception('Failed to fetch sent invitations for team: $e');
+  //   }
+  // }
+
+  Future<List<Invitation>> fetchSentInvitationsForTeam(String teamId) async {
     try {
+      Team team = await _teamManager.getTeamById(teamId);
+
+      // Check if the team has sent any invitations
+      if (team.sentSlotInvitations.isEmpty) {
+        return []; // Return an empty list if there are no sent invitations
+      }
       List<Invitation> invitations = [];
+      // Fetch details for each sent invitation
       for (List<String> slotIds in team.sentSlotInvitations.values) {
         for (String invitationId in slotIds) {
           Invitation invitation =
@@ -373,6 +474,7 @@ class InvitationManager {
       }
       return invitations;
     } catch (e) {
+      // Handle any exceptions that may occur
       throw Exception('Failed to fetch sent invitations for team: $e');
     }
   }

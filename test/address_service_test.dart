@@ -23,7 +23,7 @@ void main() {
         latitude: 34.0,
         longitude: -118.0,
         addressType: AddressType.PlayerAddress,
-        userId: 'user-123',
+        distinationId: 'user-123',
       );
 
       // Set up mock responses for your repository

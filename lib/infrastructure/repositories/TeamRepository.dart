@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 
+import '../../domain/entities/Player.dart';
 import '../../domain/entities/PositionSlot.dart';
 import '../../domain/entities/Team.dart';
 import '../../domain/repositories/ITeamRepository.dart';
@@ -125,11 +126,22 @@ class TeamRepository implements ITeamRepository {
     try {
       final List<Team> allTeams = await getAllTeams();
       List<PositionSlot> publicAvailableSlots = [];
+
+      // Get the current player's ID
+      String currentPlayerId = Player.currentPlayer!.playerId;
+
       for (var team in allTeams) {
-        publicAvailableSlots.addAll(team.slots!.where((slot) =>
-            slot.slotType == SlotType.Public &&
-            slot.status == SlotStatus.Available));
+        // Check if the team's players list contains the currentPlayerId
+        bool containsPlayer = team.players!.contains(currentPlayerId);
+
+        if (!containsPlayer) {
+          // Add all public and available slots from the team to the list
+          publicAvailableSlots.addAll(team.slots!.where((slot) =>
+              slot.slotType == SlotType.Public &&
+              slot.status == SlotStatus.Available));
+        }
       }
+
       return publicAvailableSlots;
     } catch (e) {
       throw Exception('Failed to retrieve public available slots');

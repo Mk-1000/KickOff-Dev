@@ -14,12 +14,14 @@ class BlocDemandeBloc extends Bloc<BlocDemandeEvent, BlocDemandeState> {
     on<BlocDemandeEvent>((event, emit) {
       // TODO: implement event handler
     });
-        on<loadData>(load);
+    on<loadData>(load);
   }
 
-  Future<FutureOr<void>> load(loadData event, Emitter<BlocDemandeState> emit) async {
-      List<Invitation> result =   await InvitationManager().fetchReceivedInvitationsForTeam(event.team); 
-      print(result);
-      emit(dataLoaded(invitation: result)) ; 
+  Future<FutureOr<void>> load(
+      loadData event, Emitter<BlocDemandeState> emit) async {
+    List<Invitation> result = await InvitationManager()
+        .fetchReceivedInvitationsForTeam(event.team.teamId);
+    print(result);
+    emit(dataLoaded(invitation: result));
   }
 }

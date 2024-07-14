@@ -78,7 +78,8 @@ class _PlayerInvitationPageState extends State<PlayerInvitationPage> {
 
   Widget _buildReceivedInvitations(Player player) {
     return FutureBuilder<List<Invitation>>(
-      future: _invitationManager.fetchReceivedInvitationsForPlayer(player),
+      future:
+          _invitationManager.fetchReceivedInvitationsForPlayer(player.playerId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -117,7 +118,7 @@ class _PlayerInvitationPageState extends State<PlayerInvitationPage> {
 
   Widget _buildSentInvitations(Player player) {
     return FutureBuilder<List<Invitation>>(
-      future: _invitationManager.fetchSentInvitationsForPlayer(player),
+      future: _invitationManager.fetchSentInvitationsForPlayer(player.playerId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());

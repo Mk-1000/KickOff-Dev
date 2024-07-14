@@ -92,7 +92,7 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                   ),
                   FutureBuilder<List<Invitation>>(
                     future: _invitationManager
-                        .fetchReceivedInvitationsForTeam(team!),
+                        .fetchReceivedInvitationsForTeam(team!.teamId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -143,8 +143,8 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                     ),
                   ),
                   FutureBuilder<List<Invitation>>(
-                    future:
-                        _invitationManager.fetchSentInvitationsForTeam(team!),
+                    future: _invitationManager
+                        .fetchSentInvitationsForTeam(team!.teamId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());

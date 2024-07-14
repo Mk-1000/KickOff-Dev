@@ -4,7 +4,6 @@ import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/presentation/view/widgets/button/dropDownButton/DropDownButton.dart';
 import 'package:takwira/presentation/view/widgets/cards/rechercheEquipeCard.dart';
-import 'package:takwira/presentation/view/widgets/cards/vosEquipeCards.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/search.dart';
 
 class RechercheEquipe extends StatefulWidget {
@@ -17,13 +16,12 @@ class RechercheEquipe extends StatefulWidget {
 class _RechercheEquipeState extends State<RechercheEquipe> {
   final TextEditingController searchController = TextEditingController();
   static const int itemCount = 10;
-   final TeamManager teamManager = TeamManager();
+  final TeamManager teamManager = TeamManager();
   List<String> postion = ['Gardien', 'Défenseur', 'Milieu', 'Attaquant'];
   List<String> ville = ["Monastir"];
 
   @override
   Widget build(BuildContext context) {
-    
     return Column(
       children: [
         _buildAnimatedSearchBar(),
@@ -67,66 +65,57 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
   }
 
   Widget _buildAnimatedListView() {
-    return
-    
-    
-    StreamBuilder<List<PositionSlot>>(
-        stream: teamManager.getPublicAvailableSlotsStream(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No available slots found.'));
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                PositionSlot slot = snapshot.data![index];
+    return StreamBuilder<List<PositionSlot>>(
+      stream: teamManager.getPublicAvailableSlotsStream(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No available slots found.'));
+        } else {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              PositionSlot slot = snapshot.data![index];
 
-                // Use FutureBuilder to asynchronously fetch team details
-                return FutureBuilder<Team>(
-                  future:teamManager.getTeamById(slot.teamId),
-                  builder: (context, teamSnapshot) {
-                    if (teamSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return Text("null team fetched"); // Placeholder until team details are fetched
-                    } else if (teamSnapshot.hasError) {
-                     return Text("error1"+teamSnapshot.error.toString());  // Handle error case
-                    } else if (!teamSnapshot.hasData) {
-                      return Text("no team");  // No team found case
-                    } else {
-                      Team team = teamSnapshot.data!;
-                      return _buildSlideFromBottomCard(index, team , slot);
-                    }
-                  },
-                );
-              },
-            );
-            
-            
-    //         ListView.builder(
-    //   padding: const EdgeInsets.only(top: 8, bottom: 16),
-    //   itemCount: snapshot.data!.length,
-    //   itemBuilder: (context, index) {
-    //        PositionSlot slot = snapshot.data![index];
-    //     return  _buildSlideFromBottomCard(index , slot);
-   
-    //   },
-    // );
-            
-            
-          
-          }
-        },
-      );
-     
+              // Use FutureBuilder to asynchronously fetch team details
+              return FutureBuilder<Team>(
+                future: teamManager.getTeamById(slot.teamId),
+                builder: (context, teamSnapshot) {
+                  if (teamSnapshot.connectionState == ConnectionState.waiting) {
+                    return Text(
+                        "null team fetched"); // Placeholder until team details are fetched
+                  } else if (teamSnapshot.hasError) {
+                    return Text("error1" +
+                        teamSnapshot.error.toString()); // Handle error case
+                  } else if (!teamSnapshot.hasData) {
+                    return Text("no team"); // No team found case
+                  } else {
+                    Team team = teamSnapshot.data!;
+                    return _buildSlideFromBottomCard(index, team, slot);
+                  }
+                },
+              );
+            },
+          );
 
+          //         ListView.builder(
+          //   padding: const EdgeInsets.only(top: 8, bottom: 16),
+          //   itemCount: snapshot.data!.length,
+          //   itemBuilder: (context, index) {
+          //        PositionSlot slot = snapshot.data![index];
+          //     return  _buildSlideFromBottomCard(index , slot);
 
+          //   },
+          // );
+        }
+      },
+    );
   }
 
-  Widget _buildSlideFromBottomCard(int index,Team team , PositionSlot slot) {
+  Widget _buildSlideFromBottomCard(int index, Team team, PositionSlot slot) {
     return TweenAnimationBuilder(
         duration: Duration(milliseconds: 400 + index * 200),
         curve: Curves.easeOut,
@@ -140,9 +129,10 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
             ),
           );
         },
-        child:  RechrcheEquipe(
+        child: RechrcheEquipe(
           team: team,
-          send: false, slot: slot,
+          send: false,
+          slot: slot,
         )
         //  const VosEquipeCard(
         //   name: 'WaaBroo',
