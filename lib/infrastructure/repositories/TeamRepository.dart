@@ -152,11 +152,22 @@ class TeamRepository implements ITeamRepository {
   Stream<List<PositionSlot>> getPublicAvailableSlotsStream() {
     return streamTeams().map((teams) {
       List<PositionSlot> publicAvailableSlots = [];
+
+      // Get the current player's ID
+      String currentPlayerId = Player.currentPlayer!.playerId;
+
       for (var team in teams) {
-        publicAvailableSlots.addAll(team.slots!.where((slot) =>
-            slot.slotType == SlotType.Public &&
-            slot.status == SlotStatus.Available));
+        // Check if the team's players list contains the currentPlayerId
+        bool containsPlayer = team.players!.contains(currentPlayerId);
+
+        if (!containsPlayer) {
+          // Add all public and available slots from the team to the list
+          publicAvailableSlots.addAll(team.slots!.where((slot) =>
+              slot.slotType == SlotType.Public &&
+              slot.status == SlotStatus.Available));
+        }
       }
+
       return publicAvailableSlots;
     });
   }
