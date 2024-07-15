@@ -1,14 +1,54 @@
+import 'package:takwira/business/services/UserService.dart';
 import 'package:takwira/infrastructure/repositories/PlayerRepository.dart';
+import 'package:takwira/presentation/managers/AddressManager.dart';
 
+import '../../domain/entities/Address.dart';
 import '../../domain/entities/Player.dart';
+import '../../domain/entities/User.dart';
 import '../../domain/repositories/IPlayerRepository.dart';
 import '../../domain/services/IPlayerService.dart';
+import 'AuthService.dart';
 
 class PlayerService implements IPlayerService {
   final IPlayerRepository _playerRepository;
 
   PlayerService({IPlayerRepository? playerRepository})
       : _playerRepository = playerRepository ?? PlayerRepository();
+
+  @override
+  Future<String> signInWithEmailPassword(String email, String password) async {
+    try {
+      String userId =
+          await AuthService().signInWithEmailPassword(email, password);
+      Player player = await getPlayerDetails(userId);
+      Player.setCurrentPlayer(player);
+      return userId;
+    } catch (e) {
+      throw Exception('Failed to sign in player: $e');
+    }
+  }
+
+  @override
+  Future<void> signUpPlayer(
+      String email, String password, Address address, Player player) async {
+    try {
+      String userId =
+          await AuthService().signUpWithEmailPassword(email, password);
+      User newUser = User(userId: userId, email: email, role: UserRole.Player);
+      await UserService().addUser(newUser);
+
+      player.userId = userId;
+      player.addressId = address.addressId;
+      address.distinationId = userId;
+
+      await PlayerService().createPlayer(player);
+      await AddressManager().createAddress(address);
+
+      Player.setCurrentPlayer(player);
+    } catch (e) {
+      throw Exception('Failed to sign up player: $e');
+    }
+  }
 
   @override
   Future<void> createPlayer(Player player) async {

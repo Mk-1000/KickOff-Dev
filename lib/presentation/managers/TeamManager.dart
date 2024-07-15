@@ -1,3 +1,4 @@
+import 'package:takwira/business/services/InvitationService.dart';
 import 'package:takwira/business/services/TeamService.dart';
 import 'package:takwira/domain/entities/Address.dart';
 import 'package:takwira/domain/entities/Chat.dart';
@@ -7,14 +8,12 @@ import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/domain/services/ITeamService.dart';
 import 'package:takwira/presentation/managers/AddressManager.dart';
 import 'package:takwira/presentation/managers/ChatManager.dart';
-import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
 
 class TeamManager {
   final ITeamService _teamService = TeamService();
   final ChatManager _chatManager = ChatManager();
   final PlayerManager _playerManager = PlayerManager();
-  final InvitationManager _invitationManager = InvitationManager();
   final AddressManager _addressManager = AddressManager();
 
   Stream<List<Team>> streamAllTeams() {
@@ -89,7 +88,7 @@ class TeamManager {
         List<String> receivedInvitations =
             team.receivedSlotInvitations[slotId]!;
         for (String invitationId in receivedInvitations) {
-          await _invitationManager.removeInvitation(invitationId);
+          await InvitationService().removeInvitation(invitationId);
         }
         team.receivedSlotInvitations[slotId] = [];
       }
@@ -98,7 +97,7 @@ class TeamManager {
       for (String slotId in team.sentSlotInvitations.keys) {
         List<String> sentInvitations = team.sentSlotInvitations[slotId]!;
         for (String invitationId in sentInvitations) {
-          await _invitationManager.removeInvitation(invitationId);
+          await InvitationService().removeInvitation(invitationId);
         }
         team.sentSlotInvitations[slotId] = [];
       }
@@ -335,5 +334,37 @@ class TeamManager {
       // Optionally, log the error or handle it accordingly
       return false;
     }
+  }
+
+  Future<bool> cancelCurrentGameFromTeam(String teamId) async {
+    try {
+      await _teamService.cancelCurrentGameFromTeam(teamId);
+      return true;
+    } catch (e) {
+      // Optionally, log the error or handle it accordingly
+      return false;
+    }
+  }
+
+  Future<bool> confirmCurrentGameFromTeam(String teamId) async {
+    try {
+      await _teamService.confirmCurrentGameFromTeam(teamId);
+      return true;
+    } catch (e) {
+      // Optionally, log the error or handle it accordingly
+      return false;
+    }
+  }
+
+  Future<bool> isSlotPublic(String teamId, String slotId) async {
+    return await _teamService.isSlotPublic(teamId, slotId);
+  }
+
+  Stream<List<Team>> getAvailableTeamForGameStream() {
+    return _teamService.getAvailableTeamForGameStream();
+  }
+
+  Future<List<Team>> getAvailableTeamForGame() {
+    return _teamService.getAvailableTeamForGame();
   }
 }

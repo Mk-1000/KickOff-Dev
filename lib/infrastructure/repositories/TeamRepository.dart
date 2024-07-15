@@ -171,4 +171,50 @@ class TeamRepository implements ITeamRepository {
       return publicAvailableSlots;
     });
   }
+
+  @override
+  Future<List<Team>> getAvailableTeamForGame() async {
+    try {
+      // Fetch all teams
+      List<Team> teams = await getAllTeams();
+
+      // Get the current player's ID
+      String currentPlayerId = Player.currentPlayer!.playerId;
+
+      // Filter teams that are available for a game
+      List<Team> availableTeams = teams
+          .where((team) =>
+              !team.players!.contains(currentPlayerId) &&
+              team.currentGameId == null)
+          .toList();
+
+      return availableTeams;
+    } catch (e) {
+      // Handle exceptions here
+      print('Failed to fetch available teams: $e');
+      throw Exception('Failed to fetch available teams: $e');
+    }
+  }
+
+  @override
+  Stream<List<Team>> getAvailableTeamForGameStream() {
+    return streamTeams().map((teams) {
+      List<Team> availableTeams = [];
+
+      // Get the current player's ID
+      String currentPlayerId = Player.currentPlayer!.playerId;
+
+      for (var team in teams) {
+        // Check if the team's players list does not contain the currentPlayerId
+        bool containsPlayer = team.players!.contains(currentPlayerId);
+
+        if (!containsPlayer && team.currentGameId == null) {
+          // Add the team to the list if it does not contain the player and does not have a current game
+          availableTeams.add(team);
+        }
+      }
+
+      return availableTeams;
+    });
+  }
 }

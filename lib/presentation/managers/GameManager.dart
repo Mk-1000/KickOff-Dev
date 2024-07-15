@@ -35,4 +35,13 @@ class GameManager {
       return false;
     }
   }
+
+  Future<bool> completeGame(String gameId) async {
+    try {
+      await _gameService.completeGame(gameId);
+      return true;
+    } on Exception {
+      return false;
+    }
+  }
 }

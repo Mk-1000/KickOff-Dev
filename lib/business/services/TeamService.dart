@@ -5,15 +5,16 @@ import 'package:takwira/domain/repositories/ITeamRepository.dart';
 import 'package:takwira/domain/services/IChatService.dart';
 import 'package:takwira/infrastructure/repositories/TeamRepository.dart';
 
+import '../../domain/entities/Game.dart';
+import '../../domain/entities/Player.dart';
 import '../../domain/services/ITeamService.dart';
+import 'GameService.dart';
 
 class TeamService implements ITeamService {
   final ITeamRepository _teamRepository;
-  final IChatService _chatService;
 
   TeamService({ITeamRepository? teamRepository, IChatService? chatService})
-      : _teamRepository = teamRepository ?? TeamRepository(),
-        _chatService = chatService ?? ChatService();
+      : _teamRepository = teamRepository ?? TeamRepository();
 
   @override
   Future<void> createTeam(Team team) async {
@@ -59,6 +60,16 @@ class TeamService implements ITeamService {
   @override
   Stream<List<Team>> streamTeams() {
     return _teamRepository.streamTeams();
+  }
+
+  @override
+  Stream<List<Team>> getAvailableTeamForGameStream() {
+    return _teamRepository.getAvailableTeamForGameStream();
+  }
+
+  @override
+  Future<List<Team>> getAvailableTeamForGame() {
+    return _teamRepository.getAvailableTeamForGame();
   }
 
   @override
@@ -152,7 +163,7 @@ class TeamService implements ITeamService {
       Team team = await getTeamById(teamId);
       team.addPlayerToSlot(playerId, slotId);
       await updateTeam(team);
-      await _chatService.addParticipantToChat(team.chatId!, playerId);
+      await ChatService().addParticipantToChat(team.chatId!, playerId);
     } catch (e) {
       print('Failed to add player to slot: $e');
     }
@@ -277,6 +288,82 @@ class TeamService implements ITeamService {
       await updateTeam(team);
     } catch (e) {
       print('Failed to remove invitation for team slot: $e');
+    }
+  }
+
+  @override
+  Future<void> cancelCurrentGameFromTeam(String teamId) async {
+    try {
+      // Retrieve the team details
+      Team team = await getTeamById(teamId);
+
+      // Retrieve game details
+      Game game = await GameService().getGameDetails(team.currentGameId!);
+
+      // Identify the opposing team
+      Team opposingTeam;
+      if (team.teamId == game.homeTeam) {
+        opposingTeam = await getTeamById(game.awayTeam);
+      } else {
+        opposingTeam = await getTeamById(game.homeTeam);
+      }
+      String currentPlayer = Player.currentPlayer!.playerId;
+
+      bool haveAuthorisation = (currentPlayer == team.captainId ||
+          currentPlayer == opposingTeam.captainId);
+
+      // Ensure the current player have Authorisation
+      if (haveAuthorisation) {
+        // Clear the current game for both teams
+        team.currentGameId = null;
+        opposingTeam.currentGameId = null;
+
+        // Update the teams in the database
+        await updateTeam(team);
+        await updateTeam(opposingTeam);
+      }
+    } catch (e) {
+      print('Failed to cancel game : $e');
+    }
+  }
+
+  @override
+  Future<void> confirmCurrentGameFromTeam(String teamId) async {
+    try {
+      // Retrieve the team details
+      Team team = await getTeamById(teamId);
+
+      // Retrieve game details
+      Game game = await GameService().getGameDetails(team.currentGameId!);
+
+      // Identify the opposing team
+      Team opposingTeam;
+      if (team.teamId == game.homeTeam) {
+        opposingTeam = await getTeamById(game.awayTeam);
+      } else {
+        opposingTeam = await getTeamById(game.homeTeam);
+      }
+      String currentPlayer = Player.currentPlayer!.playerId;
+
+      bool haveAuthorisation = (currentPlayer == team.captainId ||
+          currentPlayer == opposingTeam.captainId);
+
+      // Ensure the current player have Authorisation
+      if (haveAuthorisation) {
+        // Add the game to both teams' game history
+        team.addGameHistoryId(game.gameId);
+        opposingTeam.addGameHistoryId(game.gameId);
+
+        // Clear the current game for both teams
+        team.currentGameId = null;
+        opposingTeam.currentGameId = null;
+
+        // Update the teams in the database
+        await updateTeam(team);
+        await updateTeam(opposingTeam);
+      }
+    } catch (e) {
+      print('Failed to confirm game: $e');
     }
   }
 }

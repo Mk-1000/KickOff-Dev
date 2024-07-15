@@ -1,3 +1,4 @@
+import '../entities/Address.dart';
 import '../entities/Player.dart';
 
 abstract class IPlayerService {
@@ -25,4 +26,8 @@ abstract class IPlayerService {
   Future<void> addTeamId(String playerId, String teamId);
 
   Future<void> removeTeamId(String playerId, String teamId);
+  Future<String> signInWithEmailPassword(String email, String password);
+
+  Future<void> signUpPlayer(
+      String email, String password, Address address, Player player);
 }

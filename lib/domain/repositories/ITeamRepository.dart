@@ -11,4 +11,6 @@ abstract class ITeamRepository {
   Stream<List<Team>> streamTeams();
   Future<List<PositionSlot>> getPublicAvailableSlots();
   Stream<List<PositionSlot>> getPublicAvailableSlotsStream();
+  Future<List<Team>> getAvailableTeamForGame();
+  Stream<List<Team>> getAvailableTeamForGameStream();
 }

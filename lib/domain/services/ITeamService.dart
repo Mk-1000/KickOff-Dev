@@ -66,4 +66,12 @@ abstract class ITeamService {
 
   Future<void> removeReceivedGameInvitationIds(
       String teamId, String invitationId);
+
+  Future<void> cancelCurrentGameFromTeam(String teamId);
+
+  Future<void> confirmCurrentGameFromTeam(String teamId);
+
+  Stream<List<Team>> getAvailableTeamForGameStream();
+
+  Future<List<Team>> getAvailableTeamForGame();
 }

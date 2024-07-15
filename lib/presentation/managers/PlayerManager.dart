@@ -1,52 +1,24 @@
-import 'package:takwira/business/services/AuthService.dart';
 import 'package:takwira/business/services/PlayerService.dart';
-import 'package:takwira/business/services/UserService.dart';
 import 'package:takwira/domain/entities/Player.dart';
-import 'package:takwira/domain/entities/User.dart';
-import 'package:takwira/domain/services/IAuthService.dart';
 import 'package:takwira/domain/services/IPlayerService.dart';
-import 'package:takwira/domain/services/IUserService.dart';
-import 'package:takwira/presentation/managers/AddressManager.dart';
 
 import '../../domain/entities/Address.dart';
 
 class PlayerManager {
   final IPlayerService _playerService = PlayerService();
-  final IAuthService _authService = AuthService();
-  final IUserService _userService = UserService();
-  final AddressManager _addressManager = AddressManager();
 
   // Method to sign in player with email and password
   Future<String> signInWithEmailPassword(String email, String password) async {
-    try {
-      String userId =
-          await _authService.signInWithEmailPassword(email, password);
-      Player player = await _playerService.getPlayerDetails(userId);
-      Player.setCurrentPlayer(player);
-      return userId;
-    } catch (e) {
-      throw Exception('Failed to sign in player: $e');
-    }
+    return await _playerService.signInWithEmailPassword(email, password);
   }
 
-  Future<void> signUpPlayer(
+  Future<bool> signUpPlayer(
       String email, String password, Address address, Player player) async {
     try {
-      String userId =
-          await _authService.signUpWithEmailPassword(email, password);
-      User newUser = User(userId: userId, email: email, role: UserRole.Player);
-      await _userService.addUser(newUser);
-
-      player.userId = userId;
-      player.addressId = address.addressId;
-      address.distinationId = userId;
-
-      await _playerService.createPlayer(player);
-      await _addressManager.createAddress(address);
-
-      Player.setCurrentPlayer(player);
+      await _playerService.signUpPlayer(email, password, address, player);
+      return true;
     } catch (e) {
-      throw Exception('Failed to sign up player: $e');
+      return false;
     }
   }
 

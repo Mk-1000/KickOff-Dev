@@ -21,7 +21,8 @@ class _TeamListPageState extends State<TeamListPage> {
   @override
   void initState() {
     super.initState();
-    teamsStream = _teamManager.streamAllTeams(); // Initialize stream of teams
+    teamsStream = _teamManager
+        .getAvailableTeamForGameStream(); // Initialize stream of teams
   }
 
   @override

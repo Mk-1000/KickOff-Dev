@@ -5,4 +5,5 @@ abstract class IGameService {
   Future<void> createGame(Game game);
   Future<void> updateGame(Game game);
   Future<void> deleteGame(String gameId);
+  Future<void> completeGame(String gameId);
 }

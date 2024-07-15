@@ -1,3 +1,5 @@
+import 'package:takwira/business/services/TeamService.dart';
+
 import '../../domain/entities/Game.dart';
 import '../../domain/repositories/IGameRepository.dart';
 import '../../domain/services/IGameService.dart';
@@ -40,9 +42,28 @@ class GameService implements IGameService {
   @override
   Future<void> deleteGame(String gameId) async {
     try {
+      // Retrieve game details
+      Game game = await getGameDetails(gameId);
+
+      // Cancel the current game for the home team
+      await TeamService().cancelCurrentGameFromTeam(game.homeTeam);
+
       await _gameRepository.deleteGame(gameId);
     } catch (e) {
       throw Exception('Failed to delete game: $e');
+    }
+  }
+
+  @override
+  Future<void> completeGame(String gameId) async {
+    try {
+      // Retrieve game details
+      Game game = await getGameDetails(gameId);
+
+      // Confirm the current game for the home team
+      await TeamService().confirmCurrentGameFromTeam(game.homeTeam);
+    } catch (e) {
+      throw Exception('Failed to complete game: $e');
     }
   }
 }
