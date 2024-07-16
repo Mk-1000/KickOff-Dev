@@ -65,8 +65,11 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
   Future<void> _loadPlayers() async {
     try {
       List<Player> players = await _playerManager.getPlayers();
+      Team team = await _teamManager.getTeamById(widget.teamId);
       setState(() {
-        _availablePlayers = players;
+        _availablePlayers = players
+            .where((player) => !team.players.contains(player.playerId))
+            .toList();
       });
     } catch (e) {
       if (mounted) {

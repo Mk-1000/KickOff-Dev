@@ -3,6 +3,8 @@ import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
 
+import '../../domain/entities/Invitation.dart';
+
 class TeamListPage extends StatefulWidget {
   final String homeTeamId;
 
@@ -42,26 +44,57 @@ class _TeamListPageState extends State<TeamListPage> {
             return Center(child: Text('No teams available'));
           } else {
             List<Team> teams = snapshot.data!;
-            List<Team> availableTeams =
-                teams.where((team) => team.isAvailable()).toList();
-
-            if (availableTeams.isEmpty) {
-              return Center(child: Text('No available teams'));
-            }
 
             return ListView.builder(
-              itemCount: availableTeams.length,
+              itemCount: teams.length,
               itemBuilder: (context, index) {
-                Team team = availableTeams[index];
+                Team team = teams[index];
                 return ListTile(
                   title: Text(team.teamName),
                   subtitle: Text('Number of Players: ${team.players.length}'),
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      sendInvitation(
-                          team.teamId); // Send invitation for this team
+                  trailing: FutureBuilder<bool>(
+                    future: _invitationManager.isInvitationAlreadySent(
+                      playerId: widget.homeTeamId,
+                      slotId: team.teamId,
+                      invitationType: InvitationType.TeamToTeam,
+                    ),
+                    builder: (context, invitationSnapshot) {
+                      if (invitationSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return ElevatedButton(
+                          onPressed: null,
+                          child: Text('Checking...'),
+                        );
+                      } else if (invitationSnapshot.hasError) {
+                        print(
+                            'Error in FutureBuilder: ${invitationSnapshot.error}');
+                        return ElevatedButton(
+                          onPressed: null,
+                          child: Text('Error'),
+                        );
+                      } else if (!invitationSnapshot.hasData) {
+                        print('No data available in FutureBuilder');
+                        return ElevatedButton(
+                          onPressed: null,
+                          child: Text('No Data'),
+                        );
+                      } else {
+                        bool isInvitationSent = invitationSnapshot.data!;
+                        return ElevatedButton(
+                          onPressed: () => _toggleInvitation(
+                            context,
+                            widget.homeTeamId,
+                            team.teamId,
+                            isInvitationSent,
+                          ),
+                          child: Text(
+                            isInvitationSent
+                                ? 'Cancel Invitation'
+                                : 'Send Invitation',
+                          ),
+                        );
+                      }
                     },
-                    child: Text('Send Invitation'),
                   ),
                 );
               },
@@ -72,20 +105,19 @@ class _TeamListPageState extends State<TeamListPage> {
     );
   }
 
-  Future<void> sendInvitation(String teamId) async {
-    try {
+  Future<void> _toggleInvitation(BuildContext context, String homeTeamId,
+      String awayTeamId, bool isInvitationSent) async {
+    if (isInvitationSent) {
+      // Get the invitation ID
+      String invitationId = await _invitationManager.searchInvitationId(
+          playerId: homeTeamId,
+          slotId: awayTeamId,
+          invitationType: InvitationType.TeamToTeam);
+
+      await _invitationManager.respondToInvitation(invitationId, false);
+    } else {
       await _invitationManager.sendInvitationFromTeamToTeam(
-        teamSenderId: widget.homeTeamId,
-        teamReceiverId: teamId,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invitation sent successfully')),
-      );
-    } catch (e) {
-      print('Failed to send invitation: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to send invitation')),
-      );
+          teamSenderId: homeTeamId, teamReceiverId: awayTeamId);
     }
   }
 }

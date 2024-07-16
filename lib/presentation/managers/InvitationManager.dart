@@ -25,13 +25,13 @@ class InvitationManager {
   }
 
   Future<bool> sendInvitationFromPlayerToTeam({
-    required String teamId,
+    required String? teamId,
     required String playerId,
     required String slotId,
   }) async {
     try {
       await _invitationService.sendInvitationFromPlayerToTeam(
-        teamId: teamId,
+        teamId: teamId!,
         playerId: playerId,
         slotId: slotId,
       );
@@ -136,5 +136,31 @@ class InvitationManager {
     } catch (e) {
       throw Exception('Failed to fetch invitation details: $e');
     }
+  }
+
+  Future<bool> isInvitationAlreadySent({
+    required String playerId,
+    required String slotId,
+    required InvitationType invitationType,
+    String? teamId,
+  }) async {
+    return _invitationService.isInvitationAlreadySent(
+        playerId: playerId,
+        slotId: slotId,
+        invitationType: invitationType,
+        teamId: teamId);
+  }
+
+  Future<String> searchInvitationId({
+    required String playerId,
+    required String slotId,
+    required InvitationType invitationType,
+    String? teamId,
+  }) async {
+    return _invitationService.searchInvitationId(
+        playerId: playerId,
+        slotId: slotId,
+        invitationType: invitationType,
+        teamId: teamId);
   }
 }

@@ -79,10 +79,22 @@ class InvitationService implements IInvitationService {
     required String slotId,
   }) async {
     try {
+      // Check if the invitation is already sent
+      bool isInvitationAlreadySentResult = await isInvitationAlreadySent(
+        playerId: playerId,
+        slotId: slotId,
+        teamId: teamId,
+        invitationType: InvitationType.TeamToPlayer,
+      );
+      if (isInvitationAlreadySentResult) {
+        throw Exception("Invitation already sent.");
+      }
+
       // Validate input parameters
       if (teamId.isEmpty || playerId.isEmpty || slotId.isEmpty) {
         throw ArgumentError("Team ID, Player ID, or Slot ID cannot be empty.");
       }
+
       // Check if the current player is the captain of the team
       bool isCaptain =
           await TeamManager().isCaptain(Player.currentPlayer!.playerId, teamId);
@@ -127,6 +139,17 @@ class InvitationService implements IInvitationService {
       required String playerId,
       required String slotId}) async {
     try {
+      // Check if the invitation is already sent
+      bool isInvitationAlreadySentResult = await isInvitationAlreadySent(
+        playerId: playerId,
+        slotId: slotId,
+        teamId: teamId,
+        invitationType: InvitationType.PlayerToTeam,
+      );
+      if (isInvitationAlreadySentResult) {
+        throw Exception("Invitation already sent.");
+      }
+
       // Validate input parameters
       if (teamId.isEmpty || playerId.isEmpty || slotId.isEmpty) {
         throw ArgumentError("Team ID, Player ID, or Slot ID cannot be empty.");
@@ -181,6 +204,16 @@ class InvitationService implements IInvitationService {
   Future<void> sendInvitationFromTeamToTeam(
       {required String teamSenderId, required String teamReceiverId}) async {
     try {
+      // Check if the invitation is already sent
+      bool isInvitationAlreadySentResult = await isInvitationAlreadySent(
+        playerId: teamSenderId,
+        slotId: teamReceiverId,
+        invitationType: InvitationType.TeamToTeam,
+      );
+      if (isInvitationAlreadySentResult) {
+        throw Exception("Invitation already sent.");
+      }
+
       // Validate input parameters
       if (teamSenderId.isEmpty || teamReceiverId.isEmpty) {
         throw ArgumentError("Team ID, Player ID, or Slot ID cannot be empty.");
@@ -497,6 +530,94 @@ class InvitationService implements IInvitationService {
       return invitations;
     } catch (e) {
       throw Exception('Failed to fetch sent invitations for team: $e');
+    }
+  }
+
+  @override
+  Future<bool> isInvitationAlreadySent({
+    required String playerId,
+    required String slotId,
+    required InvitationType invitationType,
+    String? teamId,
+  }) async {
+    try {
+      List<Invitation> existingInvitations = await _fetchInvitations(
+        slotId: slotId,
+        playerId: playerId,
+        invitationType: invitationType,
+        teamId: teamId,
+      );
+
+      return existingInvitations.isNotEmpty;
+    } catch (e) {
+      throw Exception('Failed to check existing invitations: $e');
+    }
+  }
+
+  Future<List<Invitation>> _fetchInvitations({
+    String? teamId,
+    required String slotId,
+    required String playerId,
+    required InvitationType invitationType,
+  }) async {
+    print(
+        "Fetching invitations - playerId: $playerId, teamId: $teamId, slotId: $slotId, invitationType: $invitationType");
+
+    List<Invitation> allInvitations = [];
+
+    try {
+      switch (invitationType) {
+        case InvitationType.PlayerToTeam:
+          if (teamId != null) {
+            allInvitations = await fetchSentInvitationsForPlayer(playerId);
+          }
+          break;
+        case InvitationType.TeamToPlayer:
+          if (teamId != null) {
+            allInvitations = await fetchSentInvitationsForTeam(teamId);
+          }
+          break;
+        case InvitationType.TeamToTeam:
+          allInvitations = await fetchSentInvitationsForGame(playerId);
+          break;
+      }
+    } catch (e) {
+      print("Error fetching invitations: $e");
+      // You might want to handle this error based on your application's needs
+      throw Exception('Error fetching invitations: $e');
+    }
+
+    print("Fetched invitations: $allInvitations");
+
+    return allInvitations.where((invitation) {
+      return invitation.slotId == slotId &&
+          invitation.playerId == playerId &&
+          invitation.invitationType == invitationType;
+    }).toList();
+  }
+
+  @override
+  Future<String> searchInvitationId({
+    required String playerId,
+    required String slotId,
+    required InvitationType invitationType,
+    String? teamId,
+  }) async {
+    try {
+      List<Invitation> existingInvitations = await _fetchInvitations(
+        slotId: slotId,
+        playerId: playerId,
+        invitationType: invitationType,
+        teamId: teamId,
+      );
+
+      if (existingInvitations.isNotEmpty) {
+        return existingInvitations.first.invitationId;
+      } else {
+        throw Exception('No invitation found');
+      }
+    } catch (e) {
+      throw Exception('Failed to get invitation ID: $e');
     }
   }
 }

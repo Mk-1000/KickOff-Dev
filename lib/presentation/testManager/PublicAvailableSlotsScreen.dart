@@ -6,6 +6,8 @@ import 'package:takwira/presentation/managers/InvitationManager.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/utils/DateTimeUtils.dart';
 
+import '../../domain/entities/Invitation.dart';
+
 class PublicAvailableSlotsScreen extends StatelessWidget {
   final TeamManager teamManager = TeamManager();
   final InvitationManager invitationManager = InvitationManager();
@@ -84,9 +86,35 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
                   'Published on: ${DateTimeUtils.formatTimestamp(slot.slotTypeChangedAt)}'),
             ),
             SizedBox(height: 8.0),
-            ElevatedButton(
-              onPressed: () => _sendInvitation(context, team, slot),
-              child: Text('Send Invitation'),
+            FutureBuilder<bool>(
+              future: invitationManager.isInvitationAlreadySent(
+                  playerId: Player.currentPlayer!.playerId,
+                  slotId: slot.slotId,
+                  invitationType: InvitationType.PlayerToTeam,
+                  teamId: slot.teamId),
+              builder: (context, invitationSnapshot) {
+                if (invitationSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return ElevatedButton(
+                    onPressed: null,
+                    child: Text('Checking...'),
+                  );
+                } else if (invitationSnapshot.hasError) {
+                  return ElevatedButton(
+                    onPressed: null,
+                    child: Text('Error'),
+                  );
+                } else {
+                  bool isInvitationSent = invitationSnapshot.data ?? false;
+                  return ElevatedButton(
+                    onPressed: () => _toggleInvitation(
+                        context, team, slot, isInvitationSent),
+                    child: Text(isInvitationSent
+                        ? 'Cancel Invitation'
+                        : 'Send Invitation'),
+                  );
+                }
+              },
             ),
           ],
         ),
@@ -121,11 +149,23 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _sendInvitation(
-      BuildContext context, Team team, PositionSlot slot) async {
-    await invitationManager.sendInvitationFromPlayerToTeam(
+  Future<void> _toggleInvitation(BuildContext context, Team team,
+      PositionSlot slot, bool isInvitationSent) async {
+    if (isInvitationSent) {
+      // Get the invitation ID
+      String invitationId = await invitationManager.searchInvitationId(
+          playerId: Player.currentPlayer!.playerId,
+          slotId: slot.slotId,
+          teamId: team.teamId,
+          invitationType: InvitationType.PlayerToTeam);
+
+      await invitationManager.respondToInvitation(invitationId, false);
+    } else {
+      await invitationManager.sendInvitationFromPlayerToTeam(
         teamId: slot.teamId,
         playerId: Player.currentPlayer!.playerId,
-        slotId: slot.slotId);
+        slotId: slot.slotId,
+      );
+    }
   }
 }
