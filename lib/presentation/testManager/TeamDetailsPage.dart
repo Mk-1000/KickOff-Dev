@@ -9,6 +9,7 @@ import 'package:takwira/presentation/testManager/TeamListPage.dart';
 
 import '../../domain/entities/Address.dart';
 import '../managers/AddressManager.dart';
+import 'GameDetailsPage.dart';
 
 class TeamDetailsPage extends StatefulWidget {
   final String teamId;
@@ -140,18 +141,33 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
       appBar: AppBar(
         title: Text('Team Details'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.bug_report),
-            onPressed: () {
-              // Navigate to players screen
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        TeamListPage(homeTeamId: widget.teamId)),
-              );
-            },
-          ),
+          if (_team != null)
+            _team!.currentGameId == null
+                ? IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                // Navigate to players screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TeamListPage(
+                        homeTeamId: widget.teamId,
+                      )),
+                );
+              },
+            )
+                : IconButton(
+              icon: Icon(Icons.stadium),
+              onPressed: () {
+                // Navigate to game details screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          GameDetailsPage(gameId: _team!.currentGameId!)),
+                );
+              },
+            ),
         ],
       ),
       body: _team == null

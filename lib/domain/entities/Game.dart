@@ -20,7 +20,7 @@ class Game {
     required this.awayTeam,
     DateTime? gameDate,
     this.stadiumId,
-    String? chatId,
+    this.chatId,
     GameStatus? gameStatus,
     int? createdAt,
     int? updatedAt,
@@ -80,7 +80,7 @@ class Game {
           ? DateTime.fromMillisecondsSinceEpoch(json['gameDate'])
           : null,
       stadiumId: json['stadiumId'],
-      chatId: json['chatId'] as String?,
+      chatId : json['chatId'] as String?,
       gameStatus: ParserUtils.parseGameStatus(json['gameStatus']),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],

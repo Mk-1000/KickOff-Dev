@@ -44,4 +44,17 @@ class GameManager {
       return false;
     }
   }
+
+  Future<bool> updateGameDate(String gameId, DateTime newDate) async {
+    return await _gameService.updateGameDate(gameId, newDate);
+  }
+
+  Future<bool> updateGameStadium(String gameId, String stadiumId) async {
+    return await _gameService.updateGameStadium(gameId, stadiumId);
+  }
+
+  Future<bool> cancelGameStadium(String gameId) async {
+    return await _gameService.cancelGameStadium(gameId);
+  }
+
 }

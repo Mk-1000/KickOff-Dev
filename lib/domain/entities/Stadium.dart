@@ -52,19 +52,19 @@ class Stadium {
   }
 
   Map<String, dynamic> toJson() => {
-        'stadiumId': stadiumId,
-        'name': name,
-        'address': address,
-        'mainImage': mainImage,
-        'phoneNumber': phoneNumber,
-        'services': services,
-        'startAt': startAt?.toIso8601String(),
-        'closeAt': closeAt?.toIso8601String(),
-        'fields': fields.map((field) => field.toJson()).toList(),
-        'createdAt': createdAt,
-        'updatedAt': updatedAt,
-        'visibility': visibility,
-      };
+    'stadiumId': stadiumId,
+    'name': name,
+    'address': address,
+    'mainImage': mainImage,
+    'phoneNumber': phoneNumber,
+    'services': services,
+    'startAt': startAt?.toIso8601String(),
+    'closeAt': closeAt?.toIso8601String(),
+    'fields': fields.map((field) => field.toJson()).toList(),
+    'createdAt': createdAt,
+    'updatedAt': updatedAt,
+    'visibility': visibility,
+  };
 
   factory Stadium.fromJson(Map<String, dynamic> json) {
     final fieldsJson = json['fields'] as List;
@@ -73,7 +73,7 @@ class Stadium {
     try {
       fields = fieldsJson
           .map((fieldsJson) =>
-              Field.fromJson(Map<String, dynamic>.from(fieldsJson as Map)))
+          Field.fromJson(Map<String, dynamic>.from(fieldsJson as Map)))
           .toList();
     } catch (e) {
       print("Error parsing slots: $e");
