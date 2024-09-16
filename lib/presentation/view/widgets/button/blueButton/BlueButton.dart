@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BlueButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -21,8 +22,8 @@ class BlueButton extends StatelessWidget {
         ? OutlinedButton.styleFrom(
             side: const BorderSide(
                 color: Color(0xFF3053EC)), // Blue border for outlined button
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(48)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(48.r)),
             backgroundColor:
                 Colors.white, // White background for outlined button
           )
@@ -35,19 +36,19 @@ class BlueButton extends StatelessWidget {
 
     // Use a Button widget depending on whether it's outlined or not.
     return Container(
-      margin: const EdgeInsets.only(top: 24),
-      width: width,
-      height: 48,
+      margin: EdgeInsets.only(top: 24.h),
+      width: width.w,
+      height: 48.h,
       child: outlindedbutton
           ? OutlinedButton(
               onPressed: onTap,
               style: flatStyle,
               child: Text(
                 text,
-                style: const TextStyle(
+                style: TextStyle(
                   color:
                       Color(0xFF3053EC), // Blue text color for outlined button
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -57,9 +58,9 @@ class BlueButton extends StatelessWidget {
               style: flatStyle,
               child: Text(
                 text,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white, // White text color for elevated button
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
                 ),
               ),

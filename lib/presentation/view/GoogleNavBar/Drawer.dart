@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/Profile/Profile.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
@@ -25,11 +26,11 @@ class _DrawersState extends State<Drawers> {
                     : Theme.of(context).shadowColor,
               ),
               SizedBox(
-                width: 8,
+                width: 8.w,
               ),
               AllText.Autotext(
                 text: text,
-                fontSize: 13,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.normal,
                 color: text == "se déconnecter"
                     ? Colors.red
@@ -40,7 +41,7 @@ class _DrawersState extends State<Drawers> {
           Container(
               child: Icon(
             Icons.arrow_forward_ios,
-            size: 15,
+            size: 15.sp,
             color: text == "se déconnecter"
                 ? Colors.red
                 : Theme.of(context).shadowColor,
@@ -60,7 +61,7 @@ class _DrawersState extends State<Drawers> {
       // padding: EdgeInsets.zero,
       children: [
         Container(
-          height: 110,
+          height: 105.h,
           child: DrawerHeader(
               decoration: BoxDecoration(
                   // color: Colors.amber
@@ -87,14 +88,14 @@ class _DrawersState extends State<Drawers> {
                       ),
                       AllText.Autotext(
                           text: "test1",
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
                           color: Theme.of(context).shadowColor)
                     ],
                   ),
                   AllText.Autotext(
                       text: "swolf712@gmail.com",
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.normal,
                       color: Colors.grey)
                 ],
@@ -122,19 +123,19 @@ class _DrawersState extends State<Drawers> {
           onTap: () {},
         ),
         ListTile(
-          title: itemSidebar("contact us", Icons.mode_comment_outlined),
+          title: itemSidebar("Contact us", Icons.mode_comment_outlined),
           onTap: () {},
         ),
         ListTile(
-          title: itemSidebar("share the app", Icons.share_outlined),
+          title: itemSidebar("Share the app", Icons.share_outlined),
           onTap: () {},
         ),
         ListTile(
-          title: itemSidebar("about kickoff", Icons.info_outline),
+          title: itemSidebar("About kickoff", Icons.info_outline),
           onTap: () {},
         ),
         ListTile(
-          title: itemSidebar("privacy policy", Icons.security_outlined),
+          title: itemSidebar("Privacy policy", Icons.security_outlined),
           onTap: () {},
         ),
         ListTile(

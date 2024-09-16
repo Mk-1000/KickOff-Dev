@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:takwira/presentation/view/NavBar/NavData.dart';
 import 'package:takwira/presentation/view/NavBar/navBarMain.dart';
@@ -35,13 +36,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                 color: widget.currentIndex == index
                     ? Theme.of(context).primaryColor
                     : Colors.transparent,
-                width: 2),
+                width: 2.w),
             //  color: widget.currentIndex == index? Theme.of(context).primaryColor :Colors.transparent,
             borderRadius: BorderRadius.circular(100),
           ),
           alignment: Alignment.center,
-          height: 48,
-          width: 110,
+          height: 48.h,
+          width: 110.w,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -59,12 +60,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                 ),
               },
               SizedBox(
-                width: 4,
+                width: 4.w,
               ),
               if (widget.currentIndex == index) ...{
                 AllText.Autotext(
                     color: Colors.black,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     text: text)
               }
@@ -75,8 +76,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     }
 
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      height: 70,
+      margin: EdgeInsets.only(bottom: 20.h),
+      height: 70.h,
       // color: Colors.amber,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -1,6 +1,7 @@
 /// The Login class is a StatefulWidget that displays a login form with email and password fields, along
 /// with options for forgot password, terms and conditions, and social media login buttons.
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/view/GoogleNavBar/Navbar.dart';
 import 'package:takwira/presentation/view/Home/home_page.dart';
@@ -21,8 +22,8 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
- static  TextEditingController emailController = TextEditingController();
-  static  TextEditingController passController = TextEditingController();
+  static TextEditingController emailController = TextEditingController();
+  static TextEditingController passController = TextEditingController();
   bool isChecked = false;
   bool login = true;
   @override
@@ -30,20 +31,21 @@ class LoginState extends State<Login> {
     Size size = MediaQuery.of(context).size;
     Login() {
       if (login) {
-        if(emailController.text != "" && passController.text != "") {
-          Allpups.loading(context); 
-             PlayerManager().signInWithEmailPassword(emailController.text, passController.text).then((value) {
-          if(value != "") {
-            Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => GoogleNavBar()),
-        );
-          }
-        });
+        if (emailController.text != "" && passController.text != "") {
+          Allpups.loading(context);
+          PlayerManager()
+              .signInWithEmailPassword(
+                  emailController.text, passController.text)
+              .then((value) {
+            if (value != "") {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => GoogleNavBar()),
+              );
+            }
+          });
         }
-     
       } else {
-        
         Navigator.pushReplacement<void, void>(
           context,
           MaterialPageRoute<void>(
@@ -67,7 +69,7 @@ class LoginState extends State<Login> {
                     top: size.height * 0.04, left: size.width * 0.03),
                 child: AllText.Autotext(
                   color: Colors.black,
-                  fontSize: 30,
+                  fontSize: 30.sp,
                   fontWeight: FontWeight.w700,
                   text: login ? "Bienvenue !" : 'Créez votre compte',
                 )),
@@ -75,7 +77,7 @@ class LoginState extends State<Login> {
                 margin: const EdgeInsets.only(top: 8),
                 child: AllText.Autotext(
                   color: const Color(0xFF6D7289),
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
                   text: login
                       ? "Accédez à votre compte, invitez vos amis et réservez votre stade."
@@ -86,7 +88,7 @@ class LoginState extends State<Login> {
                 alignment: Alignment.topLeft,
                 child: AllText.Autotext(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
                   text: "Email",
                 )),
@@ -97,11 +99,11 @@ class LoginState extends State<Login> {
               obscureText: false,
             ),
             Container(
-                margin: EdgeInsets.only(top: size.height * 0.03, bottom: 8),
+                margin: EdgeInsets.only(top: size.height * 0.03.h, bottom: 8.h),
                 alignment: Alignment.topLeft,
                 child: AllText.Autotext(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
                   text: "Mot de passe",
                 )),
@@ -112,17 +114,17 @@ class LoginState extends State<Login> {
               obscureText: true,
             ),
             Container(
-              margin: const EdgeInsets.only(top: 8),
+              margin: EdgeInsets.only(top: 8.h),
               child: Row(
                 children: [
                   if (login) ...{
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        margin: const EdgeInsets.only(top: 16, bottom: 8),
+                        margin: EdgeInsets.only(top: 16.h, bottom: 8.h),
                         child: AllText.Autotext(
                           color: const Color(0xFF6485F4),
-                          fontSize: 16,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           text: "Mot de passe oublié ?",
                         ),
@@ -139,7 +141,7 @@ class LoginState extends State<Login> {
                     ),
                     AllText.Autotext(
                       color: const Color(0xFF6485F4),
-                      fontSize: 16,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       text: "J'accepte les ",
                     ),
@@ -147,7 +149,7 @@ class LoginState extends State<Login> {
                       onTap: () {},
                       child: AllText.Autotext(
                         color: const Color(0xFF6485F4),
-                        fontSize: 16,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         text: "termes et conditions ",
                       ),
@@ -160,18 +162,18 @@ class LoginState extends State<Login> {
               onTap: Login,
               text: login ? "Se connecter" : "Create an account",
               outlindedbutton: false,
-              width: size.width,
+              width: size.width.w,
             ),
             Container(
-              margin: const EdgeInsets.only(top: 24),
+              margin: EdgeInsets.only(top: 24.h),
               child: AllText.Autotext(
                   color: const Color(0xFF6D7289),
-                  fontSize: 16,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
                   text: "ou continuer avec"),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 24),
+              margin: EdgeInsets.only(top: 24),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -228,7 +230,7 @@ class LoginState extends State<Login> {
                 children: [
                   AllText.Autotext(
                     color: Colors.black,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                     text: login
                         ? "Vous n'avez pas de compte ?"
@@ -240,7 +242,7 @@ class LoginState extends State<Login> {
                     },
                     child: AllText.Autotext(
                       color: const Color(0xFF6485F4),
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       text: login ? " Inscrivez-vous" : ' Se connecter',
                     ),

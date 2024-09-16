@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/widgets/cards/notification.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
@@ -21,7 +22,7 @@ class _NotificationMainState extends State<NotificationMain> {
         ),
         title: AllText.Autotext(
             text: "Notification",
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
             color: Theme.of(context).shadowColor),
       ),

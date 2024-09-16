@@ -6,8 +6,12 @@ import 'package:takwira/presentation/view/widgets/text/text.dart';
 class MessageUi extends StatelessWidget {
   final String imageUrl;
   final bool me;
-  final String content ; 
-  const MessageUi({super.key, required this.imageUrl, required this.me, required this.content});
+  final String content;
+  const MessageUi(
+      {super.key,
+      required this.imageUrl,
+      required this.me,
+      required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +37,7 @@ class MessageUi extends StatelessWidget {
                   maxWidth: MediaQuery.of(context).size.width * 0.65),
               // width: MediaQuery.of(context).size.width*0.65 ,
               child: AllText.Autotext(
-                  text:
-                    content,
+                  text: content,
                   fontSize: 14,
                   fontWeight: FontWeight.normal,
                   color: Colors.grey,
@@ -70,7 +73,7 @@ class MessageUi extends StatelessWidget {
                   margin: EdgeInsets.only(top: 4),
                   decoration: BoxDecoration(
                       border: Border.all(
-                          color: Theme.of(context).bottomAppBarColor),
+                          color: Theme.of(context).bottomAppBarTheme.color!),
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(12),
                           bottomRight: Radius.circular(12),
@@ -79,8 +82,7 @@ class MessageUi extends StatelessWidget {
                       maxWidth: MediaQuery.of(context).size.width * 0.65),
                   // width: MediaQuery.of(context).size.width*0.65 ,
                   child: AllText.Autotext(
-                      text:content
-                         ,
+                      text: content,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey,

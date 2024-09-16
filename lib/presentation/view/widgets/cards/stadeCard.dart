@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/StadeDetail/StadeDetails.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
@@ -17,8 +18,8 @@ class StadeCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(top: 8),
-        height: 92,
+        margin: EdgeInsets.only(top: 8.h),
+        height: 82.h,
         decoration: BoxDecoration(
           border: Border.all(
               color: borderBlue
@@ -32,8 +33,8 @@ class StadeCard extends StatelessWidget {
             Hero(
               tag: "stade" + index.toString(),
               child: Container(
-                height: 92,
-                width: 88,
+                height: 82.h,
+                width: 88.w,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(6),
@@ -41,8 +42,8 @@ class StadeCard extends StatelessWidget {
                   ),
                   child: Image.network(
                     "https://images.midilibre.fr/api/v1/images/view/633da2e473564570454b7579/large-fit/image.jpg?v=1",
-                    height: 88,
-                    width: 88,
+                    height: 82.h,
+                    width: 88.w,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -50,8 +51,8 @@ class StadeCard extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(right: 8),
-              width: 2,
-              height: 100,
+              width: 2.w,
+              height: 100.h,
               color: Theme.of(context).bottomAppBarColor,
             ),
             Expanded(
@@ -61,7 +62,7 @@ class StadeCard extends StatelessWidget {
                 children: [
                   AllText.Autotext(
                       color: Theme.of(context).shadowColor,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                       text: 'MAY Foot Land'),
                   Row(
@@ -70,7 +71,7 @@ class StadeCard extends StatelessWidget {
                       Text(
                         "Monastir / MAY Foot Land",
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 11.sp,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).shadowColor,
                         ),
@@ -83,7 +84,7 @@ class StadeCard extends StatelessWidget {
                       Text(
                         "24 Jan 2024 / 23:00 H",
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 11.sp,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).shadowColor,
                         ),
@@ -91,14 +92,15 @@ class StadeCard extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(left: 12),
                         alignment: Alignment.center,
-                        height: 16,
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        height: 16.sp,
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
                         decoration: BoxDecoration(
                             color: Colors.red,
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.r))),
                         child: AllText.Autotext(
                             text: "8 DT",
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
                             color: Colors.white),
                       )

@@ -34,7 +34,10 @@ class _KickOffState extends State<KickOff> {
         context,
         MaterialPageRoute(builder: (context) => CreateTeam()),
       ),
-      child: const Icon(Icons.add),
+      child: const Icon(
+        Icons.add,
+        color: Colors.white,
+      ),
     );
   }
 

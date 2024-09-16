@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/widgets/cards/nextMatchCard.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
@@ -19,8 +20,8 @@ class _NextMatchState extends State<NextMatch> {
       children: [
         AllText.Autotext(
             color: Theme.of(context).shadowColor,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontSize: 17.sp,
+            fontWeight: FontWeight.w600,
             text: 'Prochain match'),
         NextMatchCard(
           awayImage:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class inputFild extends StatelessWidget {
   final Size size;
@@ -20,25 +21,28 @@ class inputFild extends StatelessWidget {
       obscureText: obscureText,
       cursorColor: Colors.black,
       controller: controller,
-      style: const TextStyle(
+      style: TextStyle(
         color: Colors.black,
-        fontSize: 16,
+        fontSize: 16.sp,
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+        contentPadding: EdgeInsets.symmetric(horizontal: size.width * 0.03.w),
         hintText: hint,
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0.r)),
           borderSide: BorderSide(color: Color(0xFF948B8B)),
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0.r)),
           borderSide: BorderSide(color: Color(0xFF948B8B)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+          borderSide: BorderSide(
+            color: Theme.of(context).primaryColor,
+            width: 2.0.w,
+          ),
         ),
       ),
     );

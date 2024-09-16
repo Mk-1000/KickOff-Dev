@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
@@ -31,12 +32,12 @@ class NotificationCard extends StatelessWidget {
             child: CahedImage(
               img:
                   "https://images.axios.com/JIqTJp0sjfmhTz7Q7zfeq_vrcUU=/0x148:5071x3000/1920x1080/2022/11/25/1669384070045.jpg",
-              height: 44,
-              width: 44,
+              height: 44.w,
+              width: 44.w,
               box: BoxFit.cover,
             ),
           ),
-          SizedBox(width: 16),
+          SizedBox(width: 16.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,19 +48,19 @@ class NotificationCard extends StatelessWidget {
               children: [
                 AllText.Autotext(
                   text: "game alert!",
-                  fontSize: 14,
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).shadowColor,
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 8.h,
                 ),
                 Flexible(
                   // Makes text wrap and fill the container
                   child: AllText.Autotext(
                       text:
                           "The match between Real Madrid and Barcelona has been started!",
-                      fontSize: 12,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.normal,
                       color: Colors.grey,
                       textalgin: TextAlign.left),

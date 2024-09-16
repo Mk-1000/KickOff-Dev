@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart'; // Assuming CachedImage is the correct class name
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
@@ -65,14 +66,14 @@ class _VosEquipeCardState extends State<VosEquipeCard>
   }
 
   Widget buildCard(BuildContext context) {
-    const double imageSize = 92;
+    const double imageSize = 80;
     const double cornerRadius = 8;
     const double iconSize = 14;
     const EdgeInsets geometryPadding = EdgeInsets.symmetric(horizontal: 8);
 
     return Container(
-      margin: const EdgeInsets.only(top: 8),
-      height: 92,
+      margin: EdgeInsets.only(top: 8.h),
+      height: 80.h,
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).bottomAppBarColor),
         borderRadius: BorderRadius.circular(cornerRadius),
@@ -88,8 +89,8 @@ class _VosEquipeCardState extends State<VosEquipeCard>
               ),
               child: CahedImage(
                 img: widget.photo,
-                height: imageSize,
-                width: imageSize,
+                height: imageSize.h,
+                width: imageSize.w,
                 box: BoxFit.cover,
               ),
             ),
@@ -103,21 +104,21 @@ class _VosEquipeCardState extends State<VosEquipeCard>
                 children: [
                   AllText.Autotext(
                       text: widget.name,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).shadowColor),
                   Row(
                     children: [
                       Icon(
                         Icons.place_outlined,
-                        size: 14,
+                        size: 16.sp,
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 4.w,
                       ),
                       AllText.Autotext(
                           text: widget.place,
-                          fontSize: 14,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
                           color: Colors.grey),
                     ],
@@ -127,37 +128,39 @@ class _VosEquipeCardState extends State<VosEquipeCard>
                       if (widget.captine) ...{
                         Container(
                           alignment: Alignment.center,
-                          height: iconSize,
-                          width: iconSize,
+                          height: iconSize + 4.w,
+                          width: iconSize + 4.w,
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: AllText.Autotext(
-                              text: "C",
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                          child: Center(
+                            child: AllText.Autotext(
+                                text: "C",
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
                         ),
                         const SizedBox(width: 8),
                         AllText.Autotext(
                             text: "Capitaine",
-                            fontSize: 14,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
                             color: Colors.grey),
                         const SizedBox(width: 16),
                       },
-                      const Icon(
+                      Icon(
                         Icons.directions_run,
                         color: Colors.grey,
-                        size: 14,
+                        size: 14.sp,
                       ),
                       SizedBox(
                         width: 8,
                       ),
                       AllText.Autotext(
                           text: widget.postion,
-                          fontSize: 14,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
                           color: Colors.grey),
                     ],
