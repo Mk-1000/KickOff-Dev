@@ -1,5 +1,6 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:takwira/domain/entities/Team.dart';
@@ -31,7 +32,7 @@ class _MatchDetailsState extends State<MatchDetails> {
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 247,
+            height: 247.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -44,7 +45,7 @@ class _MatchDetailsState extends State<MatchDetails> {
           Column(
             children: [
               Container(
-                  margin: EdgeInsets.only(top: 46),
+                  margin: EdgeInsets.only(top: 46.h),
                   // margin: EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +57,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                       ),
                       AllText.Autotext(
                           text: widget.team.teamName,
-                          fontSize: 18,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.w700,
                           color: Colors.white),
                       IconButton(
@@ -72,7 +73,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                     ],
                   )),
               Container(
-                margin: EdgeInsets.only(top: 8),
+                margin: EdgeInsets.only(top: 8.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -82,12 +83,12 @@ class _MatchDetailsState extends State<MatchDetails> {
                           tag: widget.team.teamId,
                           child: ClipRRect(
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(30)),
+                                BorderRadius.all(Radius.circular(30.r)),
                             child: CahedImage(
                               img:
                                   "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
-                              height: 58,
-                              width: 58,
+                              height: 58.h,
+                              width: 58.w,
                               box: BoxFit.cover,
                             ),
                           ),
@@ -100,13 +101,13 @@ class _MatchDetailsState extends State<MatchDetails> {
                           children: [
                             AllText.Autotext(
                                 text: "Waabro",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
                                 color: Colors.white),
                             AllText.Autotext(
                                 text: "Monastir",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w300,
                                 color: Colors.white),
                           ],
                         ),
@@ -114,11 +115,9 @@ class _MatchDetailsState extends State<MatchDetails> {
                     ),
                     AllText.Autotext(
                         text: "VS",
-                        fontSize: 32,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 32.sp,
+                        fontWeight: FontWeight.w600,
                         color: Colors.white),
-                       
-
                     Row(
                       children: [
                         Column(
@@ -126,27 +125,26 @@ class _MatchDetailsState extends State<MatchDetails> {
                           children: [
                             AllText.Autotext(
                                 text: "Waabro",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
                                 color: Colors.white),
                             AllText.Autotext(
                                 text: "Monastir",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w300,
                                 color: Colors.white),
                           ],
                         ),
                         SizedBox(
-                          width: 8,
+                          width: 8.w,
                         ),
                         ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(30)),
+                          borderRadius: BorderRadius.all(Radius.circular(30.r)),
                           child: CahedImage(
                             img:
                                 "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
-                            height: 58,
-                            width: 58,
+                            height: 58.h,
+                            width: 58.w,
                             box: BoxFit.cover,
                           ),
                         ),
@@ -156,7 +154,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                 ),
               ),
               SizedBox(
-                height: 16,
+                height: 16.h,
               ),
               if (dateReserved) ...{
                 Container(
@@ -172,7 +170,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                           ),
                           AllText.Autotext(
                               text: "May foot land, Monastir",
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w700,
                               color: Colors.white)
                         ],
@@ -185,7 +183,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                           ),
                           AllText.Autotext(
                               text: "24 Jan 2024 10:30h ",
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w700,
                               color: Colors.white)
                         ],
@@ -196,40 +194,40 @@ class _MatchDetailsState extends State<MatchDetails> {
               } else ...{
                 GestureDetector(
                   onTap: () {
-                      AllBottomSheet().FunBottomSheet(context, selectDateBottomSheet());
+                    AllBottomSheet()
+                        .FunBottomSheet(context, selectDateBottomSheet());
                   },
                   child: Container(
-                  alignment: Alignment.center,
-                  height: 30,
-                  width: 108,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    alignment: Alignment.center,
+                    height: 30.h,
+                    width: 108.w,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    ),
+                    child: AllText.Autotext(
+                        text: "Date & Stade",
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor),
                   ),
-                  child: AllText.Autotext(
-                      text: "Date & Stade",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).primaryColor),
-                ), 
                 )
-               
               },
-              SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(top: 16),
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  margin: EdgeInsets.only(top: 16.h),
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(16),
-                          topLeft: Radius.circular(16))),
+                          topRight: Radius.circular(16.r),
+                          topLeft: Radius.circular(16.r))),
                   child: ContainedTabBarView(
                     tabBarProperties: TabBarProperties(
                       labelStyle: GoogleFonts.rubik(
-                        textStyle: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.normal),
+                        textStyle: TextStyle(
+                            fontSize: 16.sp, fontWeight: FontWeight.normal),
                       ),
                       labelColor: Theme.of(context).primaryColor,
                       unselectedLabelColor: Colors.grey,
@@ -240,9 +238,15 @@ class _MatchDetailsState extends State<MatchDetails> {
                       Text("Demandes"),
                     ],
                     views: [
-                      Info(team: widget.team,), // Make sure these widgets exist and are imported
-                      Chat(team: widget.team,),
-                      Demande(team: widget.team ,),
+                      Info(
+                        team: widget.team,
+                      ), // Make sure these widgets exist and are imported
+                      Chat(
+                        team: widget.team,
+                      ),
+                      Demande(
+                        team: widget.team,
+                      ),
                     ],
                     onChange: (index) => print('Selected index: $index'),
                   ),

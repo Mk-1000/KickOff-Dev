@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/domain/entities/Address.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
@@ -74,7 +75,7 @@ class _CreateTeamState extends State<CreateTeam>
         ),
         title: AllText.Autotext(
             text: "Constituez votre équipe",
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
             color: Theme.of(context).shadowColor),
       ),
@@ -95,7 +96,7 @@ class _CreateTeamState extends State<CreateTeam>
                                 imageUrl:
                                     'https://scontent.ftun9-1.fna.fbcdn.net/v/t39.30808-6/359720469_2280846032106939_5652556424780514616_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_ohc=_Vgx18VhCYYAX9mr0AF&_nc_ht=scontent.ftun9-1.fna&oh=00_AfA__25Mi-SIlTxreO5XsFPFE7gWYvnorMrAuPcvhQNb3A&oe=660A495E')),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       _animatedElement(
                         inputFild(
                           controller: name,
@@ -103,20 +104,20 @@ class _CreateTeamState extends State<CreateTeam>
                           size: MediaQuery.of(context).size,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24.h),
                       Column(
                         children: [
                           _animatedElement(
                               _buildCounter("Défenseur", state.defender)),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16.h),
                           _animatedElement(
                               _buildCounter("Milieu", state.midle)),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16.h),
                           _animatedElement(
                               _buildCounter("Attaquant", state.attacker)),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       _animatedElement(
                         Stade(
                           defender: state.defender,
@@ -152,7 +153,7 @@ class _CreateTeamState extends State<CreateTeam>
                               }
                             },
                             text: "Accepter",
-                            width: 120,
+                            width: 110.w,
                             outlindedbutton: false,
                           ),
                         ],
@@ -183,14 +184,14 @@ class _CreateTeamState extends State<CreateTeam>
       children: [
         AllText.Autotext(
             text: title,
-            fontSize: 16,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: Theme.of(context).shadowColor),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         CounterInput(
-          width: 111,
-          height: 38,
-          iconSize: 17,
+          width: 111.w,
+          height: 38.h,
+          iconSize: 17.sp,
           counter: counter,
           titre: title,
         ),

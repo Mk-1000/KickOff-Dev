@@ -144,30 +144,30 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
           if (_team != null)
             _team!.currentGameId == null
                 ? IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                // Navigate to players screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TeamListPage(
-                        homeTeamId: widget.teamId,
-                      )),
-                );
-              },
-            )
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      // Navigate to players screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TeamListPage(
+                                  homeTeamId: widget.teamId,
+                                )),
+                      );
+                    },
+                  )
                 : IconButton(
-              icon: Icon(Icons.stadium),
-              onPressed: () {
-                // Navigate to game details screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          GameDetailsPage(gameId: _team!.currentGameId!)),
-                );
-              },
-            ),
+                    icon: Icon(Icons.stadium),
+                    onPressed: () {
+                      // Navigate to game details screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                GameDetailsPage(gameId: _team!.currentGameId!)),
+                      );
+                    },
+                  ),
         ],
       ),
       body: _team == null
