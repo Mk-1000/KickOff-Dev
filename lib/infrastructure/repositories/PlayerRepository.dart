@@ -25,6 +25,7 @@ class PlayerRepository implements IPlayerRepository {
           });
         }
       });
+      print("hereeee");
       return players; // Return the initially loaded players
     } catch (e) {
       throw Exception('Failed to retrieve all players');

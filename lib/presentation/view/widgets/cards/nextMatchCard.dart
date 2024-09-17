@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
@@ -34,7 +36,7 @@ class _NextMatchCardState extends State<NextMatchCard>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
       vsync: this,
     );
     _fadeAnimation =
@@ -52,7 +54,7 @@ class _NextMatchCardState extends State<NextMatchCard>
       detailsVisible = !detailsVisible;
     });
     _animationController.reset();
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       if (detailsVisible) {
         _animationController.forward();
       } else {
@@ -66,11 +68,11 @@ class _NextMatchCardState extends State<NextMatchCard>
     return GestureDetector(
       onTap: toggleDetails,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        margin: const EdgeInsets.only(top: 8),
+        margin: EdgeInsets.only(top: 8.h),
         width: double.infinity,
-        height: detailsVisible ? 162 : 100,
+        height: detailsVisible ? 162.h : 100.h,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey, width: 1),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -87,7 +89,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                       Icon(Icons.place_outlined),
                       AllText.Autotext(
                         text: widget.stade,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).shadowColor,
                       ),
@@ -95,7 +97,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                   ),
                   AllText.Autotext(
                     text: widget.time,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.normal,
                     color: Colors.grey,
                   ),
@@ -108,14 +110,14 @@ class _NextMatchCardState extends State<NextMatchCard>
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                     child: CahedImage(
                       img: widget.homeImage,
-                      height: 44,
-                      width: 44,
+                      height: 50.h,
+                      width: 44.w,
                       box: BoxFit.cover,
                     ),
                   ),
                   AllText.Autotext(
                     text: widget.nameHome,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).shadowColor,
                   ),
@@ -124,7 +126,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                     children: [
                       AllText.Autotext(
                         text: "Vs",
-                        fontSize: 24,
+                        fontSize: 24.sp,
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context).primaryColor,
                       ),
@@ -133,83 +135,85 @@ class _NextMatchCardState extends State<NextMatchCard>
                   ),
                   AllText.Autotext(
                     text: widget.nameAway,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).shadowColor,
                   ),
                   ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    borderRadius: BorderRadius.all(Radius.circular(8.r)),
                     child: CahedImage(
                       img: widget.awayImage,
-                      height: 44,
-                      width: 44,
+                      height: 50.h,
+                      width: 44.w,
                       box: BoxFit.cover,
                     ),
                   ),
                 ],
               ),
-              FadeTransition(
-                opacity: _fadeAnimation,
-                child: detailsVisible
-                    ? Column(
-                        children: [
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Divider(height: 1, color: Colors.grey),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.place_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  AllText.Autotext(
-                                    text: "Direction",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.local_phone_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  AllText.Autotext(
-                                    text: "Appeler le capitaine",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.share_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  AllText.Autotext(
-                                    text: "Publier",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      )
-                    : SizedBox(),
+              Expanded(
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: detailsVisible
+                      ? Column(
+                          children: [
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Divider(height: 1.h, color: Colors.grey),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
+                                  children: [
+                                    Icon(
+                                      Icons.place_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                    AllText.Autotext(
+                                      text: "Direction",
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey,
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Icon(
+                                      Icons.local_phone_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                    AllText.Autotext(
+                                      text: "Appeler le capitaine",
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey,
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Icon(
+                                      Icons.share_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                    AllText.Autotext(
+                                      text: "Publier",
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        )
+                      : SizedBox(),
+                ),
               ),
             ],
           ),

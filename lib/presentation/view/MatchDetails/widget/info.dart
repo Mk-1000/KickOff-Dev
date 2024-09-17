@@ -90,12 +90,15 @@ class _InfoState extends State<Info> {
                             decoration: BoxDecoration(
                               color: Color(0xFFE6F3FF),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(4)),
+                                  BorderRadius.all(Radius.circular(10.r)),
                             ),
                             width: 80.w,
                             height: 32.h,
                             child: Row(children: [
-                              Icon(Icons.add),
+                              Icon(
+                                Icons.add,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               GestureDetector(
                                 onTap: () {
                                   AllBottomSheet().FunBottomSheet(

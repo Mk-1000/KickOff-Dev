@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: Themes.lightTheme,
-            home: Onbording(),
+            home: Onbording() /* TestSignInPlayer() */,
           );
         });
   }

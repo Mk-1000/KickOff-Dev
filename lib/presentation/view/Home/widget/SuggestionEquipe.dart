@@ -1,8 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:takwira/domain/entities/Player.dart';
+import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
 class SuggestionEquipe extends StatefulWidget {
-  const SuggestionEquipe({super.key});
+  Team? team;
+  Player? player;
+
+  SuggestionEquipe({super.key, this.player, this.team});
 
   @override
   State<SuggestionEquipe> createState() => _SuggestionEquipeState();
@@ -12,62 +20,40 @@ class _SuggestionEquipeState extends State<SuggestionEquipe> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 12),
-      height: 124,
-      width: 136,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey, width: 1),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            CircleAvatar(
-              // Replace with your network image or local asset
-              backgroundImage: AssetImage('path/to/your/local/image.png'),
-              backgroundColor: Colors.blue,
+      child: Stack(
+        children: [
+          Container(
+            width: 140.w,
+            height: 120.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border:
+                  Border.all(color: Theme.of(context).primaryColor, width: 6),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AllText.Autotext(
-                    text: "test1",
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).shadowColor),
-                AllText.Autotext(
-                    text: "04/05/24",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).shadowColor),
-              ],
-            )
-          ],
-        ),
-        Column(
-          children: [
-            AllText.Autotext(
-                text: "Poste : Gardien",
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).shadowColor),
-            Container(
-              height: 18,
-              width: 43,
-              decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.all(Radius.circular(4))),
-              child: AllText.Autotext(
-                  text: "Gratuite",
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white),
-            )
-          ],
-        )
-      ]),
+            child: CircleAvatar(
+              radius: 90.r,
+              backgroundImage: NetworkImage(
+                  scale: 5,
+                  'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/800px-FC_Barcelona_%28crest%29.svg.png'),
+              backgroundColor: Colors.transparent,
+            ),
+          ),
+          Positioned(
+            bottom: 10.h,
+            left: 42.w,
+            child: Container(
+                padding: EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
+                child: AllText.Autotext(
+                    text: "Gratuite",
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white)),
+          ),
+        ],
+      ),
     );
   }
 }

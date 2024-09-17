@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
@@ -26,7 +27,7 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
       children: [
         _buildAnimatedSearchBar(),
         SizedBox(
-          height: 8,
+          height: 8.h,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +49,7 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
 
   Widget _buildAnimatedSearchBar() {
     return TweenAnimationBuilder(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
       tween: Tween<double>(begin: 0, end: 1),
       builder: (context, double value, child) {

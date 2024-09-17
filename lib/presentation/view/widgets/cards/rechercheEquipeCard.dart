@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
@@ -33,17 +34,16 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 8),
-      height: 100,
+      height: 100.h,
       decoration: BoxDecoration(
         border:
-            Border.all(color: Theme.of(context).bottomAppBarColor, width: 2),
+            Border.all(color: Theme.of(context).bottomAppBarColor, width: 2.w),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: [
-          SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Container(
-            width: 65,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -51,16 +51,16 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                   borderRadius: BorderRadius.all(Radius.circular(40)),
                   child: Image.network(
                     "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
-                    height: 54,
-                    width: 54,
+                    height: 54.h,
+                    width: 54.w,
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
                   widget.team.teamName,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).shadowColor,
                   ),
@@ -69,9 +69,9 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 8),
-            width: 2,
-            height: 100,
+            margin: EdgeInsets.symmetric(horizontal: 8.h),
+            width: 2.w,
+            height: 100.h,
             color: Theme.of(context).bottomAppBarColor,
           ),
           Expanded(
@@ -81,11 +81,11 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.place_outlined, size: 16),
+                    Icon(Icons.place_outlined, size: 16.sp),
                     Text(
                       "Monastir / MAY Foot Land",
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).shadowColor,
                       ),
@@ -94,11 +94,11 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                 ),
                 Row(
                   children: [
-                    Icon(Icons.watch_later_outlined, size: 16),
+                    Icon(Icons.watch_later_outlined, size: 16.sp),
                     Text(
                       "24 Jan 2024 / 23:00 H",
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).shadowColor,
                       ),
@@ -107,11 +107,11 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                 ),
                 Row(
                   children: [
-                    Icon(Icons.directions_run, size: 16),
+                    Icon(Icons.directions_run, size: 16.sp),
                     Text(
                       widget.slot.position.name,
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).shadowColor,
                       ),
@@ -120,7 +120,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                     Text(
                       "10 TND",
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).shadowColor,
                       ),
@@ -135,14 +135,13 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                height: 47,
+                height: 47.h,
                 child: SvgPicture.asset(
                   "assets/image/reserved.svg",
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(bottom: 6, right: 6),
-                height: 25,
+                height: 25.h,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   decoration: BoxDecoration(
@@ -153,7 +152,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                             ? Theme.of(context).primaryColor
                             : Colors.white,
                       ),
-                      borderRadius: BorderRadius.circular(4)),
+                      borderRadius: BorderRadius.circular(4.r)),
                   child: OutlinedButton(
                     onPressed: () async {
                       // Print for debugging purposes
@@ -199,7 +198,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                         color: send
                             ? Theme.of(context).primaryColor
                             : Colors.white,
-                        fontSize: 11,
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
