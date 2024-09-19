@@ -38,7 +38,8 @@ class _addPlayerBottomSheetState extends State<addPlayerBottomSheet> {
 
   void _loadData() async {
     // Perform the async work here
-    addPlayerBottomSheet.addPlayerBottomController.add(LoadData());
+    addPlayerBottomSheet.addPlayerBottomController
+        .add(LoadData(teamId: widget.teamID));
     setState(() {});
   }
 

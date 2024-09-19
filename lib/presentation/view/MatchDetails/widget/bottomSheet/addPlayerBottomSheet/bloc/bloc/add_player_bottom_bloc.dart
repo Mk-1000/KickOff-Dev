@@ -4,8 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:takwira/domain/entities/Address.dart';
 import 'package:takwira/domain/entities/Player.dart';
+import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/AddressManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
+import 'package:takwira/presentation/managers/TeamManager.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/bottomSheet/addPlayerBottomSheet/addPlayerBottomSheet.dart';
 
 part 'add_player_bottom_event.dart';
@@ -26,21 +28,25 @@ class AddPlayerBottomBloc
       List<Address> playerAdress = [];
       emit(IsLoading());
       // Fetch players from the PlayerManager
-
+      Team team = await TeamManager().getTeamById(event.teamId);
+      List<Player> availablePlayers = [];
       await PlayerManager().getPlayers().then((value) async {
-        for (var element in value) {
-          var adresse =
-              await AddressManager().getAddressDetails(element.addressId!);
-          playerAdress.add(adresse);
-        }
-
+        availablePlayers = value
+            .where((player) => !team.players.contains(player.playerId))
+            .toList();
         result = value;
       });
+      for (var element in availablePlayers) {
+        var adresse =
+            await AddressManager().getAddressDetails(element.addressId!);
+        playerAdress.add(adresse);
+      }
       if (result.isNotEmpty)
         print("Players loaded: ${result.length}"); // Debug print
 
       emit(DataLoaded(
-          players: result, adresse: playerAdress)); // Emit the dataLoaded state
+          players: availablePlayers,
+          adresse: playerAdress)); // Emit the dataLoaded state
     } catch (e) {
       print("Error fetching players: $e"); // Catch any errors
       // Optionally, you could emit an error state here
