@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
+import 'package:takwira/presentation/view/KickOff/widget/blocVosEquipe/bloc/vos_equipe_bloc.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/bottomSheet/addPlayerBottomSheet/bloc/bloc/add_player_bottom_bloc.dart';
 import 'package:takwira/presentation/view/widgets/button/dropDownButton/DropDownButton.dart';
 import 'package:takwira/presentation/view/widgets/cards/invitCard.dart';
@@ -31,11 +32,14 @@ class _addPlayerBottomSheetState extends State<addPlayerBottomSheet> {
   @override
   void initState() {
     super.initState();
-    print("addPlayerBottomSheet InitState called"); // Debug print
 
-    print("Triggering loadData event"); // Debug print
+    _loadData();
+  }
+
+  void _loadData() async {
+    // Perform the async work here
     addPlayerBottomSheet.addPlayerBottomController.add(LoadData());
-    print("done"); // Debug print
+    setState(() {});
   }
 
   @override
@@ -173,28 +177,32 @@ class _addPlayerBottomSheetState extends State<addPlayerBottomSheet> {
             BlocBuilder<AddPlayerBottomBloc, AddPlayerBottomState>(
                 bloc: addPlayerBottomSheet.addPlayerBottomController,
                 builder: (context, state) {
-                  if (state is AddPlayerBottomInitial) {
+                  if (state is IsLoading) {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is DataLoaded) {
-                    List<Player> players = state.players;
-                    if (players.isEmpty) {
-                      return Center(child: Text("No players available"));
-                    }
                     return Expanded(
                       child: ListView.builder(
-                        padding: EdgeInsets.only(top: 8.h, bottom: 16.h),
-                        itemCount: players.length,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.only(
+                          top: 16.h,
+                          bottom: 16.h,
+                        ),
+                        itemCount: state.players.length,
                         itemBuilder: (context, index) {
                           //TeamManager().updateSlotStatusToPublic(teams[index].teamId,teams[index].slots[2].slotId);
-                          return InvitCard(
-                            player: Player(
-                                email: players[index].email,
-                                nickname: players[index].nickname,
-                                birthdate: players[index].birthdate,
-                                preferredPosition:
-                                    players[index].preferredPosition,
-                                phoneNumber: players[index].phoneNumber,
-                                jerseySize: players[index].jerseySize),
+                          return Padding(
+                            padding: EdgeInsets.all(5.h),
+                            child: InvitCard(
+                              player: Player(
+                                  email: state.players[index].email,
+                                  nickname: state.players[index].nickname,
+                                  birthdate: state.players[index].birthdate,
+                                  addressId: state.adresse[index].city,
+                                  preferredPosition:
+                                      state.players[index].preferredPosition,
+                                  phoneNumber: state.players[index].phoneNumber,
+                                  jerseySize: state.players[index].jerseySize),
+                            ),
                           );
                         },
                       ),

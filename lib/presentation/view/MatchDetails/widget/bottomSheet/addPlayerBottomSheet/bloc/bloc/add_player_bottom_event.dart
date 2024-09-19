@@ -4,3 +4,5 @@ part of 'add_player_bottom_bloc.dart';
 abstract class AddPlayerBottomEvent {}
 
 class LoadData extends AddPlayerBottomEvent {}
+
+class sendInvitation extends AddPlayerBottomEvent {}

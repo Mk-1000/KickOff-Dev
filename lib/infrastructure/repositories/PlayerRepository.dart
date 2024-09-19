@@ -14,19 +14,22 @@ class PlayerRepository implements IPlayerRepository {
   @override
   Future<List<Player>> getAllPlayers() async {
     try {
-      final Stream<DatabaseEvent> stream =
-          _firebaseService.getCollectionStream(_collectionPath);
-      final players = <Player>[];
-      stream.listen((event) {
-        if (event.snapshot.exists) {
-          final data = event.snapshot.value as Map<dynamic, dynamic>;
-          data.forEach((key, value) {
-            players.add(Player.fromJson(Map<String, dynamic>.from(value)));
-          });
-        }
-      });
-      print("hereeee");
-      return players; // Return the initially loaded players
+      final DatabaseReference ref =
+          _firebaseService.getCollectionReference(_collectionPath);
+      final DatabaseEvent event = await ref.once();
+
+      if (event.snapshot.exists) {
+        final List<Player> players = [];
+        final data = event.snapshot.value as Map<dynamic, dynamic>;
+
+        data.forEach((key, value) {
+          players.add(Player.fromJson(Map<String, dynamic>.from(value)));
+        });
+
+        return players;
+      } else {
+        return []; // No data found
+      }
     } catch (e) {
       throw Exception('Failed to retrieve all players');
     }

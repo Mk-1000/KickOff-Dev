@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/bottomSheet/addPlayerBottomSheet/addPlayerBottomSheet.dart';
+import 'package:takwira/presentation/view/MatchDetails/widget/bottomSheet/addPlayerBottomSheet/bloc/bloc/add_player_bottom_bloc.dart';
 import 'package:takwira/presentation/view/widgets/StadeWidget/Stade.dart';
 import 'package:takwira/presentation/view/widgets/bottomSheet/AllButtomSheet.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
@@ -103,10 +105,15 @@ class _InfoState extends State<Info> {
                                 onTap: () {
                                   AllBottomSheet().FunBottomSheet(
                                       context,
-                                      addPlayerBottomSheet(
-                                        slotID: widget.team.slots[index].slotId,
-                                        teamID: widget.team.teamId,
-                                        publique: false,
+                                      BlocProvider(
+                                        create: (context) =>
+                                            AddPlayerBottomBloc(),
+                                        child: addPlayerBottomSheet(
+                                          slotID:
+                                              widget.team.slots[index].slotId,
+                                          teamID: widget.team.teamId,
+                                          publique: false,
+                                        ),
                                       ));
                                 },
                                 child: AllText.Autotext(
