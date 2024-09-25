@@ -52,4 +52,29 @@ class AddPlayerBottomBloc
       // Optionally, you could emit an error state here
     }
   }
+
+  @override
+  void onTransition(
+      Transition<AddPlayerBottomEvent, AddPlayerBottomState> transition) {
+    // TODO: implement onTransition
+    super.onTransition(transition);
+  }
+
+  @override
+  void onChange(Change<AddPlayerBottomState> change) {
+    // TODO: implement onChange
+    super.onChange(change);
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    // TODO: implement onError
+    super.onError(error, stackTrace);
+  }
+
+  @override
+  void onEvent(AddPlayerBottomEvent event) {
+    // TODO: implement onEvent
+    super.onEvent(event);
+  }
 }
