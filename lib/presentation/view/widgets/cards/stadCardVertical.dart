@@ -76,7 +76,7 @@ class StadeCardVertical extends StatelessWidget {
                 height: 5.h,
               ),
               Container(
-                width: 175.w,
+                width: 180.w,
                 padding: EdgeInsets.only(left: 5.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -84,11 +84,12 @@ class StadeCardVertical extends StatelessWidget {
                     AllText.Autotext(
                         color: Theme.of(context).shadowColor,
                         fontSize: 16.sp,
+                      
                         fontWeight: FontWeight.w700,
                         text: 'MAY Foot Land'),
                     Spacer(),
                     Container(
-                      margin: EdgeInsets.only(left: 12),
+                   
                       alignment: Alignment.center,
                       height: 16,
                       padding: EdgeInsets.symmetric(horizontal: 8),
@@ -110,9 +111,10 @@ class StadeCardVertical extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.place_outlined, size: 16),
+                    Icon(Icons.place_outlined, size: 16.sp),
                     Text(
                       "Monastir / MAY Foot Land",
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 11.sp,
                         fontWeight: FontWeight.w400,

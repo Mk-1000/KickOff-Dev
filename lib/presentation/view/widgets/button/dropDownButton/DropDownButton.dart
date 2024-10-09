@@ -33,7 +33,7 @@ class _DropDuwnButtonState extends State<DropDuwnButton> {
         padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
-          border: Border.all(color: isFocused ? Theme.of(context).primaryColor : Theme.of(context).bottomAppBarColor, width: 1),
+          border: Border.all(color: isFocused ? Theme.of(context).primaryColor : Theme.of(context).bottomAppBarTheme.color!, width: 1),
           color: Colors.white,
         ),
         child: DropdownButtonHideUnderline(

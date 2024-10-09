@@ -25,11 +25,11 @@ class Search extends StatelessWidget {
       hintText: hint,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Theme.of(context).bottomAppBarColor),
+        borderSide: BorderSide(color: Theme.of(context).bottomAppBarTheme.color!),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Theme.of(context).bottomAppBarColor),
+        borderSide: BorderSide(color: Theme.of(context).bottomAppBarTheme.color!),
       ),
       prefixIcon: Icon(iconData),
       focusColor: Colors.black,

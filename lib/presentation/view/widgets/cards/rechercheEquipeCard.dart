@@ -37,7 +37,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
       height: 100.h,
       decoration: BoxDecoration(
         border:
-            Border.all(color: Theme.of(context).bottomAppBarColor, width: 2.w),
+            Border.all(color: Theme.of(context).bottomAppBarTheme.color!, width: 2.w),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -72,7 +72,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
             margin: EdgeInsets.symmetric(horizontal: 8.h),
             width: 2.w,
             height: 100.h,
-            color: Theme.of(context).bottomAppBarColor,
+            color: Theme.of(context).bottomAppBarTheme.color!,
           ),
           Expanded(
             child: Column(

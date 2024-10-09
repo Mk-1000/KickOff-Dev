@@ -112,7 +112,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                       img: widget.homeImage,
                       height: 50.h,
                       width: 44.w,
-                      box: BoxFit.cover,
+                      box: BoxFit.contain,
                     ),
                   ),
                   AllText.Autotext(
@@ -145,7 +145,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                       img: widget.awayImage,
                       height: 50.h,
                       width: 44.w,
-                      box: BoxFit.cover,
+                       box: BoxFit.contain,
                     ),
                   ),
                 ],

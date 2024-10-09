@@ -75,7 +75,7 @@ class _VosEquipeCardState extends State<VosEquipeCard>
       margin: EdgeInsets.only(top: 8.h),
       height: 80.h,
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).bottomAppBarColor),
+        border: Border.all(color: Theme.of(context).bottomAppBarTheme.color!),
         borderRadius: BorderRadius.circular(cornerRadius),
       ),
       child: Row(

@@ -7,7 +7,7 @@ class Themes {
       seedColor: Color(0xFF3053EC),
     ),
     primarySwatch: Colors.blue,
-    backgroundColor: Color(0xFFFFFFFF),
+  
     shadowColor: Color(0xFF090A0A),
     indicatorColor: Color(0xFF3053EC),
     primaryColor: Color(0xFF3053EC),
@@ -19,7 +19,7 @@ class Themes {
       backgroundColor: Color(0xFF3053EC),
     ),
     scaffoldBackgroundColor: Colors.white,
-    bottomAppBarColor: Color(0xFFE3E5E5),
+    bottomAppBarTheme:  BottomAppBarTheme (color:Color(0xFFE3E5E5) ) ,
     appBarTheme: AppBarTheme(
       surfaceTintColor: Colors.white,
       shadowColor: Color(0xFFE3E5E5),

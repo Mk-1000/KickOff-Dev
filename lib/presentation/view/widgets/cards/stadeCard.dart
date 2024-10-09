@@ -24,7 +24,7 @@ class StadeCard extends StatelessWidget {
           border: Border.all(
               color: borderBlue
                   ? Theme.of(context).primaryColor
-                  : Theme.of(context).bottomAppBarColor,
+                  : Theme.of(context).bottomAppBarTheme.color!,
               width: 2),
           borderRadius: BorderRadius.circular(8),
         ),
@@ -53,7 +53,7 @@ class StadeCard extends StatelessWidget {
               margin: EdgeInsets.only(right: 8),
               width: 2.w,
               height: 100.h,
-              color: Theme.of(context).bottomAppBarColor,
+              color: Theme.of(context).bottomAppBarTheme.color!,
             ),
             Expanded(
               child: Column(

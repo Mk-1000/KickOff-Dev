@@ -261,7 +261,7 @@ class Team {
     try {
       for (PositionSlot slot in slots) {
         if (slot.playerId == playerId) {
-          return slot.position.toString();
+          return slot.position.toString().split('.').last;
         }
       }
       return null;
