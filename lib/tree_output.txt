@@ -1,0 +1,235 @@
+Folder PATH listing for volume New Volume
+Volume serial number is EA8C-3BC0
+D:.
+|   firebase_options.dart
+|   main.dart
+|   tree_output.txt
+|   
++---api
++---business
+|   \---services
+|           Address_service.dart
+|           auth_service.dart
+|           chat_service.dart
+|           invitation_service.dart
+|           match_service.dart
+|           message_service.dart
+|           notification_service.dart
+|           player_service.dart
+|           stadium_service.dart
+|           team_service.dart
+|           user_service.dart
+|           
++---domain
+|   +---entities
+|   |       Address.dart
+|   |       AuthService.dart
+|   |       Chat.dart
+|   |       Invitation.dart
+|   |       Match.dart
+|   |       Message.dart
+|   |       Notification.dart
+|   |       Player.dart
+|   |       Stadium.dart
+|   |       Team.dart
+|   |       User.dart
+|   |       
+|   +---repositories
+|   |       IAddressRepository.dart
+|   |       IChatRepository.dart
+|   |       IInvitationRepository.dart
+|   |       IMatchRepository.dart
+|   |       IMessageRepository.dart
+|   |       INotificationRepository.dart
+|   |       IPlayerRepository.dart
+|   |       IStadiumRepository.dart
+|   |       ITeamRepository.dart
+|   |       IUserRepository.dart
+|   |       
+|   \---services
+|           iaddress_service.dart
+|           iauth_service.dart
+|           ichat_service.dart
+|           iinvitation_service.dart
+|           imatch_service.dart
+|           imessage_service.dart
+|           inotification_service.dart
+|           iplayer_service.dart
+|           istadium_service.dart
+|           iteam_service.dart
+|           iuser_service.dart
+|           
++---infrastructure
+|   +---firebase
+|   |       FirebaseService.dart
+|   |       
+|   +---repositories
+|   |       AddressRepository.dart
+|   |       ChatRepository.dart
+|   |       InvitationRepository.dart
+|   |       MatchRepository.dart
+|   |       MessageRepository.dart
+|   |       NotificationRepository.dart
+|   |       PlayerRepository.dart
+|   |       StadiumRepository.dart
+|   |       TeamRepository.dart
+|   |       UserRepository.dart
+|   |       
+|   \---sql
++---Managers
+|       UserManager.dart
+|       
++---presentation
+|   +---Managers
+|   |       AddressManager.dart
+|   |       PlayerManager.dart
+|   |       UserManager.dart
+|   |       
+|   +---testManager
+|   |       player_ui_test.dart
+|   |       user_ui_test.dart
+|   |       
+|   \---view
+|       |   .DS_Store
+|       |   
+|       +---Calender
+|       |       Calender.dart
+|       |       utlis.dart
+|       |       
+|       +---CreateTeam
+|       |   |   CreateTeamMain.dart
+|       |   |   
+|       |   +---bloc
+|       |   |   \---bloc
+|       |   |           team_bloc.dart
+|       |   |           team_event.dart
+|       |   |           team_state.dart
+|       |   |           
+|       |   \---widget
+|       |       |   CircleNumber.dart
+|       |       |   
+|       |       \---avatarPhoto
+|       |               AvatarCreateTeam
+|       |               
+|       +---GoogleNavBar
+|       |       Drawer.dart
+|       |       Navbar.dart
+|       |       
+|       +---Home
+|       |   |   home_page.dart
+|       |   |   
+|       |   \---widget
+|       |           HomeAppBar.dart
+|       |           nextMatch.dart
+|       |           SuggestionEquipe.dart
+|       |           SuggestionStade.dart
+|       |           
+|       +---KickOff
+|       |   |   KickoffMain.dart
+|       |   |   
+|       |   \---widget
+|       |           rechrcheEquipe.dart
+|       |           vosEquipe.dart
+|       |           
+|       +---login & sign up
+|       |   |   login.dart
+|       |   |   
+|       |   \---completeSginup
+|       |       |   completeSignup.dart
+|       |       |   
+|       |       +---bloc
+|       |       |   \---bloc
+|       |       |           complete_signup_bloc.dart
+|       |       |           complete_signup_event.dart
+|       |       |           complete_signup_state.dart
+|       |       |           
+|       |       \---widget
+|       |               postion.dart
+|       |               
+|       +---MatchDetails
+|       |   |   MatchDetail.dart
+|       |   |   
+|       |   \---widget
+|       |       |   demande.dart
+|       |       |   info.dart
+|       |       |   
+|       |       \---Chat
+|       |           |   chat.dart
+|       |           |   
+|       |           \---widget
+|       |                   message.dart
+|       |                   
+|       +---NavBar
+|       |       customnavbar.dart
+|       |       navBarMain.dart
+|       |       NavData.dart
+|       |       
+|       +---Notification
+|       |       Notification.dart
+|       |       
+|       +---Onbording
+|       |   |   Onbording.dart
+|       |   |   
+|       |   +---bloc
+|       |   |   \---bloc
+|       |   |           onbording_bloc.dart
+|       |   |           onbording_event.dart
+|       |   |           onbording_state.dart
+|       |   |           
+|       |   \---widget
+|       |       \---body
+|       |               body.dart
+|       |               
+|       +---Profile
+|       |       Profile.dart
+|       |       
+|       +---splashScreen
+|       |       splashScreen.dart
+|       |       
+|       +---StadeDetail
+|       |       StadeDetails.dart
+|       |       
+|       +---Stades
+|       |       Stade.dart
+|       |       
+|       +---themes
+|       |       themes.dart
+|       |       
+|       \---widgets
+|           +---button
+|           |   +---blueButton
+|           |   |       BlueButton.dart
+|           |   |       
+|           |   \---dropDownButton
+|           |           DropDownButton.dart
+|           |           
+|           +---cards
+|           |       demandeCard.dart
+|           |       nextMatchCard.dart
+|           |       notification.dart
+|           |       rechercheEquipeCard.dart
+|           |       stadeCard.dart
+|           |       vosEquipeCards.dart
+|           |       
+|           +---cashedImage
+|           |       cashedImage.dart
+|           |       
+|           +---CounterInput
+|           |       CounterInput.dart
+|           |       
+|           +---forms
+|           |   \---InputFild
+|           |           InputFild.dart
+|           |           search.dart
+|           |           SendMesasge.dart
+|           |           
+|           +---StadeWidget
+|           |       Stade.dart
+|           |       
+|           \---text
+|                   text.dart
+|                   
+\---utils
+        DateUtils.dart
+        IDUtils.dart
+        

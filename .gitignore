@@ -1,0 +1,37 @@
+# Miscellaneous
+*.log
+*.iml
+.DS_Store
+.idea/
+.vscode/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.flutter-plugins-dependencies
+.packages
+.pub/
+
+# iOS
+ios/Podfile.lock
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Flutter/Flutter.podspec
+
+# Android
+android/.gradle/
+android/build/
+android/local.properties
+android/app/debug.keystore
+android/app/key.properties
+
+# Build files
+/build/
+.dart_tool/
+.flutter-plugins
+.packages
+.pub-cache/
+.pub/
+
+# Environment configuration
+.env
+/.dart_tool
