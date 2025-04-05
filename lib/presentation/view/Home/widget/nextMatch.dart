@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/widgets/cards/nextMatchCard.dart';
-import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
 class NextMatch extends StatefulWidget {
@@ -23,7 +22,7 @@ class _NextMatchState extends State<NextMatch> {
             fontSize: 17.sp,
             fontWeight: FontWeight.w600,
             text: 'Prochain match'),
-        NextMatchCard(
+        const NextMatchCard(
           awayImage:
               'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/800px-FC_Barcelona_%28crest%29.svg.png',
           nameAway: 'Test1',

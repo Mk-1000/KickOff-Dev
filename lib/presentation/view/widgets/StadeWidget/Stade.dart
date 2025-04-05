@@ -39,7 +39,7 @@ class _StadeState extends State<Stade> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 15.w),
-                  child: CirculeNumber(
+                  child: const CirculeNumber(
                     number: 1,
                   ),
                 ), // gardient
@@ -73,7 +73,7 @@ class _StadeState extends State<Stade> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(left: 20),
                   height: 160.h,
                   child: Column(
                     mainAxisAlignment:

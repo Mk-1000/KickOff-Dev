@@ -4,6 +4,8 @@ import 'package:takwira/presentation/testManager/TestPlayerHomeScreen.dart';
 import 'package:takwira/presentation/testManager/TestSignUpPlayer.dart';
 
 class TestSignInPlayer extends StatefulWidget {
+  const TestSignInPlayer({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -34,14 +36,14 @@ class _LoginScreenState extends State<TestSignInPlayer> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Sign In Failed'),
+        title: const Text('Sign In Failed'),
         content: Text(message),
         actions: <Widget>[
           ElevatedButton(
             onPressed: () {
               Navigator.of(ctx).pop();
             },
-            child: Text('Okay'),
+            child: const Text('Okay'),
           ),
         ],
       ),
@@ -52,7 +54,7 @@ class _LoginScreenState extends State<TestSignInPlayer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Player Sign In'),
+        title: const Text('Player Sign In'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,25 +63,25 @@ class _LoginScreenState extends State<TestSignInPlayer> {
           children: <Widget>[
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
               keyboardType: TextInputType.emailAddress,
             ),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _signIn,
-              child: Text('Sign In'),
+              child: const Text('Sign In'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => TestSignUpPlayer()));
+                    builder: (context) => const TestSignUpPlayer()));
               },
-              child: Text('SignUp'),
+              child: const Text('SignUp'),
             ),
           ],
         ),

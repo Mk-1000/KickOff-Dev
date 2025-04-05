@@ -26,12 +26,17 @@ class AuthService implements IAuthService {
   Future<String> signInWithEmailPassword(String email, String password) async {
     email = cleanEmail(email); // Clean email before use
 
-    UserCredential userCredential = await _firebaseAuth
-        .signInWithEmailAndPassword(email: email, password: password);
-    if (userCredential.user != null) {
-      return userCredential.user!.uid;
-    } else {
-      throw Exception('Failed to get user ID');
+    try {
+      UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      if (userCredential.user != null) {
+        return userCredential.user!.uid;
+      } else {
+        return 'Erreur verifier vos informations';
+      }
+    } catch (e) {
+      return '';
     }
   }
 

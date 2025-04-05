@@ -1,37 +1,63 @@
-# Miscellaneous
-*.log
-*.iml
-.DS_Store
-.idea/
-.vscode/
-.flutter-plugins
-.flutter-plugins-dependencies
-.pub-cache/
-.flutter-plugins-dependencies
-.packages
-.pub/
-
-# iOS
-ios/Podfile.lock
-ios/Pods/
-ios/Runner.xcworkspace/
-ios/Flutter/Flutter.podspec
-
-# Android
-android/.gradle/
-android/build/
-android/local.properties
-android/app/debug.keystore
-android/app/key.properties
-
-# Build files
-/build/
+# Flutter/Dart
 .dart_tool/
 .flutter-plugins
+.flutter-plugins-dependencies
+.flutter-versions
 .packages
 .pub-cache/
 .pub/
+build/
+generated_plugin_registrant.dart
 
-# Environment configuration
-.env
-/.dart_tool
+# Web
+web/.dart_tool/
+web/main.dart.js
+web/flutter.js
+web/flutter_service_worker.js
+
+# macOS
+macos/.flutter-plugins
+macos/.flutter-plugins-dependencies
+macos/Flutter/ephemeral/
+
+# iOS
+ios/.symlinks/
+ios/Pods/
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+
+# Android
+android/.cxx/
+android/app/debug.keystore
+
+# Windows
+windows/flutter/ephemeral/
+
+# Linux
+linux/flutter/ephemeral/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# IntelliJ/Android Studio
+.idea/
+*.iml
+
+# Other
+*.lock
+*.log
+*.DS_Store
+
+# FVM
+.fvm/flutter_sdk
+.fvm/fvm_config.json
+.fvm/version
+.vscode/settings.json
+.vscode/settings.json
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-plugins

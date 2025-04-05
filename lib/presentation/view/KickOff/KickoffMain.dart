@@ -17,7 +17,7 @@ class _KickOffState extends State<KickOff> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar(),
+      appBar: const HomeAppBar(),
       floatingActionButton: _buildFloatingActionButton(),
       body: SafeArea(
         child: Container(
@@ -32,7 +32,7 @@ class _KickOffState extends State<KickOff> {
     return FloatingActionButton(
       onPressed: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => CreateTeam()),
+        MaterialPageRoute(builder: (context) => const CreateTeam()),
       ),
       child: const Icon(
         Icons.add,
@@ -55,7 +55,7 @@ class _KickOffState extends State<KickOff> {
         Text("Vos équipes"),
         Text("Recherche d'équipe"),
       ],
-      views: [
+      views: const [
         VosEquipe(),
         // Container(color: Colors.green), // Replace with actual team search view
         RechercheEquipe()

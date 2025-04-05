@@ -155,7 +155,7 @@ class _VosEquipeCardState extends State<VosEquipeCard>
                         color: Colors.grey,
                         size: 14.sp,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       AllText.Autotext(

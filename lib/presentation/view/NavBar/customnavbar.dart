@@ -5,13 +5,12 @@ import 'package:takwira/presentation/view/NavBar/NavData.dart';
 import 'package:takwira/presentation/view/NavBar/navBarMain.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
-import '../themes/themes.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
 
-  const CustomBottomNavigationBar({
+  const CustomBottomNavigationBar({super.key, 
     required this.currentIndex,
     required this.onTap,
   });
@@ -99,7 +98,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       //                                     fontSize: 10,
       //                                     fontWeight: FontWeight.w500,color: Account().darkmod ? Colors.white: Colors.black),
       type: BottomNavigationBarType.fixed, // Add this line
-      selectedItemColor: Color(0xFF6E9A10),
+      selectedItemColor: const Color(0xFF6E9A10),
       unselectedItemColor: Colors.white,
       currentIndex: widget.currentIndex,
       showSelectedLabels: true,

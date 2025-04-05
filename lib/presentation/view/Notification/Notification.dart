@@ -34,7 +34,7 @@ class _NotificationMainState extends State<NotificationMain> {
                 child: ListView.builder(
               itemCount: 10,
               itemBuilder: (context, index) {
-                return NotificationCard();
+                return const NotificationCard();
               },
             )),
           ],

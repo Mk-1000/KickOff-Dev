@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/domain/entities/Player.dart';
 import 'package:takwira/domain/entities/Team.dart';
@@ -32,7 +30,7 @@ class _SuggestionEquipeState extends State<SuggestionEquipe> {
             ),
             child: CircleAvatar(
               radius: 90.r,
-              backgroundImage: NetworkImage(
+              backgroundImage: const NetworkImage(
                   scale: 5,
                   'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/800px-FC_Barcelona_%28crest%29.svg.png'),
               backgroundColor: Colors.transparent,
@@ -42,8 +40,8 @@ class _SuggestionEquipeState extends State<SuggestionEquipe> {
             bottom: 10.h,
             left: 42.w,
             child: Container(
-                padding: EdgeInsets.all(2),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(2),
+                decoration: const BoxDecoration(
                     color: Colors.red,
                     borderRadius: BorderRadius.all(Radius.circular(4))),
                 child: AllText.Autotext(

@@ -15,6 +15,7 @@ class TeamRepository implements ITeamRepository {
   TeamRepository({FirebaseService? firebaseService})
       : _firebaseService = firebaseService ?? FirebaseService();
 
+  @override
   Stream<List<Team>> streamTeams() {
     // Return a stream of teams from the Firebase realtime database
     return _firebaseService.getCollectionStream(_collectionPath).map((event) {
@@ -86,7 +87,7 @@ class TeamRepository implements ITeamRepository {
       final List<Team> allTeams = await getAllTeams();
       return allTeams.where((team) {
         // Check if the player's ID is present in any slot
-        return team.slots!.any((slot) => slot.playerId == userId);
+        return team.slots.any((slot) => slot.playerId == userId);
       }).toList();
     } catch (e) {
       throw Exception('Failed to retrieve teams for user');
@@ -132,11 +133,11 @@ class TeamRepository implements ITeamRepository {
 
       for (var team in allTeams) {
         // Check if the team's players list contains the currentPlayerId
-        bool containsPlayer = team.players!.contains(currentPlayerId);
+        bool containsPlayer = team.players.contains(currentPlayerId);
 
         if (!containsPlayer) {
           // Add all public and available slots from the team to the list
-          publicAvailableSlots.addAll(team.slots!.where((slot) =>
+          publicAvailableSlots.addAll(team.slots.where((slot) =>
               slot.slotType == SlotType.Public &&
               slot.status == SlotStatus.Available));
         }
@@ -158,11 +159,11 @@ class TeamRepository implements ITeamRepository {
 
       for (var team in teams) {
         // Check if the team's players list contains the currentPlayerId
-        bool containsPlayer = team.players!.contains(currentPlayerId);
+        bool containsPlayer = team.players.contains(currentPlayerId);
 
         if (!containsPlayer) {
           // Add all public and available slots from the team to the list
-          publicAvailableSlots.addAll(team.slots!.where((slot) =>
+          publicAvailableSlots.addAll(team.slots.where((slot) =>
               slot.slotType == SlotType.Public &&
               slot.status == SlotStatus.Available));
         }
@@ -184,7 +185,7 @@ class TeamRepository implements ITeamRepository {
       // Filter teams that are available for a game
       List<Team> availableTeams = teams
           .where((team) =>
-              !team.players!.contains(currentPlayerId) &&
+              !team.players.contains(currentPlayerId) &&
               team.currentGameId == null)
           .toList();
 
@@ -206,7 +207,7 @@ class TeamRepository implements ITeamRepository {
 
       for (var team in teams) {
         // Check if the team's players list does not contain the currentPlayerId
-        bool containsPlayer = team.players!.contains(currentPlayerId);
+        bool containsPlayer = team.players.contains(currentPlayerId);
 
         if (!containsPlayer && team.currentGameId == null) {
           // Add the team to the list if it does not contain the player and does not have a current game

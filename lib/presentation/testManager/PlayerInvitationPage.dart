@@ -9,7 +9,7 @@ import 'package:takwira/presentation/managers/PlayerManager.dart';
 class PlayerInvitationPage extends StatefulWidget {
   final String playerId;
 
-  PlayerInvitationPage({Key? key, required this.playerId}) : super(key: key);
+  const PlayerInvitationPage({Key? key, required this.playerId}) : super(key: key);
 
   @override
   _PlayerInvitationPageState createState() => _PlayerInvitationPageState();
@@ -37,26 +37,26 @@ class _PlayerInvitationPageState extends State<PlayerInvitationPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            appBar: AppBar(title: Text('Invitations')),
-            body: Center(child: CircularProgressIndicator()),
+            appBar: AppBar(title: const Text('Invitations')),
+            body: const Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasError) {
           return Scaffold(
-            appBar: AppBar(title: Text('Invitations')),
+            appBar: AppBar(title: const Text('Invitations')),
             body: Center(child: Text('Error: ${snapshot.error}')),
           );
         } else if (!snapshot.hasData) {
           return Scaffold(
-            appBar: AppBar(title: Text('Invitations')),
-            body: Center(child: Text('Player not found')),
+            appBar: AppBar(title: const Text('Invitations')),
+            body: const Center(child: Text('Player not found')),
           );
         } else {
           return DefaultTabController(
             length: 2,
             child: Scaffold(
               appBar: AppBar(
-                title: Text('Invitations'),
-                bottom: TabBar(
+                title: const Text('Invitations'),
+                bottom: const TabBar(
                   tabs: [
                     Tab(text: 'Received'),
                     Tab(text: 'Sent'),
@@ -82,11 +82,11 @@ class _PlayerInvitationPageState extends State<PlayerInvitationPage> {
           _invitationManager.fetchReceivedInvitationsForPlayer(player.playerId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No received invitations.'));
+          return const Center(child: Text('No received invitations.'));
         } else {
           return ListView.builder(
             itemCount: snapshot.data!.length,
@@ -99,11 +99,11 @@ class _PlayerInvitationPageState extends State<PlayerInvitationPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.check),
+                      icon: const Icon(Icons.check),
                       onPressed: () => _respondToInvitation(invitation, true),
                     ),
                     IconButton(
-                      icon: Icon(Icons.close),
+                      icon: const Icon(Icons.close),
                       onPressed: () => _respondToInvitation(invitation, false),
                     ),
                   ],
@@ -121,11 +121,11 @@ class _PlayerInvitationPageState extends State<PlayerInvitationPage> {
       future: _invitationManager.fetchSentInvitationsForPlayer(player.playerId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No sent invitations.'));
+          return const Center(child: Text('No sent invitations.'));
         } else {
           return ListView.builder(
             itemCount: snapshot.data!.length,
@@ -135,7 +135,7 @@ class _PlayerInvitationPageState extends State<PlayerInvitationPage> {
                 title: Text('Team: ${invitation.teamId}'),
                 subtitle: Text('Invitation ID: ${invitation.invitationId}'),
                 trailing: IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () => _removeSentInvitation(invitation),
                 ),
               );
@@ -166,7 +166,7 @@ class _PlayerInvitationPageState extends State<PlayerInvitationPage> {
     try {
       await _invitationManager.removeInvitation(invitation.invitationId);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invitation removed')),
+        const SnackBar(content: Text('Invitation removed')),
       );
       setState(() {});
     } catch (e) {

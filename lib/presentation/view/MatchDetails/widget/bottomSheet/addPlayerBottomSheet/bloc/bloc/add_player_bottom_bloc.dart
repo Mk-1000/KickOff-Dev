@@ -8,14 +8,13 @@ import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/AddressManager.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
-import 'package:takwira/presentation/view/MatchDetails/widget/bottomSheet/addPlayerBottomSheet/addPlayerBottomSheet.dart';
 
 part 'add_player_bottom_event.dart';
 part 'add_player_bottom_state.dart';
 
 class AddPlayerBottomBloc
     extends Bloc<AddPlayerBottomEvent, AddPlayerBottomState> {
-  AddPlayerBottomBloc() : super(AddPlayerBottomInitial(players: [])) {
+  AddPlayerBottomBloc() : super(AddPlayerBottomInitial(players: const [])) {
     on<LoadData>(load);
   }
 
@@ -41,8 +40,9 @@ class AddPlayerBottomBloc
             await AddressManager().getAddressDetails(element.addressId!);
         playerAdress.add(adresse);
       }
-      if (result.isNotEmpty)
+      if (result.isNotEmpty) {
         print("Players loaded: ${result.length}"); // Debug print
+      }
 
       emit(DataLoaded(
           players: availablePlayers,

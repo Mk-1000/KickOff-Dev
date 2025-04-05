@@ -1,23 +1,21 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:takwira/domain/entities/Team.dart';
 import 'package:takwira/presentation/managers/GameManager.dart';
-import 'package:takwira/presentation/testManager/GameDetailsPage.dart';
-import 'package:takwira/presentation/view/CreateTeam/widget/CircleNumber.dart';
 import 'package:takwira/presentation/view/Extensions/widget_extensions.dart';
-import 'package:takwira/presentation/view/KickOff/widget/rechrcheEquipe.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/Chat/chat.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/bottomSheet/selectDateBottomSheet.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/demande.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/info.dart';
-import 'package:takwira/presentation/view/widgets/StadeWidget/Stade.dart';
 import 'package:takwira/presentation/view/widgets/bottomSheet/AllButtomSheet.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
+
+import '../SearchOponent/searchOponent.dart';
 
 class MatchDetails extends StatefulWidget {
   final Team team;
@@ -82,7 +80,10 @@ class _MatchDetailsState extends State<MatchDetails> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Theme.of(context).primaryColor, Color(0xFF0F297A)],
+                colors: [
+                  Theme.of(context).primaryColor,
+                  const Color(0xFF0F297A)
+                ],
               ),
             ),
             // color: Theme.of(context).primaryColor,
@@ -96,8 +97,8 @@ class _MatchDetailsState extends State<MatchDetails> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon:
-                            Icon(Icons.arrow_back_ios_new, color: Colors.white),
+                        icon: const Icon(Icons.arrow_back_ios_new,
+                            color: Colors.white),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       AllText.Autotext(
@@ -106,7 +107,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                           fontWeight: FontWeight.w700,
                           color: Colors.white),
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.settings,
                           color: Colors.white,
                         ),
@@ -138,7 +139,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 8,
                         ),
                         Column(
@@ -163,42 +164,51 @@ class _MatchDetailsState extends State<MatchDetails> {
                         fontSize: 32.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            AllText.Autotext(
-                                text: "Recherche ",
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                            AllText.Autotext(
-                                text: "d'equipe",
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        ClipRRect(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.r)),
-                            child: Container(
-                              height: 58.h,
-                              width: 58.w,
-                              color: Colors.white,
-                              child: Center(
-                                child: Icon(
-                                  CupertinoIcons.question,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 40.sp,
-                                  weight: 20.w,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchOponent()),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Column(
+                            children: [
+                              AllText.Autotext(
+                                  text: "Recherche ",
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                              AllText.Autotext(
+                                  text: "d'equipe",
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.r)),
+                              child: Container(
+                                height: 58.h,
+                                width: 58.w,
+                                color: Colors.white,
+                                child: Center(
+                                  child: Icon(
+                                    CupertinoIcons.question,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 40.sp,
+                                    weight: 20.w,
+                                  ),
                                 ),
-                              ),
-                            )).onTap(),
-                      ],
+                              )).onTap(),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -208,13 +218,13 @@ class _MatchDetailsState extends State<MatchDetails> {
               ),
               if (_selectedDate != null) ...{
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 24),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.place_outlined,
                             color: Colors.white,
                           ),
@@ -227,7 +237,7 @@ class _MatchDetailsState extends State<MatchDetails> {
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.watch_later_outlined,
                             color: Colors.white,
                           ),
@@ -250,8 +260,8 @@ class _MatchDetailsState extends State<MatchDetails> {
                         alignment: Alignment.center,
                         height: 30.h,
                         width: 130.w,
-                        padding: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.all(6),
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         ),
@@ -262,13 +272,13 @@ class _MatchDetailsState extends State<MatchDetails> {
                             color: Theme.of(context).primaryColor),
                       ).onTap(
                           onTap: (() => AllBottomSheet().FunBottomSheet(
-                              context, selectDateBottomSheet()))),
+                              context, const selectDateBottomSheet()))),
                       Container(
                         alignment: Alignment.center,
                         height: 30.h,
                         width: 150.w,
-                        padding: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.all(6),
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         ),

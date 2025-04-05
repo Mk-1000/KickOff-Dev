@@ -28,7 +28,7 @@ class PostionState extends State<Postion> {
                 color: Colors.white,
                 borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                 border: i== selected ? Border.all(
-                  color: Color(0xFF3053EC),
+                  color: const Color(0xFF3053EC),
                   width: 4,
                 ): Border.all(),
               ),

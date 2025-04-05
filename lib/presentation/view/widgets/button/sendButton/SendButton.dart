@@ -32,7 +32,7 @@ class _SendButtonState extends State<SendButton> {
                     decoration: BoxDecoration(
                       color: send ?Colors.transparent : Colors.white,
                       border: Border.all(color:send ? Colors.white:Colors.transparent),
-                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                     ),
                     child: AllText.Autotext(
                         text:  send ? "Annuler": "Envoyer",

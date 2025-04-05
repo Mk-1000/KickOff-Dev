@@ -27,16 +27,16 @@ class _ChatState extends State<Chat> {
               stream: _chatManager.getMessagesStream(widget.team.chatId!),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Error loading messages'));
+                  return const Center(child: Text('Error loading messages'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No messages'));
+                  return const Center(child: Text('No messages'));
                 } else {
                   // Reverse the messages list here
                   final messages = snapshot.data!.reversed.toList();
                   return ListView.builder(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 16),
                     reverse: true,
                     itemCount: messages.length,
                     itemBuilder: (context, index) {

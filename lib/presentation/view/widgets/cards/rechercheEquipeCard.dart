@@ -48,7 +48,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                  borderRadius: const BorderRadius.all(Radius.circular(40)),
                   child: Image.network(
                     "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
                     height: 54.h,
@@ -116,7 +116,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                         color: Theme.of(context).shadowColor,
                       ),
                     ),
-                    Icon(Icons.attach_money, size: 16),
+                    const Icon(Icons.attach_money, size: 16),
                     Text(
                       "10 TND",
                       style: TextStyle(
@@ -134,13 +134,13 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
+              SizedBox(
                 height: 47.h,
                 child: SvgPicture.asset(
                   "assets/image/reserved.svg",
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 25.h,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
@@ -156,12 +156,7 @@ class _RechrcheEquipeState extends State<RechrcheEquipe> {
                   child: OutlinedButton(
                     onPressed: () async {
                       // Print for debugging purposes
-                      print("this is the player id: " +
-                          Player.currentPlayer!.playerId +
-                          "this is the team id:" +
-                          widget.team.teamId +
-                          "this is the slot id: " +
-                          widget.slot.slotId);
+                      print("this is the player id: ${Player.currentPlayer!.playerId}this is the team id:${widget.team.teamId}this is the slot id: ${widget.slot.slotId}");
 
                       // Ensure the widget is still mounted before proceeding
                       if (!mounted) return;

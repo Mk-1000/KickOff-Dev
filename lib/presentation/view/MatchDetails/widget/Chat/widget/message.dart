@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
@@ -17,19 +16,19 @@ class MessageUi extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(top: 12),
+      margin: const EdgeInsets.only(top: 12),
       child: Row(
         mainAxisAlignment: me ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (me) ...{
             Container(
-              padding: EdgeInsets.all(8),
-              margin: EdgeInsets.only(top: 4),
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.only(top: 4),
               decoration: BoxDecoration(
-                  color: Color(0xFFE6F3FF),
+                  color: const Color(0xFFE6F3FF),
                   border: Border.all(color: Theme.of(context).primaryColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       bottomRight: Radius.circular(12),
                       bottomLeft: Radius.circular(12),
                       topLeft: Radius.circular(12))),
@@ -45,11 +44,11 @@ class MessageUi extends StatelessWidget {
             )
           } else ...{
             Container(
-              margin: EdgeInsets.only(right: 8),
+              margin: const EdgeInsets.only(right: 8),
               height: 48,
               width: 48,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(26)),
+              child: const ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(26)),
                 child: CahedImage(
                   img:
                       "https://www.francetvinfo.fr/pictures/tBur4XyZx1u4wpxdnDYs39PmEyg/0x223:5070x3072/2656x1494/filters:format(avif):quality(50)/2022/11/09/636bcaaf33314_066-dppi-40922040-014.jpg",
@@ -69,12 +68,12 @@ class MessageUi extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     color: Theme.of(context).shadowColor),
                 Container(
-                  padding: EdgeInsets.all(8),
-                  margin: EdgeInsets.only(top: 4),
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.only(top: 4),
                   decoration: BoxDecoration(
                       border: Border.all(
                           color: Theme.of(context).bottomAppBarTheme.color!),
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(12),
                           bottomRight: Radius.circular(12),
                           bottomLeft: Radius.circular(12))),

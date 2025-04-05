@@ -26,7 +26,7 @@ class DemandeCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Hero(
-              tag: "id_" + id.toString(),
+              tag: "id_$id",
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(26)),
                 child: CahedImage(
@@ -92,7 +92,7 @@ class DemandeCard extends StatelessWidget {
                           color: Colors.white),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 6),
+                      margin: const EdgeInsets.only(left: 6),
                       child: AllText.Autotext(
                           text: place,
                           fontSize: 14,
@@ -123,12 +123,12 @@ class DemandeCard extends StatelessWidget {
               width: 32,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.red),
-                borderRadius: BorderRadius.all(Radius.circular(
+                borderRadius: const BorderRadius.all(Radius.circular(
                         4.0) //                 <--- border radius here
                     ),
               ),
               // close
-              child: Icon(
+              child: const Icon(
                 Icons.close,
                 color: Colors.red,
               ),
@@ -138,7 +138,7 @@ class DemandeCard extends StatelessWidget {
               width: 32,
               decoration: BoxDecoration(
                 border: Border.all(color: Theme.of(context).primaryColor),
-                borderRadius: BorderRadius.all(Radius.circular(
+                borderRadius: const BorderRadius.all(Radius.circular(
                         4.0) //                 <--- border radius here
                     ),
               ),

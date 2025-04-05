@@ -1,11 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:takwira/presentation/view/Onbording/bloc/bloc/onbording_bloc.dart';
 import 'package:takwira/presentation/view/Onbording/widget/body/body.dart';
+import 'package:takwira/presentation/view/login%20&%20sign%20up/login.dart';
 
 class Onbording extends StatefulWidget {
   const Onbording({super.key});
@@ -43,7 +42,7 @@ class OnbordingStat extends State<Onbording> with TickerProviderStateMixin {
               _controller.reset();
               _controller.forward();
               return Container(
-                margin: EdgeInsets.only(left: 24, right: 24),
+                margin: const EdgeInsets.only(left: 24, right: 24),
                 child: Column(
                   // crossAxisAlignment: CrossAxisAlignment.s,
                   children: [
@@ -58,21 +57,25 @@ class OnbordingStat extends State<Onbording> with TickerProviderStateMixin {
                             textAlign: TextAlign.center,
                             'KickOff',
                             style: GoogleFonts.rubik(
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 32,
                                   fontWeight: FontWeight.w700),
                             ),
                           ),
                         ),
-                        AutoSizeText(
-                          textAlign: TextAlign.center,
-                          'Passer',
-                          style: GoogleFonts.rubik(
-                            textStyle: TextStyle(
-                                color: Color(0xFF6D7289),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                        InkWell(
+                          onTap: () => Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => const Login())),
+                          child: AutoSizeText(
+                            textAlign: TextAlign.center,
+                            'Passer',
+                            style: GoogleFonts.rubik(
+                              textStyle: const TextStyle(
+                                  color: Color(0xFF6D7289),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
                           ),
                         ),
                       ],
@@ -90,7 +93,7 @@ class OnbordingStat extends State<Onbording> with TickerProviderStateMixin {
               );
             }
             return Container(
-              margin: EdgeInsets.only(left: 24, right: 24),
+              margin: const EdgeInsets.only(left: 24, right: 24),
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.s,
                 children: [
@@ -105,7 +108,7 @@ class OnbordingStat extends State<Onbording> with TickerProviderStateMixin {
                           textAlign: TextAlign.center,
                           'Kawer',
                           style: GoogleFonts.rubik(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 32,
                                 fontWeight: FontWeight.w700),
@@ -116,7 +119,7 @@ class OnbordingStat extends State<Onbording> with TickerProviderStateMixin {
                         textAlign: TextAlign.center,
                         'Passer',
                         style: GoogleFonts.rubik(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               color: Color(0xFF6D7289),
                               fontSize: 16,
                               fontWeight: FontWeight.w400),
@@ -124,7 +127,7 @@ class OnbordingStat extends State<Onbording> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  Body(
+                  const Body(
                     img: 'assets/image/onbording1.png',
                     text:
                         'Kawer est la première application pour gérer votre équipe et réserver vos places.',

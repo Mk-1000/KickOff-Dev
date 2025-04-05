@@ -33,7 +33,7 @@ class _VsviewState extends State<Vsview> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Theme.of(context).primaryColor, Color(0xFF0F297A)],
+                colors: [Theme.of(context).primaryColor, const Color(0xFF0F297A)],
               ),
             ),
             // color: Theme.of(context).primaryColor,
@@ -41,14 +41,14 @@ class _VsviewState extends State<Vsview> {
           Column(
             children: [
               Container(
-                  margin: EdgeInsets.only(top: 46),
+                  margin: const EdgeInsets.only(top: 46),
                   // margin: EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
                         icon:
-                            Icon(Icons.arrow_back_ios_new, color: Colors.white),
+                            const Icon(Icons.arrow_back_ios_new, color: Colors.white),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       AllText.Autotext(
@@ -56,21 +56,21 @@ class _VsviewState extends State<Vsview> {
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: Colors.white),
-                      SizedBox(width: 30,)
+                      const SizedBox(width: 30,)
                     ],
                   )),
               Container(
-                margin: EdgeInsets.only(top: 8,right: 24,left: 24),
+                margin: const EdgeInsets.only(top: 8,right: 24,left: 24),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        Hero(
+                        const Hero(
                           tag: "team_0",
                           child: ClipRRect(
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(30)),
+                                BorderRadius.all(Radius.circular(30)),
                             child: CahedImage(
                               img:
                                   "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
@@ -80,7 +80,7 @@ class _VsviewState extends State<Vsview> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 8,
                         ),
                         Column(
@@ -97,7 +97,7 @@ class _VsviewState extends State<Vsview> {
                       ],
                     ),
                 
-                    SendButton(invit: true,),
+                    const SendButton(invit: true,),
                   ],
                 ),
               ),
@@ -105,17 +105,17 @@ class _VsviewState extends State<Vsview> {
                
            
                
-                  SizedBox(
+                  const SizedBox(
                 height: 16,
               ),
         Container(
-                  margin: EdgeInsets.symmetric(horizontal: 24),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.place_outlined,
                             color: Colors.white,
                           ),
@@ -128,7 +128,7 @@ class _VsviewState extends State<Vsview> {
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.watch_later_outlined,
                             color: Colors.white,
                           ),
@@ -145,21 +145,21 @@ class _VsviewState extends State<Vsview> {
               // SizedBox(height: 8),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(top: 16),
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(16),
                           topLeft: Radius.circular(16))),
                   child: Column(children: [
-                    Stade(defender: 1, mid: 1, attack: 1,),
+                    const Stade(defender: 1, mid: 1, attack: 1,),
                      Container(
-                  padding: EdgeInsets.symmetric(vertical: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 80,
                         child: AllText.Autotext(
                             text: "Joueur",
@@ -167,7 +167,7 @@ class _VsviewState extends State<Vsview> {
                             fontWeight: FontWeight.w700,
                             color: Theme.of(context).primaryColor),
                       ),
-                      Container(
+                      SizedBox(
                           width: 80,
                         child: AllText.Autotext(
                             text: "Position",
@@ -175,7 +175,7 @@ class _VsviewState extends State<Vsview> {
                             fontWeight: FontWeight.w700,
                             color: Theme.of(context).primaryColor),
                       ),
-                      Container(
+                      SizedBox(
                           width: 80,
                         child: AllText.Autotext(
                             text: "Numéro",
@@ -189,17 +189,17 @@ class _VsviewState extends State<Vsview> {
                 ),
                        Expanded(
                     child: ListView.builder(
-                  padding: EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.only(top: 8),
                   itemCount: 6,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin: EdgeInsets.symmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Row(children: [
-   Icon(Icons.block_rounded,color: Colors.grey,),
-   SizedBox(width: 8,),
+   const Icon(Icons.block_rounded,color: Colors.grey,),
+   const SizedBox(width: 8,),
                            AllText.Autotext(
                                   text: "Aucun",
                                   fontSize: 14,
@@ -208,7 +208,7 @@ class _VsviewState extends State<Vsview> {
                           ],),
                        
                          
-                          Container(
+                          SizedBox(
                               width: 80,
                             child: AllText.Autotext(
                                 text: "Gardien",
@@ -216,7 +216,7 @@ class _VsviewState extends State<Vsview> {
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey),
                           ),
-                          Container(
+                          SizedBox(
                               width: 80,
                             child: AllText.Autotext(
                                 text: "1",

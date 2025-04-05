@@ -9,7 +9,7 @@ import '../../domain/entities/Player.dart';
 class ChatPage extends StatefulWidget {
   final String chatId;
 
-  ChatPage({Key? key, required this.chatId}) : super(key: key);
+  const ChatPage({Key? key, required this.chatId}) : super(key: key);
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -50,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
       print('Message sent: $messageText');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to send message')),
+        const SnackBar(content: Text('Failed to send message')),
       );
       print('Failed to send message: $e');
     }
@@ -77,13 +77,13 @@ class _ChatPageState extends State<ChatPage> {
             builder: (context, snapshot) {
               print('Stream snapshot state: ${snapshot.connectionState}');
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 print('Stream snapshot error: ${snapshot.error}');
-                return Center(child: Text('Error loading messages'));
+                return const Center(child: Text('Error loading messages'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 print('Stream snapshot has no data');
-                return Center(child: Text('No messages'));
+                return const Center(child: Text('No messages'));
               } else {
                 final messages = snapshot.data!;
                 print('Messages loaded: ${messages.length}');
@@ -106,14 +106,14 @@ class _ChatPageState extends State<ChatPage> {
               Expanded(
                 child: TextField(
                   controller: _messageController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Type your message...',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.send),
+                icon: const Icon(Icons.send),
                 onPressed: () {
                   String messageText = _messageController.text.trim();
                   if (messageText.isNotEmpty) {
@@ -143,7 +143,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildLoadingUI() {
-    return Center(
+    return const Center(
       child: CircularProgressIndicator(),
     );
   }

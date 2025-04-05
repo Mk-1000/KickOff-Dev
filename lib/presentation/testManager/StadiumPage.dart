@@ -12,6 +12,8 @@ import '../../domain/repositories/IImageRepository.dart';
 import '../../utils/TunisiaLocations.dart';
 
 class AddStadiumScreen extends StatefulWidget {
+  const AddStadiumScreen({super.key});
+
   @override
   _AddStadiumScreenState createState() => _AddStadiumScreenState();
 }
@@ -24,7 +26,7 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
   TimeOfDay? _startAt;
   TimeOfDay? _closeAt;
   File? selectedMainImage;
-  List<Field> _fields = [];
+  final List<Field> _fields = [];
   Stadium? currentStadium; // Updated to use Stadium type directly
   final ImageService _imageService =
       ImageService(); // Your image service implementation
@@ -75,12 +77,10 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
   }
 
   Future<String?> _uploadImageAndSetUrl(File image, String path) async {
-    if (image != null) {
-      String imageUrl = await _imageService.uploadImageWithType(
-          image, UploadType.Stadium, path);
-      return imageUrl;
-    }
-    return null;
+    String imageUrl = await _imageService.uploadImageWithType(
+        image, UploadType.Stadium, path);
+    return imageUrl;
+      return null;
   }
 
   Future<List<String>> _uploadImagesAndSetUrls(
@@ -153,13 +153,13 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
       }
 
       // Simulate API call to save stadium
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
 
       currentStadium?.fields = _fields;
       _stadiumService.createStadium(currentStadium!);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Stadium added successfully!')),
+        const SnackBar(content: Text('Stadium added successfully!')),
       );
 
       _formKey.currentState?.reset();
@@ -191,7 +191,7 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Stadium'),
+        title: const Text('Add Stadium'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -201,7 +201,7 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Stadium Name'),
+                decoration: const InputDecoration(labelText: 'Stadium Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the stadium name';
@@ -209,7 +209,7 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               GestureDetector(
                 onTap: _selectImageForMain,
                 child: Container(
@@ -222,13 +222,13 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                           selectedMainImage!,
                           fit: BoxFit.cover,
                         )
-                      : Center(child: Icon(Icons.image)),
+                      : const Center(child: Icon(Icons.image)),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _phoneNumberController,
-                decoration: InputDecoration(labelText: 'Phone Number'),
+                decoration: const InputDecoration(labelText: 'Phone Number'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the phone number';
@@ -236,11 +236,11 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _servicesController,
                 decoration:
-                    InputDecoration(labelText: 'Services (comma-separated)'),
+                    const InputDecoration(labelText: 'Services (comma-separated)'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the services';
@@ -248,13 +248,13 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   DropdownButton<String>(
-                    hint: Text("Select State"),
+                    hint: const Text("Select State"),
                     value: selectedState,
                     items: TunisiaLocations.states.map((String state) {
                       return DropdownMenuItem<String>(
@@ -273,7 +273,7 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   ),
                   if (cities.isNotEmpty)
                     DropdownButton<String>(
-                      hint: Text("Select City"),
+                      hint: const Text("Select City"),
                       value: selectedCity,
                       items: cities.map((String city) {
                         return DropdownMenuItem<String>(
@@ -289,10 +289,10 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                     ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _mapLink,
-                decoration: InputDecoration(labelText: 'Map Link'),
+                decoration: const InputDecoration(labelText: 'Map Link'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the map link';
@@ -300,10 +300,10 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _street,
-                decoration: InputDecoration(labelText: 'Street'),
+                decoration: const InputDecoration(labelText: 'Street'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the street';
@@ -311,10 +311,10 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _postalCode,
-                decoration: InputDecoration(labelText: 'Postal Code'),
+                decoration: const InputDecoration(labelText: 'Postal Code'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the postal code';
@@ -322,10 +322,10 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _latitude,
-                decoration: InputDecoration(labelText: 'Latitude'),
+                decoration: const InputDecoration(labelText: 'Latitude'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the latitude';
@@ -333,10 +333,10 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _longitude,
-                decoration: InputDecoration(labelText: 'Longitude'),
+                decoration: const InputDecoration(labelText: 'Longitude'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the longitude';
@@ -344,12 +344,12 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ListTile(
                 title: Text(_startAt == null
                     ? 'Select Start Time'
                     : 'Start Time: ${_startAt!.format(context)}'),
-                trailing: Icon(Icons.access_time),
+                trailing: const Icon(Icons.access_time),
                 onTap: () => _pickTime(
                   context,
                   _startAt ?? TimeOfDay.now(),
@@ -360,12 +360,12 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ListTile(
                 title: Text(_closeAt == null
                     ? 'Select Close Time'
                     : 'Close Time: ${_closeAt!.format(context)}'),
-                trailing: Icon(Icons.access_time),
+                trailing: const Icon(Icons.access_time),
                 onTap: () => _pickTime(
                   context,
                   _closeAt ?? TimeOfDay.now(),
@@ -376,10 +376,10 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: _fields.length,
                 itemBuilder: (context, index) {
                   return Card(
@@ -388,29 +388,29 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                       child: Column(
                         children: [
                           Text('Field ${index + 1}'),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           TextFormField(
-                            decoration: InputDecoration(labelText: 'Capacity'),
+                            decoration: const InputDecoration(labelText: 'Capacity'),
                             keyboardType: TextInputType.number,
                             onChanged: (value) {
                               _fields[index].capacity = int.parse(value);
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           TextFormField(
                             decoration:
-                                InputDecoration(labelText: 'Match Price'),
+                                const InputDecoration(labelText: 'Match Price'),
                             keyboardType: TextInputType.number,
                             onChanged: (value) {
                               _fields[index].matchPrice = double.parse(value);
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           ElevatedButton(
                             onPressed: () => _selectImageForField(index),
-                            child: Text('Select Field Images'),
+                            child: const Text('Select Field Images'),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           ListView.builder(
                             shrinkWrap: true,
                             itemCount: _fields[index].images.length,
@@ -421,10 +421,10 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                               );
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           ElevatedButton(
                             onPressed: () => _removeField(index),
-                            child: Text('Remove Field'),
+                            child: const Text('Remove Field'),
                           ),
                         ],
                       ),
@@ -432,15 +432,15 @@ class _AddStadiumScreenState extends State<AddStadiumScreen> {
                   );
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _addNewField,
-                child: Text('Add New Field'),
+                child: const Text('Add New Field'),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
             ],
           ),

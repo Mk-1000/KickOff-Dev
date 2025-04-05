@@ -1,11 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:scroll_date_picker/scroll_date_picker.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:takwira/presentation/managers/AddressManager.dart';
 
 import '../../../../domain/entities/Player.dart';
 
@@ -15,13 +9,13 @@ class InvitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: ScreenUtil.defaultSize.height * 0.12,
       child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
         Container(
           width: 60.w,
           height: 60.h,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
                   "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector.png"),
@@ -32,7 +26,7 @@ class InvitCard extends StatelessWidget {
         SizedBox(
           width: 5.w,
         ),
-        Container(
+        SizedBox(
             width: ScreenUtil.defaultSize.width * 0.25,
             child: Text(
               overflow: TextOverflow.clip,
@@ -92,7 +86,7 @@ class InvitCard extends StatelessWidget {
                 ),
               ),
             ]),
-        Spacer(),
+        const Spacer(),
         Checkbox(value: true, onChanged: ((value) {}))
       ]),
     );

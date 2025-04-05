@@ -24,7 +24,7 @@ class _LogoAnimationState extends State<LogoAnimation> {
   }
   void _playVideo() async {
     _controller.play();
-    await Future.delayed(Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 4));
   }
 
   @override

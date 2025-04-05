@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/domain/entities/Player.dart';
-import 'package:takwira/domain/entities/PositionSlot.dart';
 import 'package:takwira/presentation/managers/TeamManager.dart';
-import 'package:takwira/presentation/view/KickOff/widget/blocVosEquipe/bloc/vos_equipe_bloc.dart';
 import 'package:takwira/presentation/view/MatchDetails/widget/bottomSheet/addPlayerBottomSheet/bloc/bloc/add_player_bottom_bloc.dart';
 import 'package:takwira/presentation/view/widgets/button/dropDownButton/DropDownButton.dart';
 import 'package:takwira/presentation/view/widgets/cards/invitCard.dart';
@@ -45,7 +43,7 @@ class _addPlayerBottomSheetState extends State<addPlayerBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildAnimatedSearchBar() {
+    Widget buildAnimatedSearchBar() {
       return TweenAnimationBuilder(
         duration: const Duration(milliseconds: 600),
         curve: Curves.easeOut,
@@ -146,7 +144,7 @@ class _addPlayerBottomSheetState extends State<addPlayerBottomSheet> {
                     })
               ],
             ),
-            _buildAnimatedSearchBar(),
+            buildAnimatedSearchBar(),
             SizedBox(
               height: 12.h,
             ),
@@ -179,7 +177,7 @@ class _addPlayerBottomSheetState extends State<addPlayerBottomSheet> {
                 bloc: addPlayerBottomSheet.addPlayerBottomController,
                 builder: (context, state) {
                   if (state is IsLoading) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (state is DataLoaded) {
                     return Expanded(
                       child: ListView.builder(
@@ -209,7 +207,7 @@ class _addPlayerBottomSheetState extends State<addPlayerBottomSheet> {
                       ),
                     );
                   } else {
-                    return Center(child: Text("Something went wrong!"));
+                    return const Center(child: Text("Something went wrong!"));
                   }
                 })
           ],

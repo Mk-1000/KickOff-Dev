@@ -9,6 +9,8 @@ import '../../domain/entities/Address.dart';
 import '../../utils/TunisiaLocations.dart';
 
 class TestSignUpPlayer extends StatefulWidget {
+  const TestSignUpPlayer({super.key});
+
   @override
   _SignUpPlayerPageState createState() => _SignUpPlayerPageState();
 }
@@ -39,7 +41,7 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up Player"),
+        title: const Text("Sign Up Player"),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -69,7 +71,7 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   DropdownButton<String>(
-                    hint: Text("Select State"),
+                    hint: const Text("Select State"),
                     value: selectedState,
                     items: TunisiaLocations.states.map((String state) {
                       return DropdownMenuItem<String>(
@@ -88,7 +90,7 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
                   ),
                   if (cities.isNotEmpty)
                     DropdownButton<String>(
-                      hint: Text("Select City"),
+                      hint: const Text("Select City"),
                       value: selectedCity,
                       items: cities.map((String city) {
                         return DropdownMenuItem<String>(
@@ -132,18 +134,18 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: _trySubmitForm,
-                  child: Text('Sign Up'),
+                  child: const Text('Sign Up'),
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => TestSignInPlayer(),
+                      builder: (context) => const TestSignInPlayer(),
                     ),
                   );
                 },
-                child: Text('Sign In Page'),
+                child: const Text('Sign In Page'),
               ),
             ],
           ),
@@ -165,7 +167,7 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
         obscureText: obscureText,
         validator: validator ??
@@ -183,7 +185,7 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: DropdownButtonFormField<Position>(
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: 'Preferred Position',
           border: OutlineInputBorder(),
         ),
@@ -217,7 +219,7 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
             DateFormat('yyyy-MM-dd').parseStrict(_birthdateController.text);
       } catch (e) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Invalid birthdate format')));
+            .showSnackBar(const SnackBar(content: Text('Invalid birthdate format')));
         return;
       }
 
@@ -242,7 +244,7 @@ class _SignUpPlayerPageState extends State<TestSignUpPlayer> {
           .signUpPlayer(
               _emailController.text, _passwordController.text, address, player)
           .then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Player Registered Successfully! Go Sign IN')));
         Navigator.pop(context); // Navigate back to the previous screen
       }).catchError((error) {

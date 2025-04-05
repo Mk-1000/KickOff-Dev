@@ -11,14 +11,14 @@ class SuggestionStade extends StatelessWidget {
       children: [
         Container(
           // color: Colors.amber,
-          margin: EdgeInsets.only(right: 18),
+          margin: const EdgeInsets.only(right: 18),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  const ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
                     child: CahedImage(
                       img:
                           "https://media.istockphoto.com/id/1502846052/fr/photo/terrain-textur%C3%A9-de-jeu-de-football-avec-le-brouillard-de-n%C3%A9on-centre-milieu-de-terrain.jpg?s=1024x1024&w=is&k=20&c=BRsvbxYMbiJrYSVxlwYnWVeiHqiRN5FpQTRkJdHt4Oc=",
@@ -35,7 +35,7 @@ class SuggestionStade extends StatelessWidget {
                       // padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       height: 30,
                       width: 55,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius:
                             BorderRadius.only(bottomLeft: Radius.circular(20)),
@@ -43,8 +43,8 @@ class SuggestionStade extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Icon(Icons.star, color: Colors.amber),
-                          SizedBox(width: 4),
+                          const Icon(Icons.star, color: Colors.amber),
+                          const SizedBox(width: 4),
                           Text(
                             '4.8',
                             style: TextStyle(
@@ -58,7 +58,7 @@ class SuggestionStade extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               AllText.Autotext(

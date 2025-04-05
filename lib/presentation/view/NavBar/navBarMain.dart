@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/NavBar/NavData.dart';
 
-import '../widgets/cashedImage/cashedImage.dart';
 import 'customnavbar.dart';
 
 class NavBarMain extends StatefulWidget {
@@ -36,7 +33,7 @@ class NavBarMainState extends State<NavBarMain> {
         children: [
           Row(
             children: [
-              Container(
+              SizedBox(
                 height: 40,
                 width: 40,
                 child: Image.asset(
@@ -58,7 +55,7 @@ class NavBarMainState extends State<NavBarMain> {
             ],
           ),
           Container(
-              child: Icon(
+              child: const Icon(
             Icons.arrow_forward_ios,
             size: 15,
             color: Colors.black,

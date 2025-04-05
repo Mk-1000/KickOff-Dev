@@ -30,8 +30,8 @@ class ImageService implements IImageService {
 
   @override
   Future<File?> selectImage() async {
-    ImagePicker _picker = ImagePicker();
-    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       return File(image.path);
     }

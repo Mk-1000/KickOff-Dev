@@ -14,7 +14,12 @@ class StadeCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const StadeDetails()),
+          MaterialPageRoute(
+            builder: (context) => const StadeDetails(
+              showReservationButton: true,
+              isReserved: true,
+            ),
+          ),
         );
       },
       child: Container(
@@ -31,12 +36,12 @@ class StadeCard extends StatelessWidget {
         child: Row(
           children: [
             Hero(
-              tag: "stade" + index.toString(),
-              child: Container(
+              tag: "stade$index",
+              child: SizedBox(
                 height: 82.h,
                 width: 88.w,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(6),
                     bottomLeft: Radius.circular(6),
                   ),
@@ -50,7 +55,7 @@ class StadeCard extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(right: 8),
+              margin: const EdgeInsets.only(right: 8),
               width: 2.w,
               height: 100.h,
               color: Theme.of(context).bottomAppBarTheme.color!,
@@ -67,7 +72,7 @@ class StadeCard extends StatelessWidget {
                       text: 'MAY Foot Land'),
                   Row(
                     children: [
-                      Icon(Icons.place_outlined, size: 16),
+                      const Icon(Icons.place_outlined, size: 16),
                       Text(
                         "Monastir / MAY Foot Land",
                         style: TextStyle(
@@ -80,7 +85,7 @@ class StadeCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.watch_later_outlined, size: 16),
+                      const Icon(Icons.watch_later_outlined, size: 16),
                       Text(
                         "24 Jan 2024 / 23:00 H",
                         style: TextStyle(
@@ -90,7 +95,7 @@ class StadeCard extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 12),
+                        margin: const EdgeInsets.only(left: 12),
                         alignment: Alignment.center,
                         height: 16.sp,
                         padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -113,6 +118,5 @@ class StadeCard extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

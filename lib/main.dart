@@ -1,9 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:takwira/presentation/testManager/TestSignInPlayer.dart';
-import 'package:takwira/presentation/view/Onbording/Onbording.dart';
 import 'package:takwira/presentation/view/themes/themes.dart';
+import 'package:takwira/presentation/view/routes.dart';
 
 import 'firebase_options.dart';
 
@@ -31,7 +30,8 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: Themes.lightTheme,
-            home: Onbording() /* TestSignInPlayer() */,
+            initialRoute: Routes.home,
+            routes: Routes.getRoutes(),
           );
         });
   }

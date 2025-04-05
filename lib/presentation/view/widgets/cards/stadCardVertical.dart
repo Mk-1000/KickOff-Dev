@@ -14,9 +14,13 @@ class StadeCardVertical extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const StadeDetails()),
-        );
+            context,
+            MaterialPageRoute(
+              builder: (context) => const StadeDetails(
+                showReservationButton: true,
+                isReserved: true,
+              ),
+            ));
       },
       child: Row(
         children: [
@@ -84,12 +88,10 @@ class StadeCardVertical extends StatelessWidget {
                     AllText.Autotext(
                         color: Theme.of(context).shadowColor,
                         fontSize: 16.sp,
-                      
                         fontWeight: FontWeight.w700,
                         text: 'MAY Foot Land'),
                     Spacer(),
                     Container(
-                   
                       alignment: Alignment.center,
                       height: 16,
                       padding: EdgeInsets.symmetric(horizontal: 8),

@@ -1,7 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:takwira/presentation/view/Onbording/Onbording.dart';
 import 'package:takwira/presentation/view/Onbording/bloc/bloc/onbording_bloc.dart';
@@ -25,7 +23,7 @@ class Body extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 26),
+          margin: const EdgeInsets.only(top: 26),
           child: Image.asset(
             img,
             height: 287,
@@ -33,12 +31,12 @@ class Body extends StatelessWidget {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 32),
+          margin: const EdgeInsets.only(top: 32),
           child: AutoSizeText(
             textAlign: TextAlign.center,
             title,
             style: GoogleFonts.rubik(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.w700),
@@ -46,12 +44,12 @@ class Body extends StatelessWidget {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 16),
           child: AutoSizeText(
             textAlign: TextAlign.center,
             text,
             style: GoogleFonts.rubik(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   height: 1.4,
                   color: Color(0xFF6D7289),
                   fontSize: 16,
@@ -65,10 +63,10 @@ class Body extends StatelessWidget {
             for (int i = 0; i < 4; i++) ...{
               Container(
                 decoration: BoxDecoration(
-                  color: postion == i ? Color(0xFF3053EC) : Color(0xFFD9D9D9),
+                  color: postion == i ? const Color(0xFF3053EC) : const Color(0xFFD9D9D9),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                margin: EdgeInsets.only(left: 4, right: 4, top: 24),
+                margin: const EdgeInsets.only(left: 4, right: 4, top: 24),
                 height: 10,
                 width: 10,
               ),
@@ -90,7 +88,7 @@ class Body extends StatelessWidget {
                     } else {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Login()),
+                        MaterialPageRoute(builder: (context) => const Login()),
                       );
                     }
                   },
@@ -99,7 +97,7 @@ class Body extends StatelessWidget {
                     width: 115,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Color(0xFF3053EC),
+                      color: const Color(0xFF3053EC),
                       borderRadius: BorderRadius.circular(48),
                     ),
                     child: AutoSizeText(
@@ -107,7 +105,7 @@ class Body extends StatelessWidget {
                       "Suivant",
                       style: GoogleFonts.rubik(
                           textStyle:
-                              TextStyle(height: 1.4, color: Colors.white),
+                              const TextStyle(height: 1.4, color: Colors.white),
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
@@ -124,7 +122,7 @@ class Body extends StatelessWidget {
                     width: 115,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Color(0xFF3053EC)),
+                      border: Border.all(width: 1, color: const Color(0xFF3053EC)),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(48),
                     ),
@@ -133,7 +131,7 @@ class Body extends StatelessWidget {
                       "Retour",
                       style: GoogleFonts.rubik(
                           textStyle:
-                              TextStyle(height: 1.4, color: Color(0xFF3053EC)),
+                              const TextStyle(height: 1.4, color: Color(0xFF3053EC)),
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
@@ -146,7 +144,7 @@ class Body extends StatelessWidget {
                     } else {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Login()),
+                        MaterialPageRoute(builder: (context) => const Login()),
                       );
                     }
                     // OnbordingStat.TypeSwitcher.add(changePage(postion)) ;
@@ -156,7 +154,7 @@ class Body extends StatelessWidget {
                     width: 115,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Color(0xFF3053EC),
+                      color: const Color(0xFF3053EC),
                       borderRadius: BorderRadius.circular(48),
                     ),
                     child: AutoSizeText(
@@ -164,7 +162,7 @@ class Body extends StatelessWidget {
                       "Suivant",
                       style: GoogleFonts.rubik(
                           textStyle:
-                              TextStyle(height: 1.4, color: Colors.white),
+                              const TextStyle(height: 1.4, color: Colors.white),
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),

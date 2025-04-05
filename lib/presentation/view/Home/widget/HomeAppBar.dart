@@ -9,9 +9,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
 
-  HomeAppBar({
+  const HomeAppBar({
     Key? key,
-  })  : preferredSize = Size.fromHeight(50.0),
+  })  : preferredSize = const Size.fromHeight(50.0),
         super(key: key);
 
   @override
@@ -19,11 +19,11 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0.0, // Removes the shadow
       backgroundColor: Colors.white,
-      shape: Border(
+      shape: const Border(
         bottom: BorderSide.none, // Removes the line under the AppBar
       ),
       leading: IconButton(
-        icon: Icon(Icons.menu, color: Colors.black),
+        icon: const Icon(Icons.menu, color: Colors.black),
         onPressed: () {
           GoogleNavBarState.scaffoldKey.currentState?.openDrawer();
           // Handle menu button action
@@ -32,7 +32,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          CircleAvatar(
+          const CircleAvatar(
             backgroundImage: NetworkImage(
               'URL_TO_YOUR_IMAGE', // Replace with your image URL
             ),
@@ -62,7 +62,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: <Widget>[
             IconButton(
               icon: Icon(
-                Icons.mail_outline,
+                Icons.calendar_month,
                 color: Colors.black,
                 size: 26.sp,
               ),
@@ -79,12 +79,12 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               right: 5.w,
               top: 9.h,
               child: Container(
-                padding: EdgeInsets.all(1),
+                padding: const EdgeInsets.all(1),
                 decoration: BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.circular(30),
                 ),
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   minWidth: 14,
                   minHeight: 14,
                 ),
@@ -123,12 +123,12 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               right: 11.w,
               top: 8.h,
               child: Container(
-                padding: EdgeInsets.all(1),
+                padding: const EdgeInsets.all(1),
                 decoration: BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.circular(30),
                 ),
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   minWidth: 14,
                   minHeight: 14,
                 ),

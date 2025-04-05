@@ -31,11 +31,11 @@ class inputFild extends StatelessWidget {
         hintText: hint,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0.r)),
-          borderSide: BorderSide(color: Color(0xFF948B8B)),
+          borderSide: const BorderSide(color: Color(0xFF948B8B)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0.r)),
-          borderSide: BorderSide(color: Color(0xFF948B8B)),
+          borderSide: const BorderSide(color: Color(0xFF948B8B)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10.0)),

@@ -33,7 +33,7 @@ class _DropDownTeamState extends State<DropDownTeam> {
       child: Container(
         height: 48,
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(color: isFocused ? Theme.of(context).primaryColor : Theme.of(context).bottomAppBarTheme.color!, width: 1),
@@ -46,7 +46,7 @@ class _DropDownTeamState extends State<DropDownTeam> {
                   return Row(
                     children: [
                      ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                      borderRadius: const BorderRadius.all(Radius.circular(40)),
                       child: Image.network(
                         "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
                         height: 35,
@@ -54,7 +54,7 @@ class _DropDownTeamState extends State<DropDownTeam> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    SizedBox(width: 8,),
+                    const SizedBox(width: 8,),
                     AllText.Autotext(text: item.toString(), fontSize: 16, fontWeight: FontWeight.w400, color: Theme.of(context).shadowColor)
                   ],);
                 }).toList();
@@ -63,7 +63,7 @@ class _DropDownTeamState extends State<DropDownTeam> {
             icon: Icon(Icons.arrow_drop_down, color:isFocused ? Theme.of(context).primaryColor : Theme.of(context).shadowColor,),
             iconSize: 24,
             elevation: 16,
-            style: TextStyle(color: Colors.black, fontSize: 16),
+            style: const TextStyle(color: Colors.black, fontSize: 16),
             onChanged: (String? newValue) {
               setState(() {
                 if (newValue != null) {
@@ -78,7 +78,7 @@ class _DropDownTeamState extends State<DropDownTeam> {
                 child:Row(
                     children: [
                      ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                      borderRadius: const BorderRadius.all(Radius.circular(40)),
                       child: Image.network(
                         "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
                         height: 35,
@@ -86,7 +86,7 @@ class _DropDownTeamState extends State<DropDownTeam> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    SizedBox(width: 8,),
+                    const SizedBox(width: 8,),
                     AllText.Autotext(text: value.toString(), fontSize: 16, fontWeight: FontWeight.w400, color: Theme.of(context).shadowColor)
                   ],),
                 

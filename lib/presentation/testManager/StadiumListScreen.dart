@@ -8,7 +8,7 @@ import '../managers/StadiumManager.dart';
 class StadiumListScreen extends StatefulWidget {
   final String gameId;
 
-  StadiumListScreen({required this.gameId});
+  const StadiumListScreen({super.key, required this.gameId});
 
   @override
   _StadiumListScreenState createState() => _StadiumListScreenState();
@@ -54,17 +54,17 @@ class _StadiumListScreenState extends State<StadiumListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Stadium'),
+        title: const Text('Select Stadium'),
       ),
       body: FutureBuilder<List<Stadium>>(
         future: _stadiumsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No stadiums available'));
+            return const Center(child: Text('No stadiums available'));
           }
 
           final stadiums = snapshot.data!;
@@ -130,9 +130,9 @@ class StadiumCard extends StatelessWidget {
             Text('Address: ${stadium.address ?? 'N/A'}'),
             Text('Phone: ${stadium.phoneNumber}'),
             const SizedBox(height: 8.0),
-            Text(
+            const Text(
               'Fields:',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             ...stadium.fields.map((field) {
               return Padding(
@@ -142,7 +142,8 @@ class StadiumCard extends StatelessWidget {
                   children: [
                     Text('Field ID: ${field.fieldId}'),
                     Text('Capacity: ${field.capacity}'),
-                    Text('Match Price: \$${field.matchPrice.toStringAsFixed(2)}'),
+                    Text(
+                        'Match Price: \$${field.matchPrice.toStringAsFixed(2)}'),
                     if (field.images.isNotEmpty)
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,

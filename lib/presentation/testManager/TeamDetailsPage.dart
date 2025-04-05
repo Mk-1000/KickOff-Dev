@@ -14,7 +14,7 @@ import 'GameDetailsPage.dart';
 class TeamDetailsPage extends StatefulWidget {
   final String teamId;
 
-  TeamDetailsPage({required this.teamId});
+  const TeamDetailsPage({super.key, required this.teamId});
 
   @override
   _TeamDetailsPageState createState() => _TeamDetailsPageState();
@@ -91,7 +91,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
       );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Team slot limits updated successfully')),
+          const SnackBar(content: Text('Team slot limits updated successfully')),
         );
       }
     } catch (e) {
@@ -121,7 +121,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
           });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
                 content: Text('This slot is not available for invitation')),
           );
         }
@@ -139,12 +139,12 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Team Details'),
+        title: const Text('Team Details'),
         actions: [
           if (_team != null)
             _team!.currentGameId == null
                 ? IconButton(
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     onPressed: () {
                       // Navigate to players screen
                       Navigator.push(
@@ -157,7 +157,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                     },
                   )
                 : IconButton(
-                    icon: Icon(Icons.stadium),
+                    icon: const Icon(Icons.stadium),
                     onPressed: () {
                       // Navigate to game details screen
                       Navigator.push(
@@ -171,7 +171,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
         ],
       ),
       body: _team == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -179,19 +179,19 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                 children: [
                   Text(
                     'Team Name: ${_team!.teamName}',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     'Address: ${address?.country}, ${address?.state}, ${address?.city}',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Team ID: ${_team!.teamId}'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Player IDs: ${_team!.players.toString()}'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Captain ID: ${_team!.captainId}'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   _buildSlotLimitField(
                     'Max Goalkeepers',
                     _maxGoalkeepers,
@@ -212,18 +212,18 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                     _maxForwards,
                     (value) => setState(() => _maxForwards = value),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _updateSlotLimits,
-                    child: Text('Update Slot Limits'),
+                    child: const Text('Update Slot Limits'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: _team!.slots?.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _team!.slots.length,
                     itemBuilder: (context, index) {
-                      PositionSlot slot = _team!.slots![index];
+                      PositionSlot slot = _team!.slots[index];
                       return _buildSlotCard(slot);
                     },
                   ),
@@ -235,26 +235,26 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
 
   Widget _buildSlotCard(PositionSlot slot) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Slot ${slot.number} - ${slot.position.toString().split('.').last}',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             Text('Status: ${slot.status.toString().split('.').last}'),
             if (slot.playerId != null) ...[
               Text('Player ID: ${slot.playerId}'),
             ] else ...[
-              Text('No player assigned'),
-              SizedBox(height: 10),
-              Text('Invite Player:'),
+              const Text('No player assigned'),
+              const SizedBox(height: 10),
+              const Text('Invite Player:'),
               _buildPlayerDropdown(slot.slotId),
             ],
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               children: [
                 ElevatedButton(
@@ -264,13 +264,13 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                         await _teamManager.updateSlotStatusToPrivate(
                             _team!.teamId, slot.slotId);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Slot made Private')),
+                          const SnackBar(content: Text('Slot made Private')),
                         );
                       } else {
                         await _teamManager.updateSlotStatusToPublic(
                             _team!.teamId, slot.slotId);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Slot made Public')),
+                          const SnackBar(content: Text('Slot made Public')),
                         );
                       }
                       setState(() {
@@ -298,7 +298,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
 
   Widget _buildPlayerDropdown(String slotId) {
     return DropdownButton<Player>(
-      hint: Text('Select Player'),
+      hint: const Text('Select Player'),
       onChanged: (Player? player) {
         if (player != null) {
           _invitePlayerToSlot(slotId, player);

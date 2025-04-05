@@ -8,7 +8,7 @@ import '../../domain/entities/Invitation.dart';
 class TeamListPage extends StatefulWidget {
   final String homeTeamId;
 
-  TeamListPage({required this.homeTeamId});
+  const TeamListPage({super.key, required this.homeTeamId});
 
   @override
   _TeamListPageState createState() => _TeamListPageState();
@@ -31,17 +31,17 @@ class _TeamListPageState extends State<TeamListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Team List'),
+        title: const Text('Team List'),
       ),
       body: StreamBuilder<List<Team>>(
         stream: teamsStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No teams available'));
+            return const Center(child: Text('No teams available'));
           } else {
             List<Team> teams = snapshot.data!;
 
@@ -61,20 +61,20 @@ class _TeamListPageState extends State<TeamListPage> {
                     builder: (context, invitationSnapshot) {
                       if (invitationSnapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return ElevatedButton(
+                        return const ElevatedButton(
                           onPressed: null,
                           child: Text('Checking...'),
                         );
                       } else if (invitationSnapshot.hasError) {
                         print(
                             'Error in FutureBuilder: ${invitationSnapshot.error}');
-                        return ElevatedButton(
+                        return const ElevatedButton(
                           onPressed: null,
                           child: Text('Error'),
                         );
                       } else if (!invitationSnapshot.hasData) {
                         print('No data available in FutureBuilder');
-                        return ElevatedButton(
+                        return const ElevatedButton(
                           onPressed: null,
                           child: Text('No Data'),
                         );

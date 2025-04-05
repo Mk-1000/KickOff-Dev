@@ -5,7 +5,7 @@ class CahedImage extends StatefulWidget {
   final double? height ;
   final double? width;
   final BoxFit? box  ;
-   CahedImage({super.key, required this.img,  this.height,  this.width,  this.box});
+   const CahedImage({super.key, required this.img,  this.height,  this.width,  this.box});
 
   @override
   State<CahedImage> createState() => _CahedImageState();
@@ -13,7 +13,7 @@ class CahedImage extends StatefulWidget {
 
 class _CahedImageState extends State<CahedImage> {
   set() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
       });
     });

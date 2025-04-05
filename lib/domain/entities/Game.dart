@@ -41,7 +41,7 @@ class Game {
 
   // Setter for gameDate, converting DateTime to int internally
   set gameDate(DateTime? date) {
-    _gameDate = date != null ? date.millisecondsSinceEpoch : null;
+    _gameDate = date?.millisecondsSinceEpoch;
   }
 
   void newUpdate() {
@@ -80,7 +80,7 @@ class Game {
           ? DateTime.fromMillisecondsSinceEpoch(json['gameDate'])
           : null,
       stadiumId: json['stadiumId'],
-      chatId : json['chatId'] as String?,
+      chatId: json['chatId'] as String?,
       gameStatus: ParserUtils.parseGameStatus(json['gameStatus']),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],

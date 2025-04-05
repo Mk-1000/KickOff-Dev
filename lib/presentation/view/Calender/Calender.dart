@@ -4,8 +4,6 @@ import 'package:takwira/presentation/view/Calender/utlis.dart';
 import 'package:takwira/presentation/view/widgets/cards/nextMatchCard.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
-import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class Calender extends StatefulWidget {
   const Calender({super.key});
@@ -117,7 +115,7 @@ class _CalenderState extends State<Calender> {
               startingDayOfWeek: StartingDayOfWeek.monday,
               calendarStyle: CalendarStyle(
                 markerMargin:
-                    EdgeInsets.symmetric(horizontal: 0.3, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 0.3, vertical: 8),
                 rangeHighlightColor: Theme.of(context).primaryColor,
                 markerDecoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
@@ -128,7 +126,7 @@ class _CalenderState extends State<Calender> {
                 selectedDecoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     shape: BoxShape.circle),
-                todayTextStyle: TextStyle(color: Colors.black, fontSize: 16.0),
+                todayTextStyle: const TextStyle(color: Colors.black, fontSize: 16.0),
                 // Use `CalendarStyle` to customize the UI
                 outsideDaysVisible: false,
               ),
@@ -173,7 +171,7 @@ class _CalenderState extends State<Calender> {
                         ),
                         child: ListTile(
                           onTap: () => print('${value[index]}'),
-                          title: Text('${value[index].time}'),
+                          title: Text(value[index].time),
                         ),
                       );
                     },

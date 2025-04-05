@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:takwira/presentation/view/GoogleNavBar/Drawer.dart';
 import 'package:takwira/presentation/view/Home/home_page.dart';
@@ -20,16 +19,16 @@ class GoogleNavBarState extends State<GoogleNavBar> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    KickOff(),
-    Stades()
+  static final List<Widget> _widgetOptions = <Widget>[
+    const HomePage(),
+    const KickOff(),
+    const Stades()
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      drawer: Drawers(),
+      drawer: const Drawers(),
       backgroundColor: Colors.white,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -53,8 +52,8 @@ class GoogleNavBarState extends State<GoogleNavBar> {
               gap: 8,
               activeColor: Colors.black,
               iconSize: 24,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              duration: Duration(milliseconds: 400),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              duration: const Duration(milliseconds: 400),
               // tabBackgroundColor: Colors.grey[100]!,
               tabActiveBorder: Border.all(
                 color: Theme.of(context).primaryColor,

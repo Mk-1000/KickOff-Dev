@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:takwira/presentation/view/Home/widget/HomeAppBar.dart';
 import 'package:takwira/presentation/view/widgets/button/dropDownButton/DropDownButton.dart';
-import 'package:takwira/presentation/view/widgets/cards/rechercheEquipeCard.dart';
 import 'package:takwira/presentation/view/widgets/cards/stadeCard.dart';
-import 'package:takwira/presentation/view/widgets/cards/vosEquipeCards.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/search.dart';
 
 class Stades extends StatefulWidget {
@@ -22,14 +20,14 @@ class _StadesState extends State<Stades> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar(),
+      appBar: const HomeAppBar(),
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 24),
+          margin: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
               Search(controller: searchController, hint: 'Recherche'),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/domain/entities/Team.dart';
@@ -30,7 +29,7 @@ class _InfoState extends State<Info> {
             attack: widget.team.maxForwards,
           ),
           Expanded(
-              child: Container(
+              child: SizedBox(
             width: double.infinity,
             // decoration: BoxDecoration(
             //     border: Border.all(color: Theme.of(context).primaryColor),
@@ -39,11 +38,11 @@ class _InfoState extends State<Info> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 80.w,
                         child: AllText.Autotext(
                             text: "Joueur",
@@ -51,7 +50,7 @@ class _InfoState extends State<Info> {
                             fontWeight: FontWeight.w700,
                             color: Theme.of(context).primaryColor),
                       ),
-                      Container(
+                      SizedBox(
                         width: 80.w,
                         child: AllText.Autotext(
                             text: "Position",
@@ -59,7 +58,7 @@ class _InfoState extends State<Info> {
                             fontWeight: FontWeight.w700,
                             color: Theme.of(context).primaryColor),
                       ),
-                      Container(
+                      SizedBox(
                         width: 80.w,
                         child: AllText.Autotext(
                             text: "Numéro",
@@ -67,7 +66,7 @@ class _InfoState extends State<Info> {
                             fontWeight: FontWeight.w700,
                             color: Theme.of(context).primaryColor),
                       ),
-                      Container(
+                      SizedBox(
                         width: 70.w,
                         child: AllText.Autotext(
                             text: "Action",
@@ -90,7 +89,7 @@ class _InfoState extends State<Info> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              color: Color(0xFFE6F3FF),
+                              color: const Color(0xFFE6F3FF),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10.r)),
                             ),
@@ -124,25 +123,25 @@ class _InfoState extends State<Info> {
                               )
                             ]),
                           ),
-                          Container(
+                          SizedBox(
                             width: 80.w,
                             child: AllText.Autotext(
-                                text: widget.team.slots![index].position.name,
+                                text: widget.team.slots[index].position.name,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey),
                           ),
-                          Container(
+                          SizedBox(
                             width: 80.w,
                             child: AllText.Autotext(
                                 text:
-                                    widget.team.slots![index].number.toString(),
+                                    widget.team.slots[index].number.toString(),
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey),
                           ),
-                          Container(
-                              width: 70.w, child: Icon(Icons.more_vert_rounded))
+                          SizedBox(
+                              width: 70.w, child: const Icon(Icons.more_vert_rounded))
                         ],
                       ),
                     );

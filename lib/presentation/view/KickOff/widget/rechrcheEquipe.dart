@@ -70,11 +70,11 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
       stream: teamManager.getPublicAvailableSlotsStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No available slots found.'));
+          return const Center(child: Text('No available slots found.'));
         } else {
           return ListView.builder(
             itemCount: snapshot.data!.length,
@@ -86,13 +86,12 @@ class _RechercheEquipeState extends State<RechercheEquipe> {
                 future: teamManager.getTeamById(slot.teamId),
                 builder: (context, teamSnapshot) {
                   if (teamSnapshot.connectionState == ConnectionState.waiting) {
-                    return Text(
+                    return const Text(
                         "null team fetched"); // Placeholder until team details are fetched
                   } else if (teamSnapshot.hasError) {
-                    return Text("error1" +
-                        teamSnapshot.error.toString()); // Handle error case
+                    return Text("error1${teamSnapshot.error}"); // Handle error case
                   } else if (!teamSnapshot.hasData) {
-                    return Text("no team"); // No team found case
+                    return const Text("no team"); // No team found case
                   } else {
                     Team team = teamSnapshot.data!;
                     return _buildSlideFromBottomCard(index, team, slot);

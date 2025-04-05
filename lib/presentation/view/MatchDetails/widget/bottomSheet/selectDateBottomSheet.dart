@@ -16,7 +16,7 @@ class _selectDateBottomSheetState extends State<selectDateBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 24, left: 24, right: 24),
+      margin: const EdgeInsets.only(top: 24, left: 24, right: 24),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +28,7 @@ class _selectDateBottomSheetState extends State<selectDateBottomSheet> {
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: Theme.of(context).shadowColor)),
-          SizedBox(
+          const SizedBox(
             height: 32,
           ),
           AllText.Autotext(
@@ -36,13 +36,13 @@ class _selectDateBottomSheetState extends State<selectDateBottomSheet> {
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Theme.of(context).shadowColor),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
-          DropDownTeam(
+          const DropDownTeam(
             list: ["hi", "heyy"],
           ),
-          SizedBox(
+          const SizedBox(
             height: 24,
           ),
           AllText.Autotext(
@@ -50,7 +50,7 @@ class _selectDateBottomSheetState extends State<selectDateBottomSheet> {
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Theme.of(context).shadowColor),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           Row(
@@ -64,7 +64,7 @@ class _selectDateBottomSheetState extends State<selectDateBottomSheet> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           DropDuwnButton(

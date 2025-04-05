@@ -14,7 +14,7 @@ import 'package:takwira/presentation/testManager/TestCreateTeamPage.dart';
 class PlayerHomePage extends StatefulWidget {
   final String playerId;
 
-  PlayerHomePage({Key? key, required this.playerId}) : super(key: key);
+  const PlayerHomePage({Key? key, required this.playerId}) : super(key: key);
 
   @override
   _PlayerHomePageState createState() => _PlayerHomePageState();
@@ -76,7 +76,7 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UploadManagerScreen(),
+        builder: (context) => const UploadManagerScreen(),
       ),
     );
   }
@@ -96,10 +96,10 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Player Home'),
+        title: const Text('Player Home'),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
               // Navigate to players screen
               Navigator.push(
@@ -111,7 +111,7 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.people),
+            icon: const Icon(Icons.people),
             onPressed: () {
               // Navigate to players screen
               Navigator.push(
@@ -124,13 +124,13 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
         ],
       ),
       body: player == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text('Welcome, ${player!.nickname}',
-                      style: TextStyle(fontSize: 20)),
+                      style: const TextStyle(fontSize: 20)),
                 ),
                 // ElevatedButton(
                 //   onPressed: _navigateToUploadPage,
@@ -147,12 +147,12 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon: Icon(Icons.delete, color: Colors.red),
+                                icon: const Icon(Icons.delete, color: Colors.red),
                                 onPressed: () =>
                                     _deleteTeam(teams[index].teamId),
                               ),
                               IconButton(
-                                icon: Icon(Icons.notification_add_sharp),
+                                icon: const Icon(Icons.notification_add_sharp),
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -163,12 +163,12 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                                 ),
                               ),
                               IconButton(
-                                icon: Icon(Icons.message, color: Colors.blue),
+                                icon: const Icon(Icons.message, color: Colors.blue),
                                 onPressed: () => _navigateToChatPage(
                                     teams[index].chatId.toString()),
                               ),
                               IconButton(
-                                icon: Icon(Icons.arrow_forward),
+                                icon: const Icon(Icons.arrow_forward),
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -193,7 +193,7 @@ class _PlayerHomePageState extends State<PlayerHomePage> {
                           builder: (context) =>
                               TestCreateTeamPage(onTeamCreated: _addNewTeam)),
                     ),
-                    child: Text("Create a new Team"),
+                    child: const Text("Create a new Team"),
                   ),
                 ),
               ],

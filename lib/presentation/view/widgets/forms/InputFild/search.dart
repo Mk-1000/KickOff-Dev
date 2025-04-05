@@ -5,7 +5,7 @@ class Search extends StatelessWidget {
   final String hint;
   final IconData iconData;
 
-  Search({
+  const Search({
     super.key,
     required this.controller,
     required this.hint,
@@ -14,14 +14,14 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(
+    const textStyle = TextStyle(
       color: Colors.black,
       fontSize: 16,
       fontWeight: FontWeight.w500,
     );
 
     final inputDecoration = InputDecoration(
-      contentPadding: EdgeInsets.only(left: 18, right: 18, top: 10),
+      contentPadding: const EdgeInsets.only(left: 18, right: 18, top: 10),
       hintText: hint,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -36,7 +36,7 @@ class Search extends StatelessWidget {
     );
 
     return Container(
-      margin: EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 16),
       child: TextFormField(
         cursorColor: Theme.of(context).primaryColor,
         controller: controller,

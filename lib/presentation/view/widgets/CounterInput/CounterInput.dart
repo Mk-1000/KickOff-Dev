@@ -50,7 +50,7 @@ class _CounterInputState extends State<CounterInput> {
             // padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               widget.counter.toString(),
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           IconButton(

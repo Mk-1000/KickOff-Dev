@@ -22,7 +22,7 @@ class _SendMessageState extends State<SendMessage> {
       print('Message sent: $messageText');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to send message')),
+        const SnackBar(content: Text('Failed to send message')),
       );
       print('Failed to send message: $e');
     }
@@ -46,7 +46,7 @@ class _SendMessageState extends State<SendMessage> {
             borderRadius: BorderRadius.circular(20),
           ),
           suffixIcon: IconButton(
-              icon: Icon(Icons.send),
+              icon: const Icon(Icons.send),
               onPressed: () async {
                   
                // _sendMessage(_controller.text);

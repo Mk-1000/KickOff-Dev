@@ -12,13 +12,13 @@ class PlayerManager {
     return await _playerService.signInWithEmailPassword(email, password);
   }
 
-  Future<bool> signUpPlayer(
+  Future<String?> signUpPlayer(
       String email, String password, Address address, Player player) async {
     try {
       await _playerService.signUpPlayer(email, password, address, player);
-      return true;
+      return null;
     } catch (e) {
-      return false;
+      return e.toString();
     }
   }
 

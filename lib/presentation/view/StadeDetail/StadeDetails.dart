@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
-class StadeDetails extends StatelessWidget {
-  const StadeDetails({super.key});
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
+import 'package:takwira/presentation/view/widgets/text/text.dart';
+
+class StadeDetails extends StatefulWidget {
+  final bool showReservationButton;
+  final bool isReserved;
+
+  const StadeDetails({
+    super.key,
+    required this.showReservationButton,
+    this.isReserved = false,
+  });
+
+  @override
+  State<StadeDetails> createState() => _StadeDetailsState();
+}
+
+class _StadeDetailsState extends State<StadeDetails> {
+  late bool _isCurrentlyReserved;
+
+  @override
+  void initState() {
+    super.initState();
+    _isCurrentlyReserved = widget.isReserved;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +38,9 @@ class StadeDetails extends StatelessWidget {
         children: [
           Hero(
             tag: "stade0",
-            child: Container(
+            child: SizedBox(
               height: 265.h,
-              child: CahedImage(
+              child: const CahedImage(
                   img:
                       'https://images.midilibre.fr/api/v1/images/view/633da2e473564570454b7579/large-fit/image.jpg?v=1',
                   box: BoxFit.cover),
@@ -31,22 +55,22 @@ class StadeDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back_ios_new),
+                        icon: const Icon(Icons.arrow_back_ios_new),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       Container(
                         alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         height: 26.h,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Colors.white,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20))),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Icon(Icons.star, color: Colors.amber),
-                            SizedBox(width: 2),
+                            const Icon(Icons.star, color: Colors.amber),
+                            const SizedBox(width: 2),
                             Text(
                               '4.8',
                               style: TextStyle(
@@ -62,69 +86,74 @@ class StadeDetails extends StatelessWidget {
               SizedBox(height: 130.h),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(top: 16),
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(16),
                           topLeft: Radius.circular(16))),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AllText.Autotext(
                               text: "May foot land",
-                              fontSize: 24.sp,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xFF000B3A)),
-                          SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Icon(Icons.place_outlined,
-                                  size: 18.sp,
-                                  color: Theme.of(context).primaryColor),
-                              AllText.Autotext(
-                                  text:
-                                      "Route de lapin skanes, Monastir, Tunisia ",
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color(0xFF9698A9)),
-                            ],
-                          ),
+                              color: const Color(0xFF000B3A)),
+                          if (!widget.showReservationButton)
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isCurrentlyReserved = !_isCurrentlyReserved;
+                                });
+                                // TODO: Implement actual reservation/cancellation API call
+                                print(_isCurrentlyReserved
+                                    ? "Réserver"
+                                    : "Annuler");
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              child: Text(_isCurrentlyReserved
+                                  ? "Annuler"
+                                  : "Réserver"),
+                            ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 8),
+                      Row(
                         children: [
+                          Icon(Icons.place_outlined,
+                              size: 14.sp,
+                              color: Theme.of(context).primaryColor),
                           AllText.Autotext(
-                              text: "About",
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF000B3A)),
-                          SizedBox(height: 8),
-                          AllText.Autotext(
-                              text:
-                                  "Berada di jalur jalan provinsi yang menghubungkan Denpasar.",
+                              text: "Route de lapin skanes, Monastir, Tunisia ",
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w300,
-                              color: Color(0xFF9698A9),
-                              textalgin: TextAlign.left),
+                              color: const Color(0xFF9698A9)),
                         ],
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: 30.h),
                           AllText.Autotext(
                               text: "Photos",
-                              fontSize: 16.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xFF000B3A)),
-                          SizedBox(height: 8),
-                          Container(
+                              color: const Color(0xFF000B3A)),
+                          const SizedBox(height: 8),
+                          SizedBox(
                             height: 80.h,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -132,8 +161,8 @@ class StadeDetails extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   return Container(
                                     width: 80.w,
-                                    margin: EdgeInsets.only(right: 12),
-                                    child: ClipRRect(
+                                    margin: const EdgeInsets.only(right: 12),
+                                    child: const ClipRRect(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(12)),
                                       child: CahedImage(
@@ -146,115 +175,10 @@ class StadeDetails extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Container(
-                        width: ScreenUtil.defaultSize.width * 0.8,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AllText.Autotext(
-                                text: "Services",
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF000B3A)),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.check_circle_outlined,
-                                          size: 18.sp,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        AllText.Autotext(
-                                            text: "Kids Park",
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xFF000B3A)),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 12.h,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.check_circle_outlined,
-                                          size: 18.sp,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        SizedBox(
-                                          width: 8.w,
-                                        ),
-                                        AllText.Autotext(
-                                            text: "City Museum",
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xFF000B3A)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Spacer(),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.check_circle_outlined,
-                                          size: 18.sp,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        AllText.Autotext(
-                                            text: "Kids Park",
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xFF000B3A)),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 12.h,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.check_circle_outlined,
-                                          size: 18.sp,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        SizedBox(
-                                          width: 8.h,
-                                        ),
-                                        AllText.Autotext(
-                                            text: "City Museum",
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xFF000B3A)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: 30.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -263,31 +187,31 @@ class StadeDetails extends StatelessWidget {
                                 children: [
                                   AllText.Autotext(
                                       text: "À partir de",
-                                      fontSize: 16.sp,
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.w300,
-                                      color: Color(0xFF9698A9)),
+                                      color: const Color(0xFF9698A9)),
                                   SizedBox(height: 8.h),
                                   AllText.Autotext(
                                       text: "5 DT par Joueur",
-                                      fontSize: 16,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
-                                      color: Color(0xFF000B3A)),
+                                      color: const Color(0xFF000B3A)),
                                 ],
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   AllText.Autotext(
-                                      text: "Telephone",
-                                      fontSize: 16.sp,
+                                      text: "Téléphone",
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.w300,
-                                      color: Color(0xFF9698A9)),
-                                  SizedBox(height: 8),
+                                      color: const Color(0xFF9698A9)),
+                                  const SizedBox(height: 8),
                                   AllText.Autotext(
                                       text: "94 345 233",
-                                      fontSize: 16.sp,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
-                                      color: Color(0xFF000B3A)),
+                                      color: const Color(0xFF000B3A)),
                                 ],
                               ),
                               Container(
@@ -297,7 +221,7 @@ class StadeDetails extends StatelessWidget {
                                     color: Theme.of(context).primaryColor,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(8.r))),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.local_phone_outlined,
                                   color: Colors.white,
                                 ),
@@ -306,7 +230,7 @@ class StadeDetails extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 16,
                       )
                     ],

@@ -12,7 +12,7 @@ import 'StadiumListScreen.dart';
 class GameDetailsPage extends StatefulWidget {
   final String gameId;
 
-  GameDetailsPage({required this.gameId});
+  const GameDetailsPage({super.key, required this.gameId});
 
   @override
   _GameDetailsPageState createState() => _GameDetailsPageState();
@@ -83,11 +83,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text('Chat ID Missing'),
-          content: Text('Chat ID is not available for this game.'),
+          title: const Text('Chat ID Missing'),
+          content: const Text('Chat ID is not available for this game.'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -147,14 +147,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Game Details'),
+        title: const Text('Game Details'),
         actions: [
           IconButton(
-            icon: Icon(Icons.message),
+            icon: const Icon(Icons.message),
             onPressed: _navigateToChatPage,
           ),
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: _quitGame,
           ),
         ],
@@ -163,11 +163,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         future: _gameFuture,
         builder: (context, gameSnapshot) {
           if (gameSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (gameSnapshot.hasError) {
             return Center(child: Text('Error: ${gameSnapshot.error}'));
           } else if (gameSnapshot.data == null) {
-            return Center(child: Text('Game not found'));
+            return const Center(child: Text('Game not found'));
           } else {
             game = gameSnapshot.data; // Update game with gameSnapshot data
             return SingleChildScrollView(
@@ -180,16 +180,16 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                     builder: (context, homeTeamSnapshot) {
                       if (homeTeamSnapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return Text('Loading home team...');
+                        return const Text('Loading home team...');
                       } else if (homeTeamSnapshot.hasError) {
-                        return Text('Error loading home team');
+                        return const Text('Error loading home team');
                       } else if (homeTeamSnapshot.data == null) {
-                        return Text('Home team not found');
+                        return const Text('Home team not found');
                       } else {
                         final homeTeam = homeTeamSnapshot.data!;
                         return Text(
                           'Home Team: ${homeTeam.teamName}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -202,16 +202,16 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                     builder: (context, awayTeamSnapshot) {
                       if (awayTeamSnapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return Text('Loading away team...');
+                        return const Text('Loading away team...');
                       } else if (awayTeamSnapshot.hasError) {
-                        return Text('Error loading away team');
+                        return const Text('Error loading away team');
                       } else if (awayTeamSnapshot.data == null) {
-                        return Text('Away team not found');
+                        return const Text('Away team not found');
                       } else {
                         final awayTeam = awayTeamSnapshot.data!;
                         return Text(
                           'Away Team: ${awayTeam.teamName}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -219,25 +219,25 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                       }
                     },
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     'Game Date: ${game!.gameDate != null ? DateTimeUtils.formatTimestamp(game!.gameDate!.millisecondsSinceEpoch) : 'Not set'}',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                   FutureBuilder<Stadium?>(
                     future: _stadiumFuture,
                     builder: (context, stadiumSnapshot) {
                       if (stadiumSnapshot.connectionState == ConnectionState.waiting) {
-                        return Text('Loading stadium...');
+                        return const Text('Loading stadium...');
                       } else if (stadiumSnapshot.hasError) {
-                        return Text('Error loading stadium');
+                        return const Text('Error loading stadium');
                       } else if (stadiumSnapshot.data == null) {
-                        return Text('Stadium not selected');
+                        return const Text('Stadium not selected');
                       } else {
                         final stadium = stadiumSnapshot.data!;
                         return Text(
                           'Stadium: ${stadium.name}',
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         );
                       }
                     },
@@ -246,11 +246,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                     children: [
                       ElevatedButton(
                         onPressed: () => _selectDateTime(context),
-                        child: Text('Select Schedule'),
+                        child: const Text('Select Schedule'),
                       ),
                       ElevatedButton(
                         onPressed: () => _navigateToStadiumListScreen(),
-                        child: Text('Select Stadium'),
+                        child: const Text('Select Stadium'),
                       ),
                     ],
                   ),

@@ -30,7 +30,7 @@ class _DropDuwnButtonState extends State<DropDuwnButton> {
       child: Container(
         height: 48,
         width: widget.width,
-        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(color: isFocused ? Theme.of(context).primaryColor : Theme.of(context).bottomAppBarTheme.color!, width: 1),
@@ -42,7 +42,7 @@ class _DropDuwnButtonState extends State<DropDuwnButton> {
             icon: Icon(Icons.arrow_drop_down, color:isFocused ? Theme.of(context).primaryColor : Theme.of(context).shadowColor,),
             iconSize: 24,
             elevation: 16,
-            style: TextStyle(color: Colors.black, fontSize: 16),
+            style: const TextStyle(color: Colors.black, fontSize: 16),
             onChanged: (String? newValue) {
               setState(() {
                 if (newValue != null) {

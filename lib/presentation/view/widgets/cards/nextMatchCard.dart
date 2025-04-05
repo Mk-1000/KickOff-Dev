@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/view/widgets/cashedImage/cashedImage.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
@@ -86,7 +85,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.place_outlined),
+                      const Icon(Icons.place_outlined),
                       AllText.Autotext(
                         text: widget.stade,
                         fontSize: 14.sp,
@@ -130,7 +129,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context).primaryColor,
                       ),
-                      Icon(Icons.keyboard_arrow_down_rounded),
+                      const Icon(Icons.keyboard_arrow_down_rounded),
                     ],
                   ),
                   AllText.Autotext(
@@ -168,7 +167,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                               children: [
                                 Column(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.place_outlined,
                                       color: Colors.grey,
                                     ),
@@ -182,7 +181,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                                 ),
                                 Column(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.local_phone_outlined,
                                       color: Colors.grey,
                                     ),
@@ -196,7 +195,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                                 ),
                                 Column(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.share_outlined,
                                       color: Colors.grey,
                                     ),
@@ -212,7 +211,7 @@ class _NextMatchCardState extends State<NextMatchCard>
                             )
                           ],
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ),
               ),
             ],

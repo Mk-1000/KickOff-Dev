@@ -8,7 +8,7 @@ class CirculeNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 8, right: 29),
+      margin: const EdgeInsets.only(left: 8, right: 29),
       alignment: Alignment.center,
       width: 34,
       height: 34,

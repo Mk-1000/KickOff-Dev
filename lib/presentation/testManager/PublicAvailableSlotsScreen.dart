@@ -18,17 +18,17 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Public Available Slots'),
+        title: const Text('Public Available Slots'),
       ),
       body: StreamBuilder<List<PositionSlot>>(
         stream: teamManager.getPublicAvailableSlotsStream(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No available slots found.'));
+            return const Center(child: Text('No available slots found.'));
           } else {
             return ListView.builder(
               itemCount: snapshot.data!.length,
@@ -73,19 +73,19 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
             // Team Details
             Text(
               "Team Name: ${team.teamName}",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             // Other team details you want to show
 
             // Slot Details
-            Divider(),
+            const Divider(),
             ListTile(
               title: Text('${slot.position} - ${slot.status}'),
               subtitle: Text(
                   'Published on: ${DateTimeUtils.formatTimestamp(slot.slotTypeChangedAt)}'),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             FutureBuilder<bool>(
               future: invitationManager.isInvitationAlreadySent(
                   playerId: Player.currentPlayer!.playerId,
@@ -95,12 +95,12 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
               builder: (context, invitationSnapshot) {
                 if (invitationSnapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return ElevatedButton(
+                  return const ElevatedButton(
                     onPressed: null,
                     child: Text('Checking...'),
                   );
                 } else if (invitationSnapshot.hasError) {
-                  return ElevatedButton(
+                  return const ElevatedButton(
                     onPressed: null,
                     child: Text('Error'),
                   );
@@ -134,10 +134,10 @@ class PublicAvailableSlotsScreen extends StatelessWidget {
                 ? Text(
                     "Team Name: ${team.teamName}",
                     style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                        const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                   )
-                : Text('Slot not associated with a team'),
-            SizedBox(height: 8.0),
+                : const Text('Slot not associated with a team'),
+            const SizedBox(height: 8.0),
             ListTile(
               title: Text('${slot.position} - ${slot.status}'),
               subtitle: Text(

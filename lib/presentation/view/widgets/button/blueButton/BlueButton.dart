@@ -47,7 +47,7 @@ class BlueButton extends StatelessWidget {
                 text,
                 style: TextStyle(
                   color:
-                      Color(0xFF3053EC), // Blue text color for outlined button
+                      const Color(0xFF3053EC), // Blue text color for outlined button
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
                 ),

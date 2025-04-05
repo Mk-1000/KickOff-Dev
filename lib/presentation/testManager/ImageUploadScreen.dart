@@ -5,6 +5,8 @@ import 'package:takwira/business/services/ImageService.dart';
 import 'package:takwira/domain/repositories/IImageRepository.dart';
 
 class UploadManagerScreen extends StatefulWidget {
+  const UploadManagerScreen({super.key});
+
   @override
   _UploadManagerScreenState createState() => _UploadManagerScreenState();
 }
@@ -59,7 +61,7 @@ class _UploadManagerScreenState extends State<UploadManagerScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -109,7 +111,7 @@ class _UploadManagerScreenState extends State<UploadManagerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image Upload Manager'),
+        title: const Text('Image Upload Manager'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -122,26 +124,26 @@ class _UploadManagerScreenState extends State<UploadManagerScreen> {
                 UploadType.TeamTunisien, 'Upload Team Tunisien Image'),
             _buildUploadButton(UploadType.League, 'Upload League Image'),
             _buildUploadButton(UploadType.Player, 'Upload Player Image'),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _isUploading ? null : _pickAndUploadImage,
               child: _isUploading
-                  ? CircularProgressIndicator()
-                  : Text('Pick and Upload Image'),
+                  ? const CircularProgressIndicator()
+                  : const Text('Pick and Upload Image'),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Uploaded Images:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             Expanded(
               child: _uploadedImageUrls.isEmpty
-                  ? Center(child: Text('No images uploaded yet.'))
+                  ? const Center(child: Text('No images uploaded yet.'))
                   : ListView.builder(
                       itemCount: _uploadedImageUrls.length,
                       itemBuilder: (context, index) {
                         return Card(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           child: ListTile(
                             leading: Image.network(
                               _uploadedImageUrls[index],
@@ -151,7 +153,7 @@ class _UploadManagerScreenState extends State<UploadManagerScreen> {
                             ),
                             title: Text(_uploadedImageUrls[index]),
                             trailing: IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                               onPressed: () async {
                                 await _imageService
                                     .deleteImage(_uploadedImageUrls[index]);

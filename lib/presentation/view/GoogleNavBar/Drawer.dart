@@ -60,10 +60,10 @@ class _DrawersState extends State<Drawers> {
         child: ListView(
       // padding: EdgeInsets.zero,
       children: [
-        Container(
+        SizedBox(
           height: 105.h,
           child: DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   // color: Colors.amber
                   ),
               // margin: EdgeInsets.zero,
@@ -75,7 +75,7 @@ class _DrawersState extends State<Drawers> {
                   Row(
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                        borderRadius: const BorderRadius.all(Radius.circular(40)),
                         child: Image.network(
                           "https://assets-fr.imgfoot.com/media/cache/642x382/osasuna-madridliga2324.jpg",
                           height: 50,
@@ -83,7 +83,7 @@ class _DrawersState extends State<Drawers> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       AllText.Autotext(

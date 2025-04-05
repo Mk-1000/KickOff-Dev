@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:takwira/presentation/managers/UserManager.dart';
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
+
   @override
   _SignInPageState createState() => _SignInPageState();
 }
@@ -18,10 +20,10 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign In"),
+        title: const Text("Sign In"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -34,26 +36,26 @@ class _SignInPageState extends State<SignInPage> {
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Password",
               ),
               obscureText: true,
               autocorrect: false,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _isLoading ? null : _signIn,
               child: _isLoading
-                  ? CircularProgressIndicator(color: Colors.white)
-                  : Text("Sign In"),
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const Text("Sign In"),
             ),
             if (_errorMessage != null) ...[
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(_errorMessage!,
-                  style: TextStyle(color: Colors.red, fontSize: 14))
+                  style: const TextStyle(color: Colors.red, fontSize: 14))
             ],
           ],
         ),

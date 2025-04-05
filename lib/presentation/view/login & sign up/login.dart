@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:takwira/presentation/managers/PlayerManager.dart';
 import 'package:takwira/presentation/view/GoogleNavBar/Navbar.dart';
-import 'package:takwira/presentation/view/Home/home_page.dart';
-import 'package:takwira/presentation/view/NavBar/navBarMain.dart';
-import 'package:takwira/presentation/view/splashScreen/splashScreen.dart';
 import 'package:takwira/presentation/view/widgets/button/blueButton/BlueButton.dart';
 import 'package:takwira/presentation/view/widgets/forms/InputFild/InputFild.dart';
 import 'package:takwira/presentation/view/widgets/popups/Allpop.dart';
@@ -33,26 +30,51 @@ class LoginState extends State<Login> {
       if (login) {
         if (emailController.text != "" && passController.text != "") {
           Allpups.loading(context);
+
           PlayerManager()
               .signInWithEmailPassword(
                   emailController.text, passController.text)
               .then((value) {
-            if (value != "") {
+            // Dismiss the loading indicator after the sign-in process finishes
+            Navigator.of(context, rootNavigator: true).pop();
+
+            if (value.isNotEmpty) {
+              // Success: Navigate to the next screen (e.g., GoogleNavBar)
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => GoogleNavBar()),
+                MaterialPageRoute(builder: (context) => const GoogleNavBar()),
+              );
+            } else {
+              // If no value returned (in case of failure), show error message
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Failed to sign in."),
+                  backgroundColor: Colors.red,
+                ),
               );
             }
+          }).catchError((error) {
+            // Dismiss the loading indicator in case of error
+            Navigator.of(context, rootNavigator: true).pop();
+
+            // If the future fails (in case of an exception), display the error message
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(error
+                    .toString()), // Display the error message from the exception
+                backgroundColor: Colors.red,
+              ),
+            );
           });
         }
       } else {
-        Navigator.pushReplacement<void, void>(
+        Navigator.push<void>(
           context,
           MaterialPageRoute<void>(
             builder: (BuildContext context) => const CompleteSignup(),
           ),
         );
-        print("this is the sgin up pressed ");
+        print("this is the sign up pressed ");
       }
     }
 
@@ -173,7 +195,7 @@ class LoginState extends State<Login> {
                   text: "ou continuer avec"),
             ),
             Container(
-              margin: EdgeInsets.only(top: 24),
+              margin: const EdgeInsets.only(top: 24),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -238,7 +260,7 @@ class LoginState extends State<Login> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() => {login = !login});
+                      setState(() {login = !login;});
                     },
                     child: AllText.Autotext(
                       color: const Color(0xFF6485F4),

@@ -9,7 +9,7 @@ import '../../utils/TunisiaLocations.dart';
 class TestCreateTeamPage extends StatefulWidget {
   final Function(Team) onTeamCreated;
 
-  TestCreateTeamPage({Key? key, required this.onTeamCreated}) : super(key: key);
+  const TestCreateTeamPage({Key? key, required this.onTeamCreated}) : super(key: key);
 
   @override
   _TestCreateTeamPageState createState() => _TestCreateTeamPageState();
@@ -32,7 +32,7 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Team'),
+        title: const Text('Create Team'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -41,14 +41,14 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
           children: [
             TextField(
               controller: _teamNameController,
-              decoration: InputDecoration(labelText: 'Team Name'),
+              decoration: const InputDecoration(labelText: 'Team Name'),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 DropdownButton<String>(
-                  hint: Text("Select State"),
+                  hint: const Text("Select State"),
                   value: selectedState,
                   items: TunisiaLocations.states.map((String state) {
                     return DropdownMenuItem<String>(
@@ -69,7 +69,7 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
                 ),
                 if (cities.isNotEmpty)
                   DropdownButton<String>(
-                    hint: Text("Select City"),
+                    hint: const Text("Select City"),
                     value: selectedCity,
                     items: cities.map((String city) {
                       return DropdownMenuItem<String>(
@@ -90,22 +90,22 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
             TextField(
               controller: _defenderCountController,
               decoration:
-                  InputDecoration(labelText: 'Number of Defenders per Team'),
+                  const InputDecoration(labelText: 'Number of Defenders per Team'),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _midfielderCountController,
               decoration:
-                  InputDecoration(labelText: 'Number of Midfielders per Team'),
+                  const InputDecoration(labelText: 'Number of Midfielders per Team'),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _forwardCountController,
               decoration:
-                  InputDecoration(labelText: 'Number of Forwards per Team'),
+                  const InputDecoration(labelText: 'Number of Forwards per Team'),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 // Parse input values
@@ -147,7 +147,7 @@ class _TestCreateTeamPageState extends State<TestCreateTeamPage> {
                   ));
                 }
               },
-              child: Text('Create Team'),
+              child: const Text('Create Team'),
             ),
           ],
         ),

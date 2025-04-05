@@ -7,7 +7,7 @@ import 'package:takwira/presentation/managers/TeamManager.dart';
 class TeamSlotsPageInvitation extends StatefulWidget {
   final String teamId;
 
-  TeamSlotsPageInvitation({required this.teamId});
+  const TeamSlotsPageInvitation({super.key, required this.teamId});
 
   @override
   _TeamSlotsPageInvitationState createState() =>
@@ -58,7 +58,7 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
     try {
       await _invitationManager.respondToInvitation(invitationId, false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invitation cancelled')),
+        const SnackBar(content: Text('Invitation cancelled')),
       );
       setState(() {});
     } catch (e) {
@@ -75,13 +75,13 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
         title: Text('Invitations for ${team?.teamName ?? 'Team'}'),
       ),
       body: team == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Received Invitations to join team:',
                       style: TextStyle(
@@ -95,15 +95,15 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                         .fetchReceivedInvitationsForTeam(team!.teamId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(child: Text('No received invitations.'));
+                        return const Center(child: Text('No received invitations.'));
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             Invitation invitation = snapshot.data![index];
@@ -115,12 +115,12 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.check),
+                                    icon: const Icon(Icons.check),
                                     onPressed: () => _respondToInvitation(
                                         invitation.invitationId, true),
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.close),
+                                    icon: const Icon(Icons.close),
                                     onPressed: () => _respondToInvitation(
                                         invitation.invitationId, false),
                                   ),
@@ -132,8 +132,8 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                       }
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Sent Invitations to join team :',
                       style: TextStyle(
@@ -147,15 +147,15 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                         .fetchSentInvitationsForTeam(team!.teamId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(child: Text('No sent invitations.'));
+                        return const Center(child: Text('No sent invitations.'));
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             Invitation invitation = snapshot.data![index];
@@ -164,7 +164,7 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                                   'Invitation ID: ${invitation.invitationId}'),
                               subtitle: Text('Receiver: ${invitation.teamId}'),
                               trailing: IconButton(
-                                icon: Icon(Icons.cancel),
+                                icon: const Icon(Icons.cancel),
                                 onPressed: () =>
                                     _cancelInvitation(invitation.invitationId),
                               ),
@@ -174,8 +174,8 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                       }
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Received Invitations to join Game:',
                       style: TextStyle(
@@ -189,15 +189,15 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                         .fetchReceivedInvitationsForGame(team!.teamId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(child: Text('No received invitations.'));
+                        return const Center(child: Text('No received invitations.'));
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             Invitation invitation = snapshot.data![index];
@@ -209,12 +209,12 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.check),
+                                    icon: const Icon(Icons.check),
                                     onPressed: () => _respondToInvitation(
                                         invitation.invitationId, true),
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.close),
+                                    icon: const Icon(Icons.close),
                                     onPressed: () => _respondToInvitation(
                                         invitation.invitationId, false),
                                   ),
@@ -226,8 +226,8 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                       }
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Sent Invitations to join Game :',
                       style: TextStyle(
@@ -241,15 +241,15 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                         .fetchSentInvitationsForGame(team!.teamId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(child: Text('No sent invitations.'));
+                        return const Center(child: Text('No sent invitations.'));
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             Invitation invitation = snapshot.data![index];
@@ -258,7 +258,7 @@ class _TeamSlotsPageInvitationState extends State<TeamSlotsPageInvitation> {
                                   'Invitation ID: ${invitation.invitationId}'),
                               subtitle: Text('Receiver: ${invitation.slotId}'),
                               trailing: IconButton(
-                                icon: Icon(Icons.cancel),
+                                icon: const Icon(Icons.cancel),
                                 onPressed: () =>
                                     _cancelInvitation(invitation.invitationId),
                               ),
