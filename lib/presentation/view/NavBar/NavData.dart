@@ -3,8 +3,12 @@ import 'package:takwira/presentation/view/Home/home_page.dart';
 
 class NavData {
   NavData._internal();
-  int indexPage = 0;
-  List<Widget> pages = [const HomePage(), Container(), Container()];
+  int indexPage = 1;
+  List<Widget> pages = [
+    Container(),
+    Container(),
+    Container(),
+  ];
   static final NavData _singleton = NavData._internal();
   factory NavData() {
     return _singleton;

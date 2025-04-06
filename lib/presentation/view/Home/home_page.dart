@@ -5,6 +5,7 @@ import 'package:takwira/presentation/view/Home/widget/SuggestionEquipe.dart';
 import 'package:takwira/presentation/view/Home/widget/nextMatch.dart';
 import 'package:takwira/presentation/view/widgets/cards/stadCardVertical.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
+import 'package:takwira/domain/entities/Stadium.dart'; // Add this import
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,6 +15,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Add stadiums list
+  late List<Stadium> stadiums;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize stadiums (you'll need to fetch them from your data source)
+    stadiums = []; // Replace with actual stadium data
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,10 +73,11 @@ class _HomePageState extends State<HomePage> {
                   child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: 23,
+                      itemCount: stadiums.length, // Use stadiums length
                       itemBuilder: (context, index) {
                         return StadeCardVertical(
                           index: index,
+                          stadium: stadiums[index], // Pass stadium object
                           borderBlue: false,
                         );
                       }),

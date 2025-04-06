@@ -7,6 +7,7 @@ class Stadium {
   String name;
   String? address;
   String? mainImage;
+  List<String> images; // Add this line
   String phoneNumber;
   List<String> services;
   DateTime? startAt;
@@ -20,6 +21,7 @@ class Stadium {
     required this.name,
     this.address,
     this.mainImage,
+    List<String>? images, // Add this parameter
     required this.phoneNumber,
     required this.services,
     this.startAt,
@@ -29,6 +31,7 @@ class Stadium {
     int? updatedAt,
     this.visibility = false,
   })  : stadiumId = IDUtils.generateUniqueId(),
+        images = images ?? [], // Initialize images
         fields = fields ?? [],
         createdAt = createdAt ??
             DateTimeUtils.getCurrentDateTime().millisecondsSinceEpoch,
@@ -56,6 +59,7 @@ class Stadium {
         'name': name,
         'address': address,
         'mainImage': mainImage,
+        'images': images, // Add to JSON
         'phoneNumber': phoneNumber,
         'services': services,
         'startAt': startAt?.toIso8601String(),
@@ -68,6 +72,12 @@ class Stadium {
 
   factory Stadium.fromJson(Map<String, dynamic> json) {
     final fieldsJson = json['fields'] as List;
+    List<String> images = [];
+    try {
+      images = List<String>.from(json['images'] ?? []); // Parse images
+    } catch (e) {
+      print("Error parsing images: $e");
+    }
 
     List<Field> fields = [];
     try {
@@ -82,6 +92,7 @@ class Stadium {
       name: json['name'],
       address: json['address'] as String?,
       mainImage: json['mainImage'] as String?,
+      images: images, // Add images
       phoneNumber: json['phoneNumber'],
       services: List<String>.from(json['services']),
       startAt: json['startAt'] != null ? DateTime.parse(json['startAt']) : null,

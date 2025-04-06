@@ -1,26 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:takwira/domain/entities/Stadium.dart';
 import 'package:takwira/presentation/view/StadeDetail/StadeDetails.dart';
 import 'package:takwira/presentation/view/widgets/text/text.dart';
 
 class StadeCardVertical extends StatelessWidget {
   final int index;
   final bool borderBlue;
+  final Stadium stadium; // Add this parameter
   const StadeCardVertical(
-      {super.key, required this.index, this.borderBlue = false});
+      {super.key,
+      required this.index,
+      required this.stadium, // Make it required
+      this.borderBlue = false});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const StadeDetails(
-                showReservationButton: true,
-                isReserved: true,
-              ),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => StadeDetails(
+              stadiumId: stadium.stadiumId,
+              showReservationButton: true,
+              isReserved: true,
+            ),
+          ),
+        );
       },
       child: Row(
         children: [

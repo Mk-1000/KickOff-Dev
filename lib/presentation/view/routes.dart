@@ -33,10 +33,13 @@ class Routes {
         final args =
             ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
         final stadiumId = args?['stadiumId'] as String?;
+        final showReservationButton = args?['showReservationButton'] as bool? ?? true;
+        final isReserved = args?['isReserved'] as bool? ?? false;
 
         return StadeDetails(
-          showReservationButton: true,
-          isReserved: true,
+          stadiumId: stadiumId ?? '', // Add stadiumId parameter
+          showReservationButton: showReservationButton,
+          isReserved: isReserved,
         );
       },
       terrainList: (context) => const Stades(),

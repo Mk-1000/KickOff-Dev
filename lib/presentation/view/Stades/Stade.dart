@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:takwira/business/services/StadiumService.dart';
+import 'package:takwira/domain/entities/Stadium.dart';
+import 'package:takwira/presentation/managers/StadiumManager.dart';
 import 'package:takwira/presentation/view/Home/widget/HomeAppBar.dart';
 import 'package:takwira/presentation/view/widgets/button/dropDownButton/DropDownButton.dart';
 import 'package:takwira/presentation/view/widgets/cards/stadeCard.dart';
@@ -13,9 +16,15 @@ class Stades extends StatefulWidget {
 
 class _StadesState extends State<Stades> {
   final TextEditingController searchController = TextEditingController();
-  static const int itemCount = 10;
-  List<String> postion = ['Gardien', 'Défenseur', 'Milieu', 'Attaquant'];
-  List<String> ville = ["Monastir"];
+  late StadiumManager _stadiumManager;
+  late Future<List<Stadium>> _stadiums;
+
+  @override
+  void initState() {
+    super.initState();
+    _stadiumManager = StadiumManager(stadiumService: StadiumService());
+    _stadiums = _stadiumManager.getAllStadiums();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,32 +37,35 @@ class _StadesState extends State<Stades> {
             children: [
               Search(controller: searchController, hint: 'Recherche'),
               const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  DropDuwnButton(list: postion),
-                  DropDuwnButton(list: ville),
-                ],
-              ),
               Expanded(
-                child: _buildListView(),
-              )
+                child: FutureBuilder<List<Stadium>>(
+                  future: _stadiums,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No stadiums found'));
+                    }
+
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return StadeCard(
+                          index: index,
+                          stadium: snapshot.data![index],
+                          borderBlue: false,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildListView() {
-    return ListView.builder(
-      padding: const EdgeInsets.only(top: 8, bottom: 16),
-      itemCount: itemCount,
-      itemBuilder: (context, index) {
-        return StadeCard(
-          index: index,
-        );
-      },
     );
   }
 }

@@ -71,29 +71,41 @@ class _NextMatchCardState extends State<NextMatchCard>
         curve: Curves.easeInOut,
         margin: EdgeInsets.only(top: 8.h),
         width: double.infinity,
-        height: detailsVisible ? 162.h : 100.h,
+        height: detailsVisible ? 180.h : 120.h,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey, width: 1),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.place_outlined),
-                      AllText.Autotext(
-                        text: widget.stade,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).shadowColor,
-                      ),
-                    ],
+                  Flexible(
+                    flex: 1,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.place_outlined),
+                        Flexible(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 4.w),
+                            child: AllText.Autotext(
+                              text: widget.stade,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).shadowColor,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  SizedBox(width: 8.w),
                   AllText.Autotext(
                     text: widget.time,
                     fontSize: 14.sp,
@@ -102,11 +114,12 @@ class _NextMatchCardState extends State<NextMatchCard>
                   ),
                 ],
               ),
+              SizedBox(height: 8.h),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    borderRadius: BorderRadius.all(Radius.circular(8.r)),
                     child: CahedImage(
                       img: widget.homeImage,
                       height: 50.h,
@@ -114,11 +127,18 @@ class _NextMatchCardState extends State<NextMatchCard>
                       box: BoxFit.contain,
                     ),
                   ),
-                  AllText.Autotext(
-                    text: widget.nameHome,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).shadowColor,
+                  Flexible(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: AllText.Autotext(
+                        text: widget.nameHome,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).shadowColor,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -132,11 +152,18 @@ class _NextMatchCardState extends State<NextMatchCard>
                       const Icon(Icons.keyboard_arrow_down_rounded),
                     ],
                   ),
-                  AllText.Autotext(
-                    text: widget.nameAway,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).shadowColor,
+                  Flexible(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: AllText.Autotext(
+                        text: widget.nameAway,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).shadowColor,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(8.r)),
@@ -144,76 +171,69 @@ class _NextMatchCardState extends State<NextMatchCard>
                       img: widget.awayImage,
                       height: 50.h,
                       width: 44.w,
-                       box: BoxFit.contain,
+                      box: BoxFit.contain,
                     ),
                   ),
                 ],
               ),
-              Expanded(
-                child: FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: detailsVisible
-                      ? Column(
+              if (detailsVisible)
+                FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 4.h),
+                        Divider(height: 1.h, color: Colors.grey),
+                        SizedBox(height: 4.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            SizedBox(
-                              height: 8.h,
-                            ),
-                            Divider(height: 1.h, color: Colors.grey),
-                            SizedBox(
-                              height: 8.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            Column(
                               children: [
-                                Column(
-                                  children: [
-                                    const Icon(
-                                      Icons.place_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    AllText.Autotext(
-                                      text: "Direction",
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.grey,
-                                    )
-                                  ],
+                                const Icon(
+                                  Icons.place_outlined,
+                                  color: Colors.grey,
                                 ),
-                                Column(
-                                  children: [
-                                    const Icon(
-                                      Icons.local_phone_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    AllText.Autotext(
-                                      text: "Appeler le capitaine",
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.grey,
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    const Icon(
-                                      Icons.share_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    AllText.Autotext(
-                                      text: "Publier",
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.grey,
-                                    )
-                                  ],
-                                ),
+                                AllText.Autotext(
+                                  text: "Direction",
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey,
+                                )
                               ],
-                            )
+                            ),
+                            Column(
+                              children: [
+                                const Icon(
+                                  Icons.local_phone_outlined,
+                                  color: Colors.grey,
+                                ),
+                                AllText.Autotext(
+                                  text: "Appeler le capitaine",
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey,
+                                )
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                const Icon(
+                                  Icons.share_outlined,
+                                  color: Colors.grey,
+                                ),
+                                AllText.Autotext(
+                                  text: "Publier",
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey,
+                                )
+                              ],
+                            ),
                           ],
-                        )
-                      : const SizedBox(),
-                ),
-              ),
+                        ),
+                      ],
+                    )),
             ],
           ),
         ),

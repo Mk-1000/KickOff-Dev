@@ -40,7 +40,7 @@ class MessageUi extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.normal,
                   color: Colors.grey,
-                  textalgin: TextAlign.start),
+                  textAlign: TextAlign.start),
             )
           } else ...{
             Container(
@@ -85,7 +85,7 @@ class MessageUi extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey,
-                      textalgin: TextAlign.start),
+                      textAlign: TextAlign.start),
                 )
               ],
             )

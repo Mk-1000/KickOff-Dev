@@ -63,7 +63,7 @@ class NotificationCard extends StatelessWidget {
                       fontSize: 14.sp,
                       fontWeight: FontWeight.normal,
                       color: Colors.grey,
-                      textalgin: TextAlign.left),
+                      textAlign: TextAlign.left),
                 ),
               ],
             ),
